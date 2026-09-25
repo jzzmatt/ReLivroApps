@@ -1,3 +1,3 @@
 "use client";
 import Link from "next/link";
-export function MobileNav(){return <nav className="mobile-nav"><Link href="/books"><span>⌕</span><small>Explorar</small></Link><Link href="/books?mode=Troca"><span>⇄</span><small>Trocas</small></Link><Link href="/sell" className="mobile-add"><span>＋</span></Link><Link href="/profile"><span>♙</span><small>Perfil</small></Link><Link href="/menu"><span>☰</span><small>Menu</small></Link></nav>}
+export function MobileNav(){return <nav className="mobile-nav"><Link href="/books"><span>⌕</span><small>Explorar</small></Link><Link href="/messages"><span>✉</span><small>Mensagens</small></Link><Link href="/sell" className="mobile-add"><span>＋</span></Link><Link href="/notifications"><span>♢</span><small>Avisos</small></Link><Link href="/profile"><span>♙</span><small>Perfil</small></Link></nav>}
