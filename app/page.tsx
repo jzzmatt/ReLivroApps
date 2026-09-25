@@ -26,7 +26,7 @@ function PhoneMockup({ title, type }: { title: string; type: string }) {
       <div className="phone-appbar"><span>‹</span><strong>ReLivroApps</strong><span>♡</span></div>
       <div className="phone-screen">
         {type === "home" && <><div className="phone-search">⌕ Pesquisar livros, disciplinas...</div><div className="phone-banner">Livros que ligam<br/>estudantes</div><div className="phone-chips"><i>Matemática</i><i>Português</i><i>Ciências</i></div><div className="phone-list-card"><b>Matemática 10ª Classe</b><small>Usado · Bom estado</small><strong>8 000 Kz</strong></div></>}
-        {type === "detail" && <><div className="book-cover">Matemática<small>10ª Classe</small></div><h4>{title}</h4><small>Estado · Bom estado</small><small>Disciplina · Matemática</small><small>Localização · Lobito, Angola</small><button>Contactar vendedor</button></>}
+        {type === "detail" && <><div className="book-cover">Matemática<small>10ª Classe</small></div><h4>{title}</h4><small>Estado · Bom estado</small><small>Disciplina · Matemática</small><small>Localização · Lobito, Angola</small><button type="button">Contactar vendedor</button></>}
         {type === "search" && <><div className="phone-search">⌕ Matemática 10ª classe</div><div className="filter-row"><b>Todos</b><span>Venda</span><span>Troca</span></div>{[8,6,12].map((price)=><div className="result-row" key={price}><div className="tiny-cover">M</div><div><b>Matemática 10ª Classe</b><small>Bom estado</small><strong>{price} 000 Kz</strong></div></div>)}</>}
         {type === "publish" && <><h4>Publicar livro</h4><div className="step-row"><b>1</b><span>Informações</span><span>2 Fotos</span><span>3 Revisão</span></div>{["Título do livro","Disciplina","Classe","Localização","Preço (Kz)"].map((x)=><div className="input-line" key={x}>{x}</div>)}<button>Continuar</button></>}
         {type === "profile" && <><div className="profile-head"><div className="avatar">JS</div><div><b>{title}</b><small>Estudante</small></div></div>{["Os meus anúncios","Os meus favoritos","Mensagens","Compras","Trocas","Definições"].map((x)=><div className="menu-row" key={x}>{x}<span>›</span></div>)}<div className="eco-note">Contribua<br/><small>Uma segunda vida aos livros.</small></div></>}
@@ -42,7 +42,7 @@ export default function Home() { const [locale,setLocale]=useState<Locale>("pt")
       <header className="site-header"><div className="container nav">
         <a className="brand" href="#"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></a>
         <nav className="desktop-nav"><a href="#como-funciona">{t.nav.how}</a><a href="#livros">{t.nav.books}</a><a href="#comunidade">{t.nav.community}</a><a href="#ajuda">{t.nav.help}</a></nav>
-        <div className="nav-actions"><LanguageSwitcher/><button className="menu-button">☰</button></div>
+        <div className="nav-actions"><LanguageSwitcher/><button className="menu-button" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button></div>
       </div></header>
 
       <section className="hero container">
@@ -53,7 +53,7 @@ export default function Home() { const [locale,setLocale]=useState<Locale>("pt")
           <div className="hero-benefits">{benefits.map((b) => <div key={b.title} className="hero-benefit"><span className={"benefit-icon " + b.icon}>{b.icon === "leaf" ? "◆" : b.icon === "people" ? "●" : "▣"}</span><b>{b.title}</b></div>)}</div>
           <a className="button hero-button" href="#livros">{t.hero.start} <span>→</span></a>
         </div>
-        <div className="hero-phones" aria-label="Pré-visualização da aplicação">
+        <div className="hero-phones" role="img" aria-label="Pré-visualização das telas móveis do ReLivroApps">
           <div className="hero-student student-one"><span>✦</span></div><div className="hero-student student-two"><span>◈</span></div>
           <div className="phones-row">{phones.map((phone) => <PhoneMockup key={phone.type} {...phone}/>)}</div>
         </div>
