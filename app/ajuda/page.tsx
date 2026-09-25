@@ -1,10 +1,14 @@
 import Link from "next/link";
 import {helpT} from "@/lib/i18n-help";
+import {shareT} from "@/lib/i18n-share";
 import {getRequestLocale} from "@/lib/locale-server";
+import {getSupportEmail} from "@/lib/support-public";
 
 export default async function HelpPage() {
   const locale = await getRequestLocale();
   const t = helpT(locale);
+  const share = shareT(locale);
+  const supportEmail = getSupportEmail();
 
   return (
     <main className="help-page">
@@ -24,6 +28,11 @@ export default async function HelpPage() {
           ))}
         </div>
         <p className="help-contact">{t.contact}</p>
+        {supportEmail && (
+          <a className="button help-email-button" href={`mailto:${supportEmail}`}>
+            {share.emailSupport} <span>→</span>
+          </a>
+        )}
         <Link className="button" href="/books">
           {t.explore} <span>→</span>
         </Link>
