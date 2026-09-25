@@ -111,3 +111,5 @@ After changing env vars: **Redeploy** production.
 | Beta testers onboarded | ☐ |
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_9_9_PUBLIC_LAUNCH.md](./PHASE_9_9_PUBLIC_LAUNCH.md)
