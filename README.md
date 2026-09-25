@@ -36,3 +36,22 @@ The approved 16:9 landing-page mockup is:
 ## Languages
 
 Portuguese is the default application language. French and English will be supported.
+
+## Phase 4 — Backend & Data Foundation
+- Supabase browser/server clients
+- Environment template
+- Profiles and automatic profile creation on signup
+- Books, book images and favourites tables
+- PostgreSQL indexes and Row Level Security policies
+- Public book-image storage bucket policies
+- Email/password authentication UI
+- Auth callback route
+- Profile and favourites pages
+- Supabase session middleware
+
+### Supabase setup
+1. Create a Supabase project.
+2. Add the values from `.env.example` to your local environment.
+3. Run `supabase/migrations/0001_relivroapps_foundation.sql` in the Supabase SQL editor or through the Supabase CLI.
+4. Enable email authentication in Supabase Auth.
+5. Configure the application callback URL as `/auth/callback` for the deployed domain.
