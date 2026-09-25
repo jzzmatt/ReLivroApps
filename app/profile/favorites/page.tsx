@@ -2,7 +2,7 @@ import Link from "next/link";
 import {AppShell} from "@/components/AppShell";
 import {createClient} from "@/lib/supabase/server";
 
-export default async function FavoritesPage(){ const locale:Locale="pt"; const t=messages[locale];
+export default async function FavoritesPage(){ const cookieStore=await cookies(); const locale=(cookieStore.get("relivro-locale")?.value as Locale)||"pt"; const t=messages[locale];
  const supabase=await createClient(); const {data:{user}}=await supabase.auth.getUser();
  if(!user)return <AppShell><section className="profile-page container"><h1>{t.favorites.title}</h1><p>{t.favorites.login}</p><Link className="button" href="/auth">{t.auth.signin}</Link></section></AppShell>;
  const {data}=await supabase.from("favorites").select("book_id, books(*)").eq("user_id",user.id);
