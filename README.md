@@ -326,6 +326,13 @@ Exit beta and enable public SEO when smoke tests are green:
 - PWA manifest, JSON-LD on landing, full landing section i18n
 - See [docs/PHASE_10_POST_LAUNCH.md](docs/PHASE_10_POST_LAUNCH.md)
 
+### Phase 11 — Support contact & listing share
+
+- Optional `NEXT_PUBLIC_SUPPORT_EMAIL` (mailto on help + footer)
+- Share listing on book detail (Web Share / copy link)
+- Open Graph metadata per book
+- See [docs/PHASE_11_SUPPORT_SHARE.md](docs/PHASE_11_SUPPORT_SHARE.md)
+
 ### Validation commands
 
 ```bash

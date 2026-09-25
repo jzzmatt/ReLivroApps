@@ -7,6 +7,7 @@ import {HeroBannerArtwork} from "@/components/HeroBannerArtwork";
 import {LandingJsonLd} from "@/components/LandingJsonLd";
 import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 import {landingT} from "@/lib/i18n-landing";
+import {shareT} from "@/lib/i18n-share";
 import {messages, type Locale} from "@/lib/i18n";
 
 const benefitIcons = [
@@ -151,6 +152,8 @@ export default function Home() {
   const [locale, setLocale] = useState<Locale>("pt");
   const t = messages[locale];
   const land = landingT(locale);
+  const share = shareT(locale);
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim();
 
   useEffect(() => {
     const saved = localStorage.getItem("relivro-locale") as Locale | null;
@@ -297,6 +300,9 @@ export default function Home() {
         </div>
         <div className="footer-links">
           <a href="/ajuda">{t.nav.help}</a>
+          {supportEmail && supportEmail.includes("@") && (
+            <a href={`mailto:${supportEmail}`}>{share.emailSupport}</a>
+          )}
           <a href="/privacidade">{t.legal.privacy}</a>
           <a href="/termos">{t.legal.terms}</a>
         </div>
