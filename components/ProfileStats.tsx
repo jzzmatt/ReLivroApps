@@ -1,0 +1,1 @@
+export function ProfileStats({books,reviews,rating}:{books:number;reviews:number;rating:number}){return <div className="profile-stats"><div><strong>{books}</strong><span>livros</span></div><div><strong>{reviews}</strong><span>avaliações</span></div><div><strong>{rating?rating.toFixed(1):"—"}</strong><span>nota média</span></div></div>}
