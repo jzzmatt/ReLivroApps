@@ -181,3 +181,12 @@ Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
 - Sell/listing form translation catalog
 - Server-rendered locale preference via cookie
 - PT-AO, FR and EN shared translation keys
+
+## Phase 9.4 — Accessibility & Mobile QA
+- Visible keyboard focus states
+- 44px minimum touch targets for primary controls
+- Responsive mobile/tablet refinements
+- Reduced-motion support
+- Accessible application header navigation semantics
+- Accessible landing preview semantics
+- Mobile-friendly form sizing and error presentation
