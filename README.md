@@ -320,6 +320,12 @@ Exit beta and enable public SEO when smoke tests are green:
 3. Verify `/sitemap.xml`, `/robots.txt`, `/privacidade`, `/termos`.
 4. Re-run [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md) on production.
 
+### Phase 10 — Post-launch discovery & support
+
+- Help centre FAQ: `/ajuda` (PT / FR / EN)
+- PWA manifest, JSON-LD on landing, full landing section i18n
+- See [docs/PHASE_10_POST_LAUNCH.md](docs/PHASE_10_POST_LAUNCH.md)
+
 ### Validation commands
 
 ```bash

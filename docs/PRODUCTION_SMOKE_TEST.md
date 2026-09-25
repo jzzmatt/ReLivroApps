@@ -57,6 +57,7 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 
 - [ ] `/robots.txt` allows crawling and lists sitemap
 - [ ] `/sitemap.xml` loads
+- [ ] `/ajuda` FAQ (PT / FR / EN)
 - [ ] `/privacidade` and `/termos` (PT / FR / EN)
 - [ ] Admin UI strings follow selected language
 
