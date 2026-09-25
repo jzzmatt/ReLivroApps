@@ -133,3 +133,15 @@ Run `supabase/migrations/0004_admin_moderation_analytics.sql` after migrations 0
 ### First admin setup
 After the migration, promote the initial administrator directly in Supabase:
 `update public.profiles set role='admin' where id='<AUTH_USER_UUID>';`
+
+## Phase 9 — Production Readiness & Beta Launch
+- Production loading, error and 404 states
+- Next.js production image configuration
+- Strict ESLint configuration
+- Production metadata, SEO defaults and viewport
+- `NEXT_PUBLIC_SITE_URL` support
+- Portuguese Angola document locale (`pt-AO`)
+- Reduced-motion support for production route feedback
+
+### Production environment
+Set `NEXT_PUBLIC_SITE_URL` to the public Vercel domain before production deployment.
