@@ -156,3 +156,18 @@ Set `NEXT_PUBLIC_SITE_URL` to the public Vercel domain before production deploym
 
 ### Required Supabase migration
 Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
+
+## Phase 9.2 — Internationalization
+- PT-AO default locale
+- French support
+- English support
+- Shared translation catalog
+- Landing page localization
+- Authentication localization
+- Persistent language selector
+- Language preference stored locally
+
+### Supported locales
+`pt` → Português (default)  
+`fr` → Français  
+`en` → English
