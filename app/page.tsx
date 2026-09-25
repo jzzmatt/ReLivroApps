@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "motion/react";import {useEffect,useState} from "react";import {messages,type Locale} from "@/lib/i18n";import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 
 const phones = [
   { title: "Livros que ligam estudantes", type: "home" },
@@ -36,22 +36,22 @@ function PhoneMockup({ title, type }: { title: string; type: string }) {
   );
 }
 
-export default function Home() {
+export default function Home() { const [locale,setLocale]=useState<Locale>("pt"); const t=messages[locale]; useEffect(()=>{const saved=localStorage.getItem("relivro-locale") as Locale|null;if(saved&&["pt","fr","en"].includes(saved))setLocale(saved);const fn=(e:Event)=>setLocale((e as CustomEvent<Locale>).detail);window.addEventListener("relivro-locale",fn);return()=>window.removeEventListener("relivro-locale",fn)},[]);
   return (
     <main>
       <header className="site-header"><div className="container nav">
         <a className="brand" href="#"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></a>
-        <nav className="desktop-nav"><a href="#como-funciona">Como funciona</a><a href="#livros">Livros</a><a href="#comunidade">Comunidade</a><a href="#ajuda">Ajuda</a></nav>
-        <div className="nav-actions"><button className="language">🇦🇴 PT⌄</button><button className="menu-button">☰</button></div>
+        <nav className="desktop-nav"><a href="#como-funciona">{t.nav.how}</a><a href="#livros">{t.nav.books}</a><a href="#comunidade">{t.nav.community}</a><a href="#ajuda">{t.nav.help}</a></nav>
+        <div className="nav-actions"><LanguageSwitcher/><button className="menu-button">☰</button></div>
       </div></header>
 
       <section className="hero container">
         <div className="hero-copy">
-          <span className="eyebrow">LER · APRENDER · PARTILHAR · CRESCER</span>
-          <h1>Livros escolares<br/>para um futuro<br/><em>mais acessível</em></h1>
-          <p>Compre, venda ou troque livros escolares de forma simples, segura e próxima de si.</p>
+          <span className="eyebrow">{t.hero.eyebrow}</span>
+          <h1>{t.hero.title}</h1>
+          <p>{t.hero.description}</p>
           <div className="hero-benefits">{benefits.map((b) => <div key={b.title} className="hero-benefit"><span className={"benefit-icon " + b.icon}>{b.icon === "leaf" ? "◆" : b.icon === "people" ? "●" : "▣"}</span><b>{b.title}</b></div>)}</div>
-          <a className="button hero-button" href="#livros">Começar agora <span>→</span></a>
+          <a className="button hero-button" href="#livros">{t.hero.start} <span>→</span></a>
         </div>
         <div className="hero-phones" aria-label="Pré-visualização da aplicação">
           <div className="hero-student student-one"><span>✦</span></div><div className="hero-student student-two"><span>◈</span></div>
