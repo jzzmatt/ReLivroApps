@@ -81,22 +81,30 @@ with check (
   )
 );
 
-create policy "Recipients can mark messages read"
-on public.messages for update
-using (
-  exists (
-    select 1 from public.conversations c
-    where c.id = conversation_id
-    and (c.buyer_id = auth.uid() or c.seller_id = auth.uid())
-  )
-)
-with check (
-  exists (
-    select 1 from public.conversations c
-    where c.id = conversation_id
-    and (c.buyer_id = auth.uid() or c.seller_id = auth.uid())
-  )
-);
+create or replace function public.mark_conversation_messages_read(p_conversation_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $
+begin
+  if not exists (
+    select 1 from public.conversations
+    where id = p_conversation_id
+    and (buyer_id = auth.uid() or seller_id = auth.uid())
+  ) then
+    raise exception 'Not a conversation participant';
+  end if;
+
+  update public.messages
+  set read_at = now()
+  where conversation_id = p_conversation_id
+    and sender_id <> auth.uid()
+    and read_at is null;
+end;
+$;
+
+grant execute on function public.mark_conversation_messages_read(uuid) to authenticated;
 
 create policy "Users view their notifications"
 on public.notifications for select
