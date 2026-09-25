@@ -1,6 +1,7 @@
 import type {Metadata, Viewport} from "next";
 import "./globals.css";
 import {AnalyticsTracker} from "@/components/AnalyticsTracker";
+import {SupabaseConfigBanner} from "@/components/SupabaseConfigBanner";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app";
 const siteDescription =
@@ -42,6 +43,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="pt-AO">
       <body>
+        <SupabaseConfigBanner/>
         <AnalyticsTracker/>
         {children}
       </body>
