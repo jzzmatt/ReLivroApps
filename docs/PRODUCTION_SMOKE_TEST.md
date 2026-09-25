@@ -53,6 +53,13 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 - [ ] Tablet
 - [ ] Desktop
 
+## Beta (when `NEXT_PUBLIC_BETA=true`)
+
+- [ ] Beta banner visible on first visit
+- [ ] Banner dismisses and stays hidden after reload
+- [ ] PT / FR / EN banner text (language switcher)
+- [ ] Page metadata uses `noindex` (view source / SEO tools)
+
 ## Infrastructure (deployment)
 
 - [ ] `NEXT_PUBLIC_SITE_URL` matches deployed URL
