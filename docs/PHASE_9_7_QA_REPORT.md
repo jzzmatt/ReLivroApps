@@ -84,4 +84,5 @@ Use [PRODUCTION_SMOKE_TEST.md](./PRODUCTION_SMOKE_TEST.md) line-by-line on produ
 |-------|--------|
 | 9.6 Production deployment | Complete |
 | **9.7 Final QA & RC** | **Complete** |
-| 9.8 Beta launch | Awaiting approval |
+| 9.6-HERO Reference hero | Complete |
+| 9.8 Beta launch | In progress — see [PHASE_9_8_BETA_DEPLOYMENT.md](./PHASE_9_8_BETA_DEPLOYMENT.md) |

@@ -265,6 +265,7 @@ supabase/migrations/0004_admin_moderation_analytics.sql
 supabase/migrations/0005_security_rate_limits.sql
 supabase/migrations/0006_analytics_observability.sql
 supabase/migrations/0007_storage_book_images_hardening.sql
+supabase/migrations/0008_google_oauth_profile_names.sql
 ```
 
 4. Confirm Storage buckets: **`book-images`** (public), **`avatars`** (public).
@@ -294,16 +295,21 @@ update public.profiles set role = 'admin' where id = '<AUTH_USER_UUID>';
 
 ### Production checklist
 
-- [ ] All migrations `0001`–`0007` on production database
+- [ ] All migrations `0001`–`0008` on production database
 - [ ] Env vars set in Vercel (no service role in client)
 - [ ] Auth redirect URLs for production domain
 - [ ] `NEXT_PUBLIC_SITE_URL` matches live URL
 - [ ] `npm run lint` and `npm run build` pass in CI
 - [ ] Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md)
 
-### Beta deployment (Phase 9.8 — not part of 9.6)
+### Phase 9.8 — Beta deployment
 
-When approved: backup production DB, final migration verification, production deploy, domain/HTTPS verification, smoke tests, beta onboarding. Do not announce publicly unless requested.
+Closed beta on Vercel + Supabase (not a public marketing launch unless you approve one).
+
+1. Follow [docs/PHASE_9_8_BETA_DEPLOYMENT.md](docs/PHASE_9_8_BETA_DEPLOYMENT.md).
+2. Set `NEXT_PUBLIC_BETA=true` in Vercel Production during beta (dismissible banner + `noindex`).
+3. Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md) on the live URL.
+4. Onboard testers privately; do not announce publicly unless requested.
 
 ### Validation commands
 
