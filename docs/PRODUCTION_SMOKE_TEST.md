@@ -53,6 +53,13 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 - [ ] Tablet
 - [ ] Desktop
 
+## Public launch (GA — `NEXT_PUBLIC_BETA` off)
+
+- [ ] `/robots.txt` allows crawling and lists sitemap
+- [ ] `/sitemap.xml` loads
+- [ ] `/privacidade` and `/termos` (PT / FR / EN)
+- [ ] Admin UI strings follow selected language
+
 ## Beta (when `NEXT_PUBLIC_BETA=true`)
 
 - [ ] Beta banner visible on first visit

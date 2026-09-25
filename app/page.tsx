@@ -80,7 +80,14 @@ export default function Home() { const [locale,setLocale]=useState<Locale>("pt")
 
       <section id="comunidade" className="community"><div className="container community-inner"><div><span className="eyebrow">UMA REDE LOCAL</span><h2>Uma segunda vida aos livros.</h2><p>Uma experiência pensada para estudantes, famílias e comunidades em Angola.</p></div><div className="community-stats"><div><strong>01</strong><span>Descubra</span></div><div><strong>02</strong><span>Escolha</span></div><div><strong>03</strong><span>Partilhe</span></div></div></div></section>
       <section id="ajuda" className="cta container"><span className="eyebrow">RELIVROAPPS</span><h2>O seu próximo livro pode estar mais perto do que imagina.</h2><a className="button" href="#livros">Explorar livros <span>→</span></a></section>
-      <footer className="footer container"><div className="brand"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></div><span>© 2026 ReLivroApps</span></footer>
+      <footer className="footer container">
+        <div className="brand"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></div>
+        <div className="footer-links">
+          <a href="/privacidade">{t.legal.privacy}</a>
+          <a href="/termos">{t.legal.terms}</a>
+        </div>
+        <span>© 2026 ReLivroApps</span>
+      </footer>
     </main>
   );
 }

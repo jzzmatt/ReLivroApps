@@ -85,4 +85,5 @@ Use [PRODUCTION_SMOKE_TEST.md](./PRODUCTION_SMOKE_TEST.md) line-by-line on produ
 | 9.6 Production deployment | Complete |
 | **9.7 Final QA & RC** | **Complete** |
 | 9.6-HERO Reference hero | Complete |
-| 9.8 Beta launch | In progress — see [PHASE_9_8_BETA_DEPLOYMENT.md](./PHASE_9_8_BETA_DEPLOYMENT.md) |
+| 9.8 Beta launch | Complete (runbook) — ops sign-off in [PHASE_9_8_BETA_DEPLOYMENT.md](./PHASE_9_8_BETA_DEPLOYMENT.md) |
+| 9.9 Public launch (GA) | In progress — [PHASE_9_9_PUBLIC_LAUNCH.md](./PHASE_9_9_PUBLIC_LAUNCH.md) |
