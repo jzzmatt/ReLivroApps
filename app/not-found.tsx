@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="route-state"><div className="route-state-card"><span className="eyebrow">404</span><h1>Esta página não existe.</h1><p>O conteúdo que procura pode ter sido removido ou ainda não estar disponível.</p><Link className="button" href="/books">Explorar livros →</Link></div></main>}
