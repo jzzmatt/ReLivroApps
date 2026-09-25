@@ -171,3 +171,13 @@ Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
 `pt` → Português (default)  
 `fr` → Français  
 `en` → English
+
+## Phase 9.3 — Complete Application Localization
+- Core marketplace localization
+- Profile localization
+- Favorites localization
+- Messaging localization
+- Notifications localization
+- Sell/listing form translation catalog
+- Server-rendered locale preference via cookie
+- PT-AO, FR and EN shared translation keys
