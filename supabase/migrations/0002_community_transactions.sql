@@ -86,7 +86,7 @@ returns void
 language plpgsql
 security definer
 set search_path = public
-as $
+as $$
 begin
   if not exists (
     select 1 from public.conversations
@@ -102,7 +102,7 @@ begin
     and sender_id <> auth.uid()
     and read_at is null;
 end;
-$;
+$$;
 
 grant execute on function public.mark_conversation_messages_read(uuid) to authenticated;
 

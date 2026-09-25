@@ -71,8 +71,9 @@ Portuguese is the default application language. French and English will be suppo
 1. Create a Supabase project.
 2. Add the values from `.env.example` to your local environment.
 3. Run `supabase/migrations/0001_relivroapps_foundation.sql` in the Supabase SQL editor or through the Supabase CLI.
-4. Enable email authentication in Supabase Auth.
+4. Enable **Email** and **Google** in Supabase Auth (see [docs/GOOGLE_AUTH_SETUP.md](docs/GOOGLE_AUTH_SETUP.md)).
 5. Configure the application callback URL as `/auth/callback` for the deployed domain.
+6. Optional: run `0008_google_oauth_profile_names.sql` after `0007` for Google display names/avatars on signup.
 
 
 ## Phase 6 — Community & Transaction Layer
@@ -202,3 +203,100 @@ Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
 
 ### Required Supabase migration
 Run `supabase/migrations/0006_analytics_observability.sql` after migration 0005.
+
+## Phase 9.6 — Production Deployment & Infrastructure
+
+Production-ready deployment on **Vercel + Supabase + GitHub** (no public launch in this phase).
+
+### Architecture
+
+- **Frontend / SSR:** Next.js 15 App Router on Vercel
+- **Auth & data:** Supabase (Postgres, Auth, Storage, RLS, RPC)
+- **i18n:** PT-AO default, FR, EN (`lib/i18n.ts`, locale cookie `relivro-locale`)
+- **Analytics:** first-party events via Supabase RPC (`record_analytics_event`)
+- **Secrets:** only `NEXT_PUBLIC_*` in the browser; no service role in client code
+
+### Environment variables
+
+Copy `.env.example` to `.env.local` for local development. Never commit real secrets.
+
+| Variable | Scope | Required |
+|----------|--------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Public | Yes |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public | Yes |
+| `NEXT_PUBLIC_SITE_URL` | Public | Yes (production/staging URL) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server only | No (not used by current app) |
+
+### Local development
+
+```bash
+npm ci
+cp .env.example .env.local
+# fill Supabase URL and anon key
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). Set `NEXT_PUBLIC_SITE_URL=http://localhost:3000`.
+
+### Supabase setup
+
+1. Create a Supabase project.
+2. Enable **Email** provider in Authentication.
+3. Apply SQL migrations **in order** (SQL editor or Supabase CLI):
+
+```text
+supabase/migrations/0001_relivroapps_foundation.sql
+supabase/migrations/0002_community_transactions.sql
+supabase/migrations/0003_trust_profiles_intelligence.sql
+supabase/migrations/0004_admin_moderation_analytics.sql
+supabase/migrations/0005_security_rate_limits.sql
+supabase/migrations/0006_analytics_observability.sql
+supabase/migrations/0007_storage_book_images_hardening.sql
+```
+
+4. Confirm Storage buckets: **`book-images`** (public), **`avatars`** (public).
+5. Auth **Site URL** and **Redirect URLs** must include:
+   - Local: `http://localhost:3000/auth/callback`
+   - Production: `https://YOUR_PRODUCTION_DOMAIN/auth/callback`
+
+### First admin
+
+After migrations, promote an admin in SQL (replace UUID):
+
+```sql
+update public.profiles set role = 'admin' where id = '<AUTH_USER_UUID>';
+```
+
+### Vercel deployment
+
+1. Import the GitHub repository in Vercel.
+2. Framework: **Next.js** (auto-detected).
+3. Node.js: **20.x** (see `package.json` `engines`).
+4. Install: `npm ci` · Build: `npm run build`.
+5. Set environment variables (Production + Preview as needed):
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `NEXT_PUBLIC_SITE_URL` → `https://YOUR_PRODUCTION_DOMAIN` (use the Vercel URL until a custom domain is configured)
+6. Deploy. Verify build logs and run the smoke-test checklist.
+
+### Production checklist
+
+- [ ] All migrations `0001`–`0007` on production database
+- [ ] Env vars set in Vercel (no service role in client)
+- [ ] Auth redirect URLs for production domain
+- [ ] `NEXT_PUBLIC_SITE_URL` matches live URL
+- [ ] `npm run lint` and `npm run build` pass in CI
+- [ ] Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md)
+
+### Beta deployment (Phase 9.8 — not part of 9.6)
+
+When approved: backup production DB, final migration verification, production deploy, domain/HTTPS verification, smoke tests, beta onboarding. Do not announce publicly unless requested.
+
+### Validation commands
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run build
+```
