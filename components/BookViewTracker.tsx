@@ -1,0 +1,1 @@
+"use client";import {useEffect} from "react";import {createClient} from "@/lib/supabase/client";export function BookViewTracker({bookId}:{bookId:string}){useEffect(()=>{createClient().rpc("record_book_view",{p_book_id:bookId})},[bookId]);return null}
