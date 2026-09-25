@@ -145,3 +145,14 @@ After the migration, promote the initial administrator directly in Supabase:
 
 ### Production environment
 Set `NEXT_PUBLIC_SITE_URL` to the public Vercel domain before production deployment.
+
+## Phase 9.1 — Security, Validation & Abuse Protection
+- Zod schemas for listing, profile, message/report validation foundation
+- Listing image type and 5 MB size validation
+- Avatar image type and 3 MB size validation
+- Secure HTTP response headers
+- Database-backed rate limiting
+- Conversation creation validates authentication, published listing and self-contact
+
+### Required Supabase migration
+Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
