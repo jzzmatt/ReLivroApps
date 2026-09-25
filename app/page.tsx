@@ -1,4 +1,75 @@
 "use client";
-import {motion} from "motion/react";
-const benefits=[{title:"Encontre livros",text:"Descubra livros escolares perto de si.",icon:"🔎"},{title:"Troque ou compre",text:"Dê uma nova vida aos seus livros.",icon:"📚"},{title:"Partilhe",text:"Ajude outros estudantes a aprender.",icon:"🤝"}];
-export default function Home(){return <main><header className="site-header"><div className="container nav"><div className="brand"><span className="brand-mark">R</span>ReLivroApps</div><nav className="desktop-nav"><a href="#como-funciona">Como funciona</a><a href="#beneficios">Benefícios</a><a href="#livros">Livros</a></nav><div className="nav-actions"><button className="language">PT ▾</button><button className="menu-button">☰</button><a className="button button-small" href="#começar">Começar</a></div></div></header><section className="hero container"><div className="hero-copy"><span className="eyebrow">LER · APRENDER · PARTILHAR · CRESCER</span><h1>Livros escolares para um futuro mais acessível.</h1><p>Encontre, troque e partilhe livros escolares com a sua comunidade.</p><div className="hero-actions"><a className="button" href="#começar">Começar agora <span>→</span></a><a className="text-link" href="#como-funciona">Descobrir como funciona</a></div></div><div className="hero-art"><div className="student-card">🎓</div><div className="book-stack">📚</div><div className="phone-preview"><div className="phone-notch"/><div className="phone-content"><small>ReLivroApps</small><strong>Encontre o seu próximo livro</strong>{["Matemática","Português","Física"].map(x=><div className="mini-book" key={x}>{x}</div>)}</div></div></div></section><section id="beneficios" className="section container"><div className="section-heading"><span className="eyebrow">PORQUÊ RELIVROAPPS</span><h2>Uma comunidade para dar uma segunda vida aos livros.</h2></div><div className="card-grid">{benefits.map((b,i)=><motion.article key={b.title} className="feature-card" initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.45,delay:i*.08}} whileHover={{y:-6,scale:1.015}} whileTap={{scale:.985}}><span className="feature-icon">{b.icon}</span><h3>{b.title}</h3><p>{b.text}</p><span className="card-arrow">→</span></motion.article>)}</div></section><section id="como-funciona" className="community"><div className="container community-inner"><div><span className="eyebrow">UMA REDE LOCAL</span><h2>Aprender fica melhor quando os livros circulam.</h2><p>Conecte estudantes, famílias e comunidades através de uma experiência simples e segura.</p></div><div className="community-stats">{["Descubra","Escolha","Partilhe"].map((x,i)=><div key={x}><strong>0{i+1}</strong><span>{x}</span></div>)}</div></div></section><section id="começar" className="cta container"><span className="eyebrow">RELIVROAPPS</span><h2>O seu próximo livro pode estar mais perto do que imagina.</h2><a className="button" href="#livros">Explorar livros <span>→</span></a></section><footer className="footer container"><div className="brand"><span className="brand-mark">R</span>ReLivroApps</div><span>© 2026 ReLivroApps</span></footer></main>}
+
+import { motion } from "motion/react";
+
+const phones = [
+  { title: "Livros que ligam estudantes", type: "home" },
+  { title: "Matemática 10ª Classe", type: "detail" },
+  { title: "32 resultados", type: "search" },
+  { title: "Publicar livro", type: "publish" },
+  { title: "João Silva", type: "profile" },
+];
+
+const benefits = [
+  { title: "Poupe dinheiro", text: "Encontre livros escolares a preços acessíveis.", icon: "leaf" },
+  { title: "Apoie a comunidade", text: "Mantenha os livros a circular entre estudantes.", icon: "people" },
+  { title: "Dê uma segunda vida aos livros", text: "Compre, venda ou troque de forma simples.", icon: "book" },
+];
+
+function PhoneMockup({ title, type }: { title: string; type: string }) {
+  return (
+    <motion.div className={"phone phone-" + type}
+      initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay: phones.findIndex((p) => p.type === type) * 0.08 }}
+      whileHover={{ y: -10, scale: 1.025 }}>
+      <div className="phone-top"><span>9:41</span><span>●</span></div>
+      <div className="phone-appbar"><span>‹</span><strong>ReLivroApps</strong><span>♡</span></div>
+      <div className="phone-screen">
+        {type === "home" && <><div className="phone-search">⌕ Pesquisar livros, disciplinas...</div><div className="phone-banner">Livros que ligam<br/>estudantes</div><div className="phone-chips"><i>Matemática</i><i>Português</i><i>Ciências</i></div><div className="phone-list-card"><b>Matemática 10ª Classe</b><small>Usado · Bom estado</small><strong>8 000 Kz</strong></div></>}
+        {type === "detail" && <><div className="book-cover">Matemática<small>10ª Classe</small></div><h4>{title}</h4><small>Estado · Bom estado</small><small>Disciplina · Matemática</small><small>Localização · Lobito, Angola</small><button>Contactar vendedor</button></>}
+        {type === "search" && <><div className="phone-search">⌕ Matemática 10ª classe</div><div className="filter-row"><b>Todos</b><span>Venda</span><span>Troca</span></div>{[8,6,12].map((price)=><div className="result-row" key={price}><div className="tiny-cover">M</div><div><b>Matemática 10ª Classe</b><small>Bom estado</small><strong>{price} 000 Kz</strong></div></div>)}</>}
+        {type === "publish" && <><h4>Publicar livro</h4><div className="step-row"><b>1</b><span>Informações</span><span>2 Fotos</span><span>3 Revisão</span></div>{["Título do livro","Disciplina","Classe","Localização","Preço (Kz)"].map((x)=><div className="input-line" key={x}>{x}</div>)}<button>Continuar</button></>}
+        {type === "profile" && <><div className="profile-head"><div className="avatar">JS</div><div><b>{title}</b><small>Estudante</small></div></div>{["Os meus anúncios","Os meus favoritos","Mensagens","Compras","Trocas","Definições"].map((x)=><div className="menu-row" key={x}>{x}<span>›</span></div>)}<div className="eco-note">Contribua<br/><small>Uma segunda vida aos livros.</small></div></>}
+      </div>
+      <div className="phone-nav"><span>⌂</span><span>⌕</span><b>＋</b><span>♧</span><span>♙</span></div>
+    </motion.div>
+  );
+}
+
+export default function Home() {
+  return (
+    <main>
+      <header className="site-header"><div className="container nav">
+        <a className="brand" href="#"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></a>
+        <nav className="desktop-nav"><a href="#como-funciona">Como funciona</a><a href="#livros">Livros</a><a href="#comunidade">Comunidade</a><a href="#ajuda">Ajuda</a></nav>
+        <div className="nav-actions"><button className="language">🇦🇴 PT⌄</button><button className="menu-button">☰</button></div>
+      </div></header>
+
+      <section className="hero container">
+        <div className="hero-copy">
+          <span className="eyebrow">LER · APRENDER · PARTILHAR · CRESCER</span>
+          <h1>Livros escolares<br/>para um futuro<br/><em>mais acessível</em></h1>
+          <p>Compre, venda ou troque livros escolares de forma simples, segura e próxima de si.</p>
+          <div className="hero-benefits">{benefits.map((b) => <div key={b.title} className="hero-benefit"><span className={"benefit-icon " + b.icon}>{b.icon === "leaf" ? "◆" : b.icon === "people" ? "●" : "▣"}</span><b>{b.title}</b></div>)}</div>
+          <a className="button hero-button" href="#livros">Começar agora <span>→</span></a>
+        </div>
+        <div className="hero-phones" aria-label="Pré-visualização da aplicação">
+          <div className="hero-student student-one"><span>✦</span></div><div className="hero-student student-two"><span>◈</span></div>
+          <div className="phones-row">{phones.map((phone) => <PhoneMockup key={phone.type} {...phone}/>)}</div>
+        </div>
+      </section>
+
+      <section id="livros" className="section container">
+        <div className="section-heading"><span className="eyebrow">UMA EXPERIÊNCIA SIMPLES</span><h2>Encontre. Escolha. Partilhe.</h2></div>
+        <div className="card-grid">{["Encontrar livros de todas as disciplinas e classes.","Comprar ou trocar de forma segura e ao melhor preço.","Conectar-se com estudantes da sua escola e região."].map((text, i) =>
+          <motion.article key={text} className="feature-card" initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.45,delay:i*.08}} whileHover={{y:-7,scale:1.015}} whileTap={{scale:.985}}>
+            <span className="feature-number">0{i+1}</span><h3>{["Encontre","Compre ou troque","Conecte-se"][i]}</h3><p>{text}</p><span className="card-arrow">→</span>
+          </motion.article>)}</div>
+      </section>
+
+      <section id="comunidade" className="community"><div className="container community-inner"><div><span className="eyebrow">UMA REDE LOCAL</span><h2>Uma segunda vida aos livros.</h2><p>Uma experiência pensada para estudantes, famílias e comunidades em Angola.</p></div><div className="community-stats"><div><strong>01</strong><span>Descubra</span></div><div><strong>02</strong><span>Escolha</span></div><div><strong>03</strong><span>Partilhe</span></div></div></div></section>
+      <section id="ajuda" className="cta container"><span className="eyebrow">RELIVROAPPS</span><h2>O seu próximo livro pode estar mais perto do que imagina.</h2><a className="button" href="#livros">Explorar livros <span>→</span></a></section>
+      <footer className="footer container"><div className="brand"><span className="logo-book"><span/></span><span><b>Re</b>Livro<span>Apps</span></span></div><span>© 2026 ReLivroApps</span></footer>
+    </main>
+  );
+}
