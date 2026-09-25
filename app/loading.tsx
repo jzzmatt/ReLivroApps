@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="route-state"><div className="loading-mark"><span/></div><p>A preparar o ReLivroApps...</p></main>}
