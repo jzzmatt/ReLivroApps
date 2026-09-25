@@ -113,3 +113,23 @@ after the Phase 4 migration.
 Run:
 `supabase/migrations/0003_trust_profiles_intelligence.sql`
 after migrations 0001 and 0002.
+
+## Phase 8 — Admin, Moderation & Analytics
+- Dedicated `/admin` administration area
+- Admin and moderator roles
+- Marketplace KPI dashboard
+- User management view
+- Listing moderation
+- Listing publish/suspend actions
+- Report moderation
+- Admin audit logs
+- Secure admin RPCs
+- Database-level admin authorization
+- Moderation-ready analytics foundation
+
+### Required Supabase migration
+Run `supabase/migrations/0004_admin_moderation_analytics.sql` after migrations 0001, 0002 and 0003.
+
+### First admin setup
+After the migration, promote the initial administrator directly in Supabase:
+`update public.profiles set role='admin' where id='<AUTH_USER_UUID>';`
