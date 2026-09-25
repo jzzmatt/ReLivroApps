@@ -37,6 +37,24 @@ The approved 16:9 landing-page mockup is:
 
 Portuguese is the default application language. French and English will be supported.
 
+## Phase 5 — Real Marketplace CRUD
+- Marketplace catalogue reads from Supabase
+- Real search and subject / mode filtering
+- Supabase-backed favourites
+- Real book detail pages with image gallery
+- Authenticated book publishing
+- Supabase Storage upload for up to five book images
+- Seller-owned listing management
+- Edit listing
+- Publish / pause listing
+- Delete listing
+- Personal listings page
+- Profile navigation to listings
+- Mobile-first management UI
+
+### Current user flow
+`/auth` → `/books` → `/books/[id]` → `/sell` → `/profile/listings` → `/books/[id]/edit`
+
 ## Phase 4 — Backend & Data Foundation
 - Supabase browser/server clients
 - Environment template
