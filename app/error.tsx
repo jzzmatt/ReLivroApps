@@ -1,0 +1,2 @@
+"use client";
+export default function Error({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="route-state"><div className="route-state-card"><span className="eyebrow">ERRO</span><h1>Algo não correu como esperado.</h1><p>Não foi possível concluir esta operação. Pode tentar novamente.</p><button className="button" onClick={()=>reset()}>Tentar novamente →</button></div></main>}
