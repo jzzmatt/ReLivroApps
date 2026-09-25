@@ -1,4 +1,4 @@
-import type {Metadata,Viewport} from "next";import "./globals.css";
+import type {Metadata,Viewport} from "next";import "./globals.css";import {AnalyticsTracker} from "@/components/AnalyticsTracker";
 export const metadata:Metadata={metadataBase:new URL(process.env.NEXT_PUBLIC_SITE_URL||"https://relivroapps.vercel.app"),title:{default:"ReLivroApps — Livros escolares para todos",template:"%s — ReLivroApps"},description:"Marketplace mobile-first para encontrar, trocar e partilhar livros escolares em Angola.",applicationName:"ReLivroApps",authors:[{name:"ReLivroApps"}],keywords:["livros escolares","Angola","troca de livros","marketplace escolar"],robots:{index:true,follow:true}};
 export const viewport:Viewport={width:"device-width",initialScale:1,themeColor:"#fffaf1"};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="pt-AO"><body>{children}</body></html>}
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="pt-AO"><body><AnalyticsTracker/>{children}</body></html>}
