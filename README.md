@@ -95,3 +95,21 @@ Portuguese is the default application language. French and English will be suppo
 Run:
 `supabase/migrations/0002_community_transactions.sql`
 after the Phase 4 migration.
+
+
+## Phase 7 — Trust, Profiles & Marketplace Intelligence
+- Real editable user profiles
+- Avatar uploads to Supabase Storage
+- School, city, municipality, phone and bio fields
+- Profile activity statistics
+- Seller identity on book detail
+- Seller ratings/reviews data model
+- Book view tracking
+- Seller/book analytics foundation
+- Recent-view and recommendation data foundation
+- Marketplace intelligence migration
+
+### Required Supabase migration
+Run:
+`supabase/migrations/0003_trust_profiles_intelligence.sql`
+after migrations 0001 and 0002.
