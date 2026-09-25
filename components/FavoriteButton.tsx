@@ -1,0 +1,4 @@
+"use client";
+import {useState} from "react";
+import {createClient} from "@/lib/supabase/client";
+export function FavoriteButton({bookId,initial=false}:{bookId:string;initial?:boolean}){const [saved,setSaved]=useState(initial);const [busy,setBusy]=useState(false);async function toggle(e:React.MouseEvent){e.preventDefault();e.stopPropagation();if(busy)return;setBusy(true);const supabase=createClient();const {data:{user}}=await supabase.auth.getUser();if(!user){window.location.href="/auth";return}const result=saved?await supabase.from("favorites").delete().eq("user_id",user.id).eq("book_id",bookId):await supabase.from("favorites").insert({user_id:user.id,book_id:bookId});if(!result.error)setSaved(!saved);setBusy(false)}return <button className={"favorite-button "+(saved?"saved":"")} aria-label={saved?"Remover dos favoritos":"Adicionar aos favoritos"} onClick={toggle} disabled={busy}>{saved?"♥":"♡"}</button>}
