@@ -4,8 +4,21 @@ Mobile-first school-book marketplace and exchange platform.
 
 ## Design source of truth
 
-The approved 16:9 landing-page mockup is:
-`public/asset/reLivroApps-landing-16x9.png`
+Design assets (16:9):
+
+- Landing reference mockup: `public/asset/reLivroApps-landing-16x9.png`
+- GPT-Image hero banner (text-free, HTML overlay): `public/asset/reLivroApps-hero-banner-16x9.png`
+
+### Regenerate hero banner (optional)
+
+Server-side only — never expose `OPENAI_API_KEY` to the client or Vercel runtime unless you run generation in CI.
+
+```bash
+# Set OPENAI_API_KEY in your shell or .env.local (do not commit)
+npm run generate:hero
+```
+
+Uses `gpt-image-2` by default (`1536x864`). Override with `OPENAI_IMAGE_MODEL` if needed. Commit the updated PNG after review.
 
 ## Frontend progress
 

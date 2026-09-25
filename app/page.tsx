@@ -1,6 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";import {useEffect,useState} from "react";import {messages,type Locale} from "@/lib/i18n";import {LanguageSwitcher} from "@/components/LanguageSwitcher";
+import { motion } from "motion/react";import {useEffect,useState} from "react";import {messages,type Locale} from "@/lib/i18n";import {LanguageSwitcher} from "@/components/LanguageSwitcher";import {HeroBannerArtwork} from "@/components/HeroBannerArtwork";
+
+const benefitIcons = [
+  {key: "leaf" as const, icon: "leaf" as const, glyph: "◆"},
+  {key: "people" as const, icon: "people" as const, glyph: "●"},
+  {key: "book" as const, icon: "book" as const, glyph: "▣"},
+];
 
 const phones = [
   { title: "Livros que ligam estudantes", type: "home" },
@@ -8,12 +14,6 @@ const phones = [
   { title: "32 resultados", type: "search" },
   { title: "Publicar livro", type: "publish" },
   { title: "João Silva", type: "profile" },
-];
-
-const benefits = [
-  { title: "Poupe dinheiro", text: "Encontre livros escolares a preços acessíveis.", icon: "leaf" },
-  { title: "Apoie a comunidade", text: "Mantenha os livros a circular entre estudantes.", icon: "people" },
-  { title: "Dê uma segunda vida aos livros", text: "Compre, venda ou troque de forma simples.", icon: "book" },
 ];
 
 function PhoneMockup({ title, type }: { title: string; type: string }) {
@@ -45,17 +45,28 @@ export default function Home() { const [locale,setLocale]=useState<Locale>("pt")
         <div className="nav-actions"><LanguageSwitcher/><button className="menu-button" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button></div>
       </div></header>
 
-      <section className="hero container">
-        <div className="hero-copy">
-          <span className="eyebrow">{t.hero.eyebrow}</span>
-          <h1>{t.hero.title}</h1>
-          <p>{t.hero.description}</p>
-          <div className="hero-benefits">{benefits.map((b) => <div key={b.title} className="hero-benefit"><span className={"benefit-icon " + b.icon}>{b.icon === "leaf" ? "◆" : b.icon === "people" ? "●" : "▣"}</span><b>{b.title}</b></div>)}</div>
-          <a className="button hero-button" href="#livros">{t.hero.start} <span>→</span></a>
-        </div>
-        <div className="hero-phones" role="img" aria-label="Pré-visualização das telas móveis do ReLivroApps">
-          <div className="hero-student student-one"><span>✦</span></div><div className="hero-student student-two"><span>◈</span></div>
-          <div className="phones-row">{phones.map((phone) => <PhoneMockup key={phone.type} {...phone}/>)}</div>
+      <section className="hero-shell">
+        <HeroBannerArtwork/>
+        <div className="container hero">
+          <div className="hero-copy">
+            <span className="eyebrow">{t.hero.eyebrow}</span>
+            <h1>{t.hero.title}</h1>
+            <p>{t.hero.description}</p>
+            <div className="hero-benefits">
+              {benefitIcons.map((b) => (
+                <div key={b.key} className="hero-benefit">
+                  <span className={"benefit-icon " + b.icon}>{b.glyph}</span>
+                  <b>{t.hero.benefits[b.key]}</b>
+                </div>
+              ))}
+            </div>
+            <a className="button hero-button" href="#livros">{t.hero.start} <span>→</span></a>
+          </div>
+          <div className="hero-phones" role="img" aria-label="Pré-visualização das telas móveis do ReLivroApps">
+            <div className="hero-student student-one"><span>✦</span></div>
+            <div className="hero-student student-two"><span>◈</span></div>
+            <div className="phones-row">{phones.map((phone) => <PhoneMockup key={phone.type} {...phone}/>)}</div>
+          </div>
         </div>
       </section>
 
