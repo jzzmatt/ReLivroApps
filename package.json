@@ -1,0 +1,9 @@
+{
+  "name": "reLivroApps",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mobile-first school-book marketplace and exchange platform",
+  "dependencies": {
+    "motion": "^13.4.3"
+  }
+}
