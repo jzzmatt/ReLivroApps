@@ -190,3 +190,15 @@ Run `supabase/migrations/0005_security_rate_limits.sql` after migration 0004.
 - Accessible application header navigation semantics
 - Accessible landing preview semantics
 - Mobile-friendly form sizing and error presentation
+
+## Phase 9.5 — Analytics & Production Observability
+- Privacy-conscious first-party analytics stored in Supabase
+- Page-view tracking
+- Session tracking with anonymous browser session ID
+- Generic event tracking API
+- Admin analytics summary
+- Daily event aggregation view
+- 24h / 7d / 30d event metrics
+
+### Required Supabase migration
+Run `supabase/migrations/0006_analytics_observability.sql` after migration 0005.
