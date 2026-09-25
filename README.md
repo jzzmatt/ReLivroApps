@@ -18,7 +18,7 @@ Server-side only — never expose `OPENAI_API_KEY` to the client or Vercel runti
 npm run generate:hero
 ```
 
-Uses `gpt-image-2` by default (`1536x864`). Override with `OPENAI_IMAGE_MODEL` if needed. Commit the updated PNG after review.
+Uses `gpt-image-2` by default (`1536x864`) with reference-guided `images.edit` when `scripts/reference/reLivroApps-hero-reference.png` exists (cropped from the landing mockup illustration — not served from `public/`). Override reference path with `HERO_REFERENCE_IMAGE` or model with `OPENAI_IMAGE_MODEL`. Commit the updated PNG after review.
 
 ## Frontend progress
 
