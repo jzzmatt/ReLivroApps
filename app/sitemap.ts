@@ -7,7 +7,7 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  const routes = ["/", "/books", "/auth", "/sell", "/privacidade", "/termos"];
+  const routes = ["/", "/books", "/auth", "/sell", "/ajuda", "/privacidade", "/termos"];
 
   return routes.map((path) => ({
     url: `${siteUrl}${path}`,
