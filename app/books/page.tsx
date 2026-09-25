@@ -1,11 +1,14 @@
-"use client";
-import {useMemo,useState} from "react";
+import Link from "next/link";
 import {AppShell} from "@/components/AppShell";
-import {BookCard} from "@/components/BookCard";
-import {books} from "@/lib/books";
+import {createClient} from "@/lib/supabase/server";
+import {MarketplaceClient} from "@/components/MarketplaceClient";
+import type {Book} from "@/lib/books";
 
-export default function BooksPage(){
- const [query,setQuery]=useState(""); const [subject,setSubject]=useState("Todos"); const [mode,setMode]=useState("Todos");
- const filtered=useMemo(()=>books.filter(b=>(subject==="Todos"||b.subject===subject)&&(mode==="Todos"||b.mode===mode)&&(b.title.toLowerCase().includes(query.toLowerCase())||b.subject.toLowerCase().includes(query.toLowerCase()))),[query,subject,mode]);
- return <AppShell><section className="marketplace container"><div className="marketplace-head"><div><span className="eyebrow">MARKETPLACE</span><h1>Encontre o seu próximo livro.</h1><p>Livros escolares de estudantes e famílias perto de si.</p></div><a className="button button-small" href="/sell">＋ Publicar livro</a></div><label className="search-box"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Pesquisar por título, disciplina..." /></label><div className="filter-scroll"><button className={subject==="Todos"?"active":""} onClick={()=>setSubject("Todos")}>Todos</button>{["Matemática","Português","Física","Biologia","História","Geografia"].map(s=><button key={s} className={subject===s?"active":""} onClick={()=>setSubject(s)}>{s}</button>)}</div><div className="mode-tabs">{["Todos","Venda","Troca"].map(m=><button key={m} className={mode===m?"active":""} onClick={()=>setMode(m)}>{m}</button>)}</div><div className="results-head"><strong>{filtered.length} livros encontrados</strong><button>↕ Ordenar</button></div><div className="book-grid">{filtered.map((book,i)=><BookCard key={book.id} book={book} index={i}/>)}</div></section></AppShell>;
+export default async function BooksPage(){
+ const supabase=await createClient();
+ const {data:{user}}=await supabase.auth.getUser();
+ const {data,error}=await supabase.from("books").select("*,book_images(id,storage_path,sort_order),profiles(display_name,avatar_url)").eq("is_published",true).order("created_at",{ascending:false});
+ const books=(data||[]) as Book[];
+ const {data:favorites}=user?await supabase.from("favorites").select("book_id").eq("user_id",user.id):{data:[]};
+ return <AppShell><section className="marketplace container"><div className="marketplace-head"><div><span className="eyebrow">MARKETPLACE</span><h1>Encontre o seu próximo livro.</h1><p>Livros escolares de estudantes e famílias perto de si.</p></div><Link className="button button-small" href="/sell">＋ Publicar livro</Link></div>{error?<div className="empty-state">Não foi possível carregar os livros neste momento.</div>:books.length===0?<div className="empty-state"><h2>Ainda não há livros publicados.</h2><p>Seja o primeiro a publicar um livro.</p><Link className="button" href="/sell">Publicar livro</Link></div>:<MarketplaceClient books={books} favorites={(favorites||[]).map(f=>f.book_id)}/>}</section></AppShell>;
 }
