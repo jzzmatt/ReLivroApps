@@ -73,3 +73,25 @@ Portuguese is the default application language. French and English will be suppo
 3. Run `supabase/migrations/0001_relivroapps_foundation.sql` in the Supabase SQL editor or through the Supabase CLI.
 4. Enable email authentication in Supabase Auth.
 5. Configure the application callback URL as `/auth/callback` for the deployed domain.
+
+
+## Phase 6 — Community & Transaction Layer
+- Buyer/seller conversations
+- Secure conversation creation through Supabase RPC
+- Messaging with participant-only RLS
+- Message read-state handling through secure RPC
+- Automatic recipient notifications for new messages
+- Notifications page
+- Seller contact flow from book detail
+- Listing reporting
+- Listing transaction states: active, reserved, sold, exchanged
+- Automatic unpublishing when sold/exchanged
+- Mobile navigation for messages and notifications
+
+### New community flow
+`/books/[id]` → `Contactar vendedor` → `/messages/[conversation-id]` → messages + notifications
+
+### Required Supabase migration
+Run:
+`supabase/migrations/0002_community_transactions.sql`
+after the Phase 4 migration.
