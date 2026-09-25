@@ -1,0 +1,2 @@
+export function storageImageUrl(path?:string|null){const base=process.env.NEXT_PUBLIC_SUPABASE_URL;return path&&base?base+"/storage/v1/object/public/book-images/"+path:null}
+export function BookImage({path,title,className=""}:{path?:string|null;title:string;className?:string}){const src=storageImageUrl(path);return src?<img src={src} alt={title} className={className}/>:<div className={className+" book-art-fallback"}><span>{title.slice(0,1).toUpperCase()}</span></div>}
