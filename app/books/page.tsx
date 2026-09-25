@@ -4,7 +4,7 @@ import {createClient} from "@/lib/supabase/server";
 import {MarketplaceClient} from "@/components/MarketplaceClient";
 import type {Book} from "@/lib/books";
 
-export default async function BooksPage(){ const locale:Locale="pt"; const t=messages[locale];
+export default async function BooksPage(){ const cookieStore=await cookies(); const locale=(cookieStore.get("relivro-locale")?.value as Locale)||"pt"; const t=messages[locale];
  const supabase=await createClient();
  const {data:{user}}=await supabase.auth.getUser();
  const {data,error}=await supabase.from("books").select("*,book_images(id,storage_path,sort_order),profiles(display_name,avatar_url)").eq("is_published",true).order("created_at",{ascending:false});
