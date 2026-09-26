@@ -26,3 +26,5 @@
 - [ ] `npm run build` passes
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_17_SELLER_REVIEWS.md](./PHASE_17_SELLER_REVIEWS.md)

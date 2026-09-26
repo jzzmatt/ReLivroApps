@@ -365,6 +365,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Localized 404, error, loading, Supabase config banner
 - See [docs/PHASE_16_SHELL_SEO_I18N.md](docs/PHASE_16_SHELL_SEO_I18N.md)
 
+### Phase 17 — Seller reviews (trust UI)
+
+- Rate sellers on book detail (1–5 stars + optional comment)
+- Seller average and review list; profile stats + recent feedback i18n
+- See [docs/PHASE_17_SELLER_REVIEWS.md](docs/PHASE_17_SELLER_REVIEWS.md)
+
 ### Validation commands
 
 ```bash
