@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520">
+  <rect width="400" height="520" fill="#fffaf1"/>
+  <rect x="24" y="24" width="352" height="472" rx="20" fill="#1a3a6b"/>
+  <text x="200" y="200" fill="#ffd54a" font-family="Georgia,serif" font-size="72" font-weight="700" text-anchor="middle">Aa</text>
+  <text x="200" y="290" fill="#ffffff" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle">Português</text>
+  <text x="200" y="340" fill="#6ec5ff" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle">Demo ReLivroApps</text>
+  <circle cx="200" cy="420" r="36" fill="#ff8c2a" opacity="0.9"/>
+</svg>

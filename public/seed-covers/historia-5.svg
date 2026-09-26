@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520">
+  <rect width="400" height="520" fill="#fffaf1"/>
+  <rect x="24" y="24" width="352" height="472" rx="20" fill="#5c3d2e"/>
+  <rect x="160" y="120" width="80" height="200" rx="8" fill="#ffd54a"/>
+  <rect x="140" y="100" width="120" height="40" rx="8" fill="#ff8c2a"/>
+  <text x="200" y="360" fill="#fffaf1" font-family="system-ui,sans-serif" font-size="28" font-weight="700" text-anchor="middle">História</text>
+  <text x="200" y="410" fill="#6ec5ff" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle">5ª Classe</text>
+</svg>

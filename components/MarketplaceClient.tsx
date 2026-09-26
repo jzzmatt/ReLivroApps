@@ -31,7 +31,9 @@ export function MarketplaceClient({
         (b) =>
           (subject === "Todos" || b.subject === subject) &&
           (mode === "Todos" || b.mode === mode) &&
-          (b.title + " " + b.subject + " " + (b.city || "")).toLowerCase().includes(query.toLowerCase()),
+          (b.title + " " + b.subject + " " + b.grade + " " + (b.city || "") + " " + (b.municipality || ""))
+            .toLowerCase()
+            .includes(query.toLowerCase()),
       ),
     [books, query, subject, mode],
   );

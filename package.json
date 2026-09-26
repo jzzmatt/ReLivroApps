@@ -21,7 +21,9 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "generate:hero": "tsx scripts/generate-hero-banner.ts"
+    "generate:hero": "tsx scripts/generate-hero-banner.ts",
+    "seed:demo": "tsx scripts/seed-demo-data.ts",
+    "seed:demo:clear": "tsx scripts/clear-demo-data.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
