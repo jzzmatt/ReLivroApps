@@ -32,3 +32,5 @@ Redeploy Vercel after setting the variable.
 - [ ] PT / FR / EN share strings (locale cookie)
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_12_BOOK_DETAIL.md](./PHASE_12_BOOK_DETAIL.md)
