@@ -339,6 +339,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Open Graph / Twitter image from first listing photo
 - See [docs/PHASE_12_BOOK_DETAIL.md](docs/PHASE_12_BOOK_DETAIL.md)
 
+### Phase 13 — Marketplace & seller listings i18n
+
+- `/books` search, filters, book cards (PT / FR / EN)
+- Report listing + `/profile/listings` management copy
+- See [docs/PHASE_13_MARKETPLACE_I18N.md](docs/PHASE_13_MARKETPLACE_I18N.md)
+
 ### Validation commands
 
 ```bash

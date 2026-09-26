@@ -10,6 +10,7 @@ import {ReportListingButton} from "@/components/ReportListingButton";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {formatPrice, type Book, type BookImage as BookImageRow} from "@/lib/books";
 import {detailT} from "@/lib/i18n-detail";
+import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import {createClient} from "@/lib/supabase/server";
 
@@ -71,6 +72,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const {id} = await params;
   const locale = await getRequestLocale();
   const t = detailT(locale);
+  const market = marketplaceT(locale);
   const supabase = await createClient();
   const {
     data: {user},
@@ -181,7 +183,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
               <ShareListingButton title={book.title} path={`/books/${book.id}`} locale={locale} />
             </div>
             <div className="safe-note">🛡 {t.safeNote}</div>
-            {!own && <ReportListingButton bookId={book.id} />}
+            {!own && <ReportListingButton bookId={book.id} labels={market.report} />}
           </div>
         </div>
       </section>
