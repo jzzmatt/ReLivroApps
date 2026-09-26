@@ -1,2 +1,22 @@
 "use client";
-export default function Error({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="route-state"><div className="route-state-card"><span className="eyebrow">ERRO</span><h1>Algo não correu como esperado.</h1><p>Não foi possível concluir esta operação. Pode tentar novamente.</p><button className="button" onClick={()=>reset()}>Tentar novamente →</button></div></main>}
+
+import {shellT} from "@/lib/i18n-shell";
+import {useClientLocale} from "@/lib/use-client-locale";
+
+export default function Error({reset}: {error: Error & {digest?: string}; reset: () => void}) {
+  const locale = useClientLocale();
+  const t = shellT(locale).routeError;
+
+  return (
+    <main className="route-state">
+      <div className="route-state-card">
+        <span className="eyebrow">{t.eyebrow}</span>
+        <h1>{t.title}</h1>
+        <p>{t.body}</p>
+        <button className="button" type="button" onClick={() => reset()}>
+          {t.cta}
+        </button>
+      </div>
+    </main>
+  );
+}

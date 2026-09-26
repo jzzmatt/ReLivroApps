@@ -26,3 +26,5 @@ Shared date/number formatting: `lib/locale-format.ts` (`localeTag`).
 - [ ] `npm run build` passes
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_16_SHELL_SEO_I18N.md](./PHASE_16_SHELL_SEO_I18N.md)

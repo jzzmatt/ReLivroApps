@@ -3,37 +3,43 @@ import "./globals.css";
 import {AnalyticsTracker} from "@/components/AnalyticsTracker";
 import {BetaBanner} from "@/components/BetaBanner";
 import {SupabaseConfigBanner} from "@/components/SupabaseConfigBanner";
+import {htmlLang, openGraphLocale} from "@/lib/html-lang";
+import {siteMetadataT} from "@/lib/i18n-metadata";
+import {getRequestLocale} from "@/lib/locale-server";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app";
 const isBeta = process.env.NEXT_PUBLIC_BETA === "true";
-const siteDescription =
-  "Marketplace mobile-first para encontrar, trocar e partilhar livros escolares em Angola.";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: "ReLivroApps — Livros escolares para todos",
-    template: "%s — ReLivroApps",
-  },
-  description: siteDescription,
-  applicationName: "ReLivroApps",
-  authors: [{name: "ReLivroApps"}],
-  keywords: ["livros escolares", "Angola", "troca de livros", "marketplace escolar"],
-  robots: isBeta ? {index: false, follow: false} : {index: true, follow: true},
-  openGraph: {
-    type: "website",
-    locale: "pt_AO",
-    url: siteUrl,
-    siteName: "ReLivroApps",
-    title: "ReLivroApps — Livros escolares para todos",
-    description: siteDescription,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ReLivroApps — Livros escolares para todos",
-    description: siteDescription,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale();
+  const meta = siteMetadataT(locale);
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: meta.title,
+      template: "%s — ReLivroApps",
+    },
+    description: meta.description,
+    applicationName: "ReLivroApps",
+    authors: [{name: "ReLivroApps"}],
+    keywords: [...meta.keywords],
+    robots: isBeta ? {index: false, follow: false} : {index: true, follow: true},
+    openGraph: {
+      type: "website",
+      locale: openGraphLocale(locale),
+      url: siteUrl,
+      siteName: "ReLivroApps",
+      title: meta.title,
+      description: meta.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.description,
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -41,9 +47,11 @@ export const viewport: Viewport = {
   themeColor: "#fffaf1",
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default async function RootLayout({children}: {children: React.ReactNode}) {
+  const locale = await getRequestLocale();
+
   return (
-    <html lang="pt-AO">
+    <html lang={htmlLang(locale)}>
       <body>
         <SupabaseConfigBanner/>
         <BetaBanner/>
