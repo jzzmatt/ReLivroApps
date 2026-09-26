@@ -3,13 +3,17 @@ import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
 import {AppShell} from "@/components/AppShell";
 import {createClient} from "@/lib/supabase/server";
+import {conversationT} from "@/lib/i18n-conversation";
 import {messages, type Locale} from "@/lib/i18n";
+import {localeTag} from "@/lib/locale-format";
 import {oneRelation} from "@/lib/supabase-relations";
 
 export default async function MessagesPage() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get("relivro-locale")?.value as Locale) || "pt";
   const t = messages[locale];
+  const conv = conversationT(locale);
+  const numberLocale = localeTag(locale);
   const s = await createClient();
   const {data: {user}} = await s.auth.getUser();
   if (!user) redirect("/auth");
@@ -31,8 +35,8 @@ export default async function MessagesPage() {
               <Link href={"/messages/" + c.id} className="conversation-row" key={c.id}>
                 <div className="conversation-icon">💬</div>
                 <div>
-                  <strong>{book?.title || "Livro"}</strong>
-                  <p>{Number(book?.price_kz || 0).toLocaleString("pt-AO")} Kz</p>
+                  <strong>{book?.title || conv.bookFallback}</strong>
+                  <p>{Number(book?.price_kz || 0).toLocaleString(numberLocale)} Kz</p>
                 </div>
                 <span>→</span>
               </Link>

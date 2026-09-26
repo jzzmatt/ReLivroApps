@@ -351,6 +351,13 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/sell` and edit listing use full `messages[locale].sell`
 - See [docs/PHASE_14_CATALOG_I18N.md](docs/PHASE_14_CATALOG_I18N.md)
 
+### Phase 15 — Messaging thread & profile edit i18n
+
+- `/messages/[id]` conversation UI (PT / FR / EN)
+- `MessageComposer` and `/profile/edit` localized
+- Locale-aware dates on messages and notifications
+- See [docs/PHASE_15_MESSAGING_PROFILE_I18N.md](docs/PHASE_15_MESSAGING_PROFILE_I18N.md)
+
 ### Validation commands
 
 ```bash
