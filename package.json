@@ -23,7 +23,8 @@
     "typecheck": "tsc --noEmit",
     "generate:hero": "tsx scripts/generate-hero-banner.ts",
     "seed:demo": "tsx scripts/seed-demo-data.ts",
-    "seed:demo:clear": "tsx scripts/clear-demo-data.ts"
+    "seed:demo:clear": "tsx scripts/clear-demo-data.ts",
+    "seed:demo:sql": "tsx scripts/generate-demo-seed-sql.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

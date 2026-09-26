@@ -10,6 +10,10 @@
 .env*.local
 scripts/demo-credentials.local.json
 
+# generated demo seed SQL (contains password hash from local DEMO_USER_PASSWORD)
+demo-seed.sql
+seed-chunk-*.sql
+
 # debug
 npm-debug.log*
 yarn-debug.log*
