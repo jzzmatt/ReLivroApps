@@ -8,6 +8,7 @@ import {LandingJsonLd} from "@/components/LandingJsonLd";
 import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 import {landingT} from "@/lib/i18n-landing";
 import {shareT} from "@/lib/i18n-share";
+import {shellT} from "@/lib/i18n-shell";
 import {messages, type Locale} from "@/lib/i18n";
 
 const benefitIcons = [
@@ -153,6 +154,7 @@ export default function Home() {
   const t = messages[locale];
   const land = landingT(locale);
   const share = shareT(locale);
+  const shell = shellT(locale);
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim();
 
   useEffect(() => {
@@ -184,7 +186,7 @@ export default function Home() {
           </nav>
           <div className="nav-actions">
             <LanguageSwitcher />
-            <button className="menu-button" type="button" aria-label="Abrir menu" aria-expanded="false">
+            <button className="menu-button" type="button" aria-label={shell.menuOpen} aria-expanded="false">
               ☰
             </button>
           </div>

@@ -358,6 +358,13 @@ Exit beta and enable public SEO when smoke tests are green:
 - Locale-aware dates on messages and notifications
 - See [docs/PHASE_15_MESSAGING_PROFILE_I18N.md](docs/PHASE_15_MESSAGING_PROFILE_I18N.md)
 
+### Phase 16 — App shell & global SEO i18n
+
+- `AppShell` / `MobileNav` labels and header aria
+- Root `generateMetadata` + `<html lang>` from locale cookie
+- Localized 404, error, loading, Supabase config banner
+- See [docs/PHASE_16_SHELL_SEO_I18N.md](docs/PHASE_16_SHELL_SEO_I18N.md)
+
 ### Validation commands
 
 ```bash
