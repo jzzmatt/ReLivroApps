@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520">
+  <rect width="400" height="520" fill="#fffaf1"/>
+  <rect x="24" y="24" width="352" height="472" rx="20" fill="#1a3a6b"/>
+  <text x="120" y="220" fill="#ffd54a" font-family="system-ui,sans-serif" font-size="40" font-weight="800">À</text>
+  <text x="220" y="220" fill="#6ec5ff" font-family="system-ui,sans-serif" font-size="40" font-weight="800">+</text>
+  <text x="200" y="300" fill="#ffffff" font-family="system-ui,sans-serif" font-size="26" font-weight="700" text-anchor="middle">Matemática</text>
+  <text x="200" y="350" fill="#ff8c2a" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle">4ª Classe</text>
+</svg>

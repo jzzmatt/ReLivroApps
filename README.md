@@ -302,6 +302,19 @@ update public.profiles set role = 'admin' where id = '<AUTH_USER_UUID>';
 - [ ] `npm run lint` and `npm run build` pass in CI
 - [ ] Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md)
 
+### Phase 9.6-DATA — Demo / test data seeding (dev & staging only)
+
+Populate a **non-production** Supabase project with fictional users, books, messaging, reviews, and original SVG demo covers. Catalogue titles are inspired by public metadata from [Xilonga manuais escolares](https://xilonga.med.gov.ao/manuais-escolares) — no PDFs or official artwork.
+
+**Never run against production.** Requires `SEED_DATABASE=true`, service role key, and `DEMO_USER_PASSWORD` in `.env.local` only.
+
+```bash
+SEED_DATABASE=true npm run seed:demo
+SEED_DATABASE=true npm run seed:demo:clear
+```
+
+See [docs/PHASE_9_6_DATA_SEEDING.md](docs/PHASE_9_6_DATA_SEEDING.md). Demo emails: `*@demo.example.com` (admin: `admin.demo@demo.example.com`).
+
 ### Phase 9.8 — Beta deployment
 
 Closed beta on Vercel + Supabase (not a public marketing launch unless you approve one).

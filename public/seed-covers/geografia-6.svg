@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520">
+  <rect width="400" height="520" fill="#fffaf1"/>
+  <rect x="24" y="24" width="352" height="472" rx="20" fill="#3d8f5a"/>
+  <circle cx="200" cy="220" r="90" fill="#6ec5ff" opacity="0.35"/>
+  <ellipse cx="200" cy="220" rx="90" ry="45" fill="none" stroke="#0b1f33" stroke-width="4"/>
+  <ellipse cx="200" cy="220" rx="45" ry="90" fill="none" stroke="#0b1f33" stroke-width="4"/>
+  <text x="200" y="360" fill="#fffaf1" font-family="system-ui,sans-serif" font-size="28" font-weight="700" text-anchor="middle">Geografia</text>
+  <text x="200" y="410" fill="#ffd54a" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle">6ª Classe</text>
+</svg>
