@@ -53,6 +53,7 @@ export default async function BooksPage() {
             books={books}
             favorites={(favorites || []).map((f) => f.book_id)}
             labels={marketLabels}
+            locale={locale}
           />
         )}
       </section>

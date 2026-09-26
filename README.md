@@ -345,6 +345,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Report listing + `/profile/listings` management copy
 - See [docs/PHASE_13_MARKETPLACE_I18N.md](docs/PHASE_13_MARKETPLACE_I18N.md)
 
+### Phase 14 — Catalog labels & publish flow i18n
+
+- Translated subject/grade labels (DB values stay PT-AO)
+- `/sell` and edit listing use full `messages[locale].sell`
+- See [docs/PHASE_14_CATALOG_I18N.md](docs/PHASE_14_CATALOG_I18N.md)
+
 ### Validation commands
 
 ```bash

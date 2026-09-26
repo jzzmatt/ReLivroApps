@@ -4,6 +4,8 @@ import {useMemo, useState} from "react";
 import {BookCard} from "@/components/BookCard";
 import type {Book, ListingMode} from "@/lib/books";
 import {modes, subjects} from "@/lib/books";
+import type {Locale} from "@/lib/i18n";
+import {labelSubject} from "@/lib/i18n-catalog";
 import type {MarketplaceLabels} from "@/lib/i18n-marketplace";
 
 type ModeFilter = "Todos" | ListingMode;
@@ -12,10 +14,12 @@ export function MarketplaceClient({
   books,
   favorites,
   labels,
+  locale,
 }: {
   books: Book[];
   favorites: string[];
   labels: MarketplaceLabels;
+  locale: Locale;
 }) {
   const [query, setQuery] = useState("");
   const [subject, setSubject] = useState("Todos");
@@ -53,7 +57,7 @@ export function MarketplaceClient({
         </button>
         {subjects.map((s) => (
           <button key={s} className={subject === s ? "active" : ""} onClick={() => setSubject(s)}>
-            {s}
+            {labelSubject(s, locale)}
           </button>
         ))}
       </div>

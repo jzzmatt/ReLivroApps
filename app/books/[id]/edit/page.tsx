@@ -1,7 +1,182 @@
 "use client";
-import {useEffect,useState} from "react";import {useParams,useRouter} from "next/navigation";import {AppShell} from "@/components/AppShell";import {createClient} from "@/lib/supabase/client";import {conditions,grades,modes,subjects,type BookCondition,type ListingMode} from "@/lib/books";
-export default function EditBookPage(){const {id}=useParams<{id:string}>();const router=useRouter();const [loading,setLoading]=useState(true);const [saving,setSaving]=useState(false);const [error,setError]=useState("");const [title,setTitle]=useState("");const [subject,setSubject]=useState<(typeof subjects)[number]>(subjects[0]);const [grade,setGrade]=useState<(typeof grades)[number]>(grades[0]);const [price,setPrice]=useState("");const [condition,setCondition]=useState<BookCondition>("Bom estado");const [city,setCity]=useState("");const [municipality,setMunicipality]=useState("");const [description,setDescription]=useState("");const [mode,setMode]=useState<ListingMode>("Venda");const [published,setPublished]=useState(true);
-useEffect(()=>{(async()=>{const s=createClient();const {data:{user}}=await s.auth.getUser();if(!user){router.replace("/auth");return}const {data,error}=await s.from("books").select("*").eq("id",id).maybeSingle();if(error||!data||data.seller_id!==user.id){router.replace("/profile/listings");return}setTitle(data.title);setSubject(data.subject as (typeof subjects)[number]);setGrade(data.grade as (typeof grades)[number]);setPrice(String(data.price_kz));setCondition(data.condition);setCity(data.city||"");setMunicipality(data.municipality||"");setDescription(data.description||"");setMode(data.mode);setPublished(data.is_published);setLoading(false)})()},[id,router]);
-async function save(e:React.FormEvent){e.preventDefault();setSaving(true);const s=createClient();const {error}=await s.from("books").update({title,subject,grade,price_kz:Number(price||0),condition,mode,city,municipality,description,is_published:published}).eq("id",id);if(error)setError(error.message);else router.push("/books/"+id);setSaving(false)}
-if(loading)return <AppShell><section className="sell-page container"><p>A carregar anúncio...</p></section></AppShell>;
-return <AppShell><section className="sell-page container"><span className="eyebrow">GERIR ANÚNCIO</span><h1>Editar livro.</h1><form className="sell-form" onSubmit={save}><label>Título do livro<input value={title} onChange={e=>setTitle(e.target.value)} required/></label><div className="form-two"><label>Disciplina<select value={subject} onChange={e=>setSubject(e.target.value as (typeof subjects)[number])}>{subjects.map(x=><option key={x}>{x}</option>)}</select></label><label>Classe<select value={grade} onChange={e=>setGrade(e.target.value as (typeof grades)[number])}>{grades.map(x=><option key={x}>{x}</option>)}</select></label></div><div className="form-two"><label>Preço (Kz)<input type="number" min="0" value={price} onChange={e=>setPrice(e.target.value)}/></label><label>Estado<select value={condition} onChange={e=>setCondition(e.target.value as BookCondition)}>{conditions.map(x=><option key={x}>{x}</option>)}</select></label></div><div className="form-two"><label>Cidade<input value={city} onChange={e=>setCity(e.target.value)}/></label><label>Município<input value={municipality} onChange={e=>setMunicipality(e.target.value)}/></label></div><label>Descrição<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={4}/></label><div className="listing-type"><strong>Disponibilidade</strong><div>{modes.map(x=><button type="button" className={mode===x?"selected":""} key={x} onClick={()=>setMode(x)}>{x}</button>)}</div></div><label className="publish-toggle"><input type="checkbox" checked={published} onChange={e=>setPublished(e.target.checked)}/> Publicado no marketplace</label>{error&&<div className="form-error">{error}</div>}<button className="button submit-listing" disabled={saving}>{saving?"A guardar...":"Guardar alterações →"}</button></form></section></AppShell>}
+
+import {useEffect, useState} from "react";
+import {useParams, useRouter} from "next/navigation";
+import {AppShell} from "@/components/AppShell";
+import {conditions, grades, modes, subjects, type BookCondition, type ListingMode} from "@/lib/books";
+import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
+import {editListingT} from "@/lib/i18n-edit-listing";
+import {marketplaceT} from "@/lib/i18n-marketplace";
+import {messages} from "@/lib/i18n";
+import {useClientLocale} from "@/lib/use-client-locale";
+import {createClient} from "@/lib/supabase/client";
+
+export default function EditBookPage() {
+  const {id} = useParams<{id: string}>();
+  const router = useRouter();
+  const locale = useClientLocale();
+  const sell = messages[locale].sell;
+  const edit = editListingT(locale);
+  const catalog = marketplaceT(locale);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState<(typeof subjects)[number]>(subjects[0]);
+  const [grade, setGrade] = useState<(typeof grades)[number]>(grades[0]);
+  const [price, setPrice] = useState("");
+  const [condition, setCondition] = useState<BookCondition>("Bom estado");
+  const [city, setCity] = useState("");
+  const [municipality, setMunicipality] = useState("");
+  const [description, setDescription] = useState("");
+  const [mode, setMode] = useState<ListingMode>("Venda");
+  const [published, setPublished] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const s = createClient();
+      const {
+        data: {user},
+      } = await s.auth.getUser();
+      if (!user) {
+        router.replace("/auth");
+        return;
+      }
+      const {data, error: loadError} = await s.from("books").select("*").eq("id", id).maybeSingle();
+      if (loadError || !data || data.seller_id !== user.id) {
+        router.replace("/profile/listings");
+        return;
+      }
+      setTitle(data.title);
+      setSubject(data.subject as (typeof subjects)[number]);
+      setGrade(data.grade as (typeof grades)[number]);
+      setPrice(String(data.price_kz));
+      setCondition(data.condition);
+      setCity(data.city || "");
+      setMunicipality(data.municipality || "");
+      setDescription(data.description || "");
+      setMode(data.mode);
+      setPublished(data.is_published);
+      setLoading(false);
+    })();
+  }, [id, router]);
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    const s = createClient();
+    const {error: saveError} = await s
+      .from("books")
+      .update({
+        title,
+        subject,
+        grade,
+        price_kz: Number(price || 0),
+        condition,
+        mode,
+        city,
+        municipality,
+        description,
+        is_published: published,
+      })
+      .eq("id", id);
+    if (saveError) setError(saveError.message);
+    else router.push("/books/" + id);
+    setSaving(false);
+  }
+
+  if (loading) {
+    return (
+      <AppShell>
+        <section className="sell-page container">
+          <p>{edit.loading}</p>
+        </section>
+      </AppShell>
+    );
+  }
+
+  return (
+    <AppShell>
+      <section className="sell-page container">
+        <span className="eyebrow">{edit.eyebrow}</span>
+        <h1>{edit.title}</h1>
+        <form className="sell-form" onSubmit={save}>
+          <label>
+            {sell.bookTitle}
+            <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </label>
+          <div className="form-two">
+            <label>
+              {sell.subject}
+              <select value={subject} onChange={(e) => setSubject(e.target.value as (typeof subjects)[number])}>
+                {subjectOptions(locale).map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              {sell.grade}
+              <select value={grade} onChange={(e) => setGrade(e.target.value as (typeof grades)[number])}>
+                {gradeOptions(locale).map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="form-two">
+            <label>
+              {sell.price}
+              <input type="number" min="0" value={price} onChange={(e) => setPrice(e.target.value)} />
+            </label>
+            <label>
+              {sell.condition}
+              <select value={condition} onChange={(e) => setCondition(e.target.value as BookCondition)}>
+                {conditions.map((x) => (
+                  <option key={x} value={x}>
+                    {catalog.conditions[x]}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="form-two">
+            <label>
+              {sell.city}
+              <input value={city} onChange={(e) => setCity(e.target.value)} />
+            </label>
+            <label>
+              {sell.municipality}
+              <input value={municipality} onChange={(e) => setMunicipality(e.target.value)} />
+            </label>
+          </div>
+          <label>
+            {sell.description}
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} />
+          </label>
+          <div className="listing-type">
+            <strong>{edit.availability}</strong>
+            <div>
+              {modes.map((x) => (
+                <button type="button" className={mode === x ? "selected" : ""} key={x} onClick={() => setMode(x)}>
+                  {catalog.modes[x]}
+                </button>
+              ))}
+            </div>
+          </div>
+          <label className="publish-toggle">
+            <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
+            {edit.published}
+          </label>
+          {error && <div className="form-error">{error}</div>}
+          <button className="button submit-listing" disabled={saving}>
+            {saving ? edit.saving : edit.save}
+          </button>
+        </form>
+      </section>
+    </AppShell>
+  );
+}
