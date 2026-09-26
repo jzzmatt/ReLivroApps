@@ -15,7 +15,7 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 
 - [ ] Browse books
 - [ ] Search
-- [ ] Book details
+- [ ] Book details (PT / FR / EN labels; share preview with photo when available)
 - [ ] Publish book
 - [ ] Edit listing
 - [ ] Delete listing

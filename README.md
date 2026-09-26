@@ -333,6 +333,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Open Graph metadata per book
 - See [docs/PHASE_11_SUPPORT_SHARE.md](docs/PHASE_11_SUPPORT_SHARE.md)
 
+### Phase 12 — Book detail i18n & rich share previews
+
+- Localized book detail page (PT / FR / EN)
+- Open Graph / Twitter image from first listing photo
+- See [docs/PHASE_12_BOOK_DETAIL.md](docs/PHASE_12_BOOK_DETAIL.md)
+
 ### Validation commands
 
 ```bash
