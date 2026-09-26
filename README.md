@@ -311,6 +311,8 @@ Populate a **non-production** Supabase project with fictional users, books, mess
 ```bash
 SEED_DATABASE=true npm run seed:demo
 SEED_DATABASE=true npm run seed:demo:clear
+# Fallback without service role (SQL editor / MCP):
+DEMO_USER_PASSWORD='…' npm run seed:demo:sql > demo-seed.sql
 ```
 
 See [docs/PHASE_9_6_DATA_SEEDING.md](docs/PHASE_9_6_DATA_SEEDING.md). Demo emails: `*@demo.example.com` (admin: `admin.demo@demo.example.com`).

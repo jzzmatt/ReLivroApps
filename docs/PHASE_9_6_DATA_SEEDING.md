@@ -41,6 +41,28 @@ SEED_DATABASE=true npm run seed:demo:clear
 
 Re-running `seed:demo` is **idempotent** (deterministic UUIDs, upserts).
 
+### SQL generator (no service role)
+
+When you cannot run the Node seed locally (e.g. Cloud Agent without `SUPABASE_SERVICE_ROLE_KEY`), generate the same manifest as SQL and apply it in the Supabase SQL editor or via Supabase MCP `execute_sql`:
+
+```bash
+# Single file (redirect — file is gitignored; never commit)
+DEMO_USER_PASSWORD='your-staging-password' npm run seed:demo:sql > demo-seed.sql
+
+# Split for MCP size limits (~7 chunks)
+DEMO_USER_PASSWORD='your-staging-password' npm run seed:demo:sql -- --chunks=7 --out-dir=./tmp
+# Apply tmp/seed-chunk-0.sql … seed-chunk-6.sql in order
+```
+
+| Method | Covers in Storage | `book_views` | Notifications |
+|--------|-------------------|--------------|---------------|
+| `npm run seed:demo` | Yes (uploads SVGs) | Yes | Yes |
+| `npm run seed:demo:sql` | No (DB paths only) | Yes | Yes |
+
+After SQL-only seeding, run `seed:demo` once with a service role if you need cover images in the `book-images` bucket.
+
+Script: `scripts/generate-demo-seed-sql.ts` — reads the same manifests as `seed-demo-data.ts`; password is taken from `DEMO_USER_PASSWORD` at generation time only.
+
 ---
 
 ## Dataset (summary)
