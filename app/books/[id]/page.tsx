@@ -7,12 +7,17 @@ import {BookViewTracker} from "@/components/BookViewTracker";
 import {ContactSellerButton} from "@/components/ContactSellerButton";
 import {FavoriteButton} from "@/components/FavoriteButton";
 import {ReportListingButton} from "@/components/ReportListingButton";
+import {SellerReviewForm} from "@/components/SellerReviewForm";
 import {ShareListingButton} from "@/components/ShareListingButton";
+import {StarRating} from "@/components/StarRating";
 import {formatPrice, type Book, type BookImage as BookImageRow} from "@/lib/books";
 import {detailT} from "@/lib/i18n-detail";
 import {labelGrade, labelSubject} from "@/lib/i18n-catalog";
 import {marketplaceT} from "@/lib/i18n-marketplace";
+import {formatReviewCount, reviewsT} from "@/lib/i18n-reviews";
+import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
+import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app").replace(
@@ -73,7 +78,9 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const {id} = await params;
   const locale = await getRequestLocale();
   const t = detailT(locale);
+  const rt = reviewsT(locale);
   const market = marketplaceT(locale);
+  const dateLocale = localeTag(locale);
   const supabase = await createClient();
   const {
     data: {user},
@@ -90,6 +97,26 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
     ? await supabase.from("favorites").select("book_id").eq("user_id", user.id).eq("book_id", id).maybeSingle()
     : {data: null};
   const own = user?.id === book.seller_id;
+  const {data: ratingRows} = await supabase.from("seller_reviews").select("rating").eq("seller_id", book.seller_id);
+  const reviewCount = ratingRows?.length || 0;
+  const avgRating = reviewCount
+    ? (ratingRows?.reduce((sum, r) => sum + r.rating, 0) || 0) / reviewCount
+    : 0;
+  const {data: reviewList} = await supabase
+    .from("seller_reviews")
+    .select("id,rating,comment,created_at,reviewer_id,profiles:reviewer_id(display_name)")
+    .eq("seller_id", book.seller_id)
+    .order("created_at", {ascending: false})
+    .limit(8);
+  const {data: myReview} = user
+    ? await supabase
+        .from("seller_reviews")
+        .select("rating,comment")
+        .eq("seller_id", book.seller_id)
+        .eq("book_id", id)
+        .eq("reviewer_id", user.id)
+        .maybeSingle()
+    : {data: null};
   const sellerName = book.profiles?.display_name || t.memberDefault;
   const modeLabel = t.modes[book.mode] ?? book.mode;
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
@@ -143,6 +170,13 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
                 <small>{t.seller}</small>
                 <strong>{sellerName}</strong>
                 <span>{[book.profiles?.city, book.profiles?.municipality].filter(Boolean).join(", ")}</span>
+                {reviewCount > 0 && (
+                  <div className="seller-rating-inline">
+                    <StarRating value={Math.round(avgRating)} label={rt.average}/>
+                    <strong>{avgRating.toFixed(1)}</strong>
+                    <span>({formatReviewCount(reviewCount, locale)})</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="detail-info">
@@ -185,6 +219,46 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
             </div>
             <div className="safe-note">🛡 {t.safeNote}</div>
             {!own && <ReportListingButton bookId={book.id} labels={market.report} />}
+            <section className="reviews-section" aria-labelledby="seller-reviews-heading">
+              <span className="eyebrow">{rt.sectionEyebrow}</span>
+              <h2 id="seller-reviews-heading">{rt.sectionTitle}</h2>
+              {reviewCount > 0 ? (
+                <div className="reviews-summary">
+                  <StarRating value={Math.round(avgRating)} label={rt.average}/>
+                  <div>
+                    <strong>{avgRating.toFixed(1)}</strong> · {formatReviewCount(reviewCount, locale)}
+                  </div>
+                </div>
+              ) : (
+                <p className="review-hint">{rt.empty}</p>
+              )}
+              {reviewList && reviewList.length > 0 && (
+                <div className="reviews-list">
+                  {reviewList.map(row => {
+                    const reviewer = oneRelation(row.profiles as {display_name: string | null} | {display_name: string | null}[]);
+                    return (
+                      <article className="review-card" key={row.id}>
+                        <div className="review-card-head">
+                          <strong>{reviewer?.display_name || rt.anonymous}</strong>
+                          <small>{new Date(row.created_at).toLocaleDateString(dateLocale)}</small>
+                        </div>
+                        <StarRating value={row.rating} label={`${row.rating}/5`}/>
+                        {row.comment && <p>{row.comment}</p>}
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+              <SellerReviewForm
+                locale={locale}
+                sellerId={book.seller_id}
+                bookId={book.id}
+                loggedIn={!!user}
+                ownListing={own}
+                initialRating={myReview?.rating || 0}
+                initialComment={myReview?.comment || ""}
+              />
+            </section>
           </div>
         </div>
       </section>
