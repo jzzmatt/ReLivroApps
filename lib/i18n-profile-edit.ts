@@ -1,0 +1,62 @@
+import type {Locale} from "@/lib/i18n";
+
+export const profileEditMessages = {
+  pt: {
+    eyebrow: "PERFIL",
+    title: "Editar perfil.",
+    changePhoto: "Alterar fotografia",
+    name: "Nome",
+    school: "Escola",
+    schoolPlaceholder: "Nome da escola",
+    city: "Cidade",
+    cityPlaceholder: "Lobito",
+    municipality: "Município",
+    phone: "Telefone",
+    phonePlaceholder: "+244 ...",
+    bio: "Sobre mim",
+    validation: "Verifique os dados do perfil.",
+    uploadError: "A fotografia deve ser JPG, PNG ou WebP e ter no máximo 3 MB.",
+    saving: "A guardar...",
+    save: "Guardar perfil →",
+  },
+  fr: {
+    eyebrow: "PROFIL",
+    title: "Modifier le profil.",
+    changePhoto: "Changer la photo",
+    name: "Nom",
+    school: "École",
+    schoolPlaceholder: "Nom de l’école",
+    city: "Ville",
+    cityPlaceholder: "Lobito",
+    municipality: "Municipalité",
+    phone: "Téléphone",
+    phonePlaceholder: "+244 ...",
+    bio: "À propos de moi",
+    validation: "Vérifiez les informations du profil.",
+    uploadError: "La photo doit être JPG, PNG ou WebP et faire au maximum 3 Mo.",
+    saving: "Enregistrement...",
+    save: "Enregistrer le profil →",
+  },
+  en: {
+    eyebrow: "PROFILE",
+    title: "Edit profile.",
+    changePhoto: "Change photo",
+    name: "Name",
+    school: "School",
+    schoolPlaceholder: "School name",
+    city: "City",
+    cityPlaceholder: "Lobito",
+    municipality: "Municipality",
+    phone: "Phone",
+    phonePlaceholder: "+244 ...",
+    bio: "About me",
+    validation: "Please check your profile details.",
+    uploadError: "Photo must be JPG, PNG or WebP and no larger than 3 MB.",
+    saving: "Saving...",
+    save: "Save profile →",
+  },
+} as const;
+
+export function profileEditT(locale: Locale) {
+  return profileEditMessages[locale] ?? profileEditMessages.pt;
+}

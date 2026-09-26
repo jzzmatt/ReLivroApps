@@ -4,11 +4,13 @@ import {cookies} from "next/headers";
 import {AppShell} from "@/components/AppShell";
 import {createClient} from "@/lib/supabase/server";
 import {messages, type Locale} from "@/lib/i18n";
+import {localeTag} from "@/lib/locale-format";
 
 export default async function NotificationsPage() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get("relivro-locale")?.value as Locale) || "pt";
   const t = messages[locale];
+  const numberLocale = localeTag(locale);
   const s = await createClient();
   const {data: {user}} = await s.auth.getUser();
   if (!user) redirect("/auth");
@@ -33,7 +35,7 @@ export default async function NotificationsPage() {
                 <strong>{n.title}</strong>
                 <p>{n.body}</p>
               </div>
-              <small>{new Date(n.created_at).toLocaleDateString("pt-AO")}</small>
+              <small>{new Date(n.created_at).toLocaleDateString(numberLocale)}</small>
             </Link>
           )) : (
             <div className="empty-state">
