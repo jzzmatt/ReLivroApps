@@ -26,3 +26,5 @@ Shared mode/condition labels align with Phase 12 `i18n-detail.ts` semantics.
 - [ ] `npm run build` passes
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_14_CATALOG_I18N.md](./PHASE_14_CATALOG_I18N.md)

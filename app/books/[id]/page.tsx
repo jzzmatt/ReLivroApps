@@ -10,6 +10,7 @@ import {ReportListingButton} from "@/components/ReportListingButton";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {formatPrice, type Book, type BookImage as BookImageRow} from "@/lib/books";
 import {detailT} from "@/lib/i18n-detail";
+import {labelGrade, labelSubject} from "@/lib/i18n-catalog";
 import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import {createClient} from "@/lib/supabase/server";
@@ -158,11 +159,11 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
               </div>
               <div>
                 <small>{t.subject}</small>
-                <strong>{book.subject}</strong>
+                <strong>{labelSubject(book.subject, locale)}</strong>
               </div>
               <div>
                 <small>{t.grade}</small>
-                <strong>{book.grade}</strong>
+                <strong>{labelGrade(book.grade, locale)}</strong>
               </div>
               <div>
                 <small>{t.seller}</small>
