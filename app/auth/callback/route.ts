@@ -15,5 +15,7 @@ export async function GET(request:Request){
    return NextResponse.redirect(new URL("/auth?error="+encodeURIComponent(error.message),url.origin));
   }
  }
- return NextResponse.redirect(new URL("/books",url.origin));
+ const nextPath=url.searchParams.get("next");
+ const destination=nextPath&&nextPath.startsWith("/")&&!nextPath.startsWith("//")?nextPath:"/books";
+ return NextResponse.redirect(new URL(destination,url.origin));
 }

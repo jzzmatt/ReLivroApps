@@ -3,6 +3,27 @@ import {createServerClient} from "@supabase/ssr";
 import {getSupabasePublicEnv} from "@/lib/supabase/public-env";
 
 export async function middleware(request: NextRequest) {
+  const {pathname, searchParams} = request.nextUrl;
+
+  // Supabase sometimes redirects to Site URL (/) with ?code= when /auth/callback
+  // is missing from Redirect URLs — forward to the app callback route.
+  if (pathname !== "/auth/callback") {
+    const code = searchParams.get("code");
+    if (code) {
+      const callbackUrl = request.nextUrl.clone();
+      callbackUrl.pathname = "/auth/callback";
+      return NextResponse.redirect(callbackUrl);
+    }
+    const oauthError = searchParams.get("error_description") || searchParams.get("error");
+    if (oauthError && (pathname === "/" || pathname === "/auth")) {
+      const authUrl = request.nextUrl.clone();
+      authUrl.pathname = "/auth";
+      authUrl.searchParams.delete("code");
+      authUrl.searchParams.set("error", oauthError);
+      return NextResponse.redirect(authUrl);
+    }
+  }
+
   const env = getSupabasePublicEnv();
   if (!env) {
     return NextResponse.next();

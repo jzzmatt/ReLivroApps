@@ -67,3 +67,4 @@ Redeploy after env changes.
 | Redirect URL not allowed | Add `https://your-domain/auth/callback` in Supabase URL Configuration |
 | Login works but no profile | Confirm `handle_new_user` trigger exists (migration `0001`); run `0008` for Google names |
 | Works on prod, not preview | Add preview origin + callback in Google and Supabase, or test Google only on production |
+| Lands on `http://localhost:3000/?code=...` (stuck on home, not logged in) | Add **`http://localhost:3000/auth/callback`** under Supabase **Authentication → URL Configuration → Redirect URLs**. The app also forwards `/?code=` to `/auth/callback`, but whitelisting the callback URL is required for a reliable session. |
