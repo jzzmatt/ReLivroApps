@@ -30,4 +30,4 @@ Native push stays out of this phase.
 - [ ] A listing with a null value shows **To be agreed**
 - [ ] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval — native push)_
+**Next:** [Phase 56 — Browser push alerts](PHASE_56_WEB_PUSH.md)

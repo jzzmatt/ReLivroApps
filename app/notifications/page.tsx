@@ -8,13 +8,12 @@ import {NOTIFICATIONS_LIST_SELECT, type NotificationRow} from "@/lib/notificatio
 import {getRequestLocale} from "@/lib/locale-server";
 import {createClient} from "@/lib/supabase/server";
 import {markAllNotificationsRead} from "@/app/notifications/actions";
-import {pushReadinessT} from "@/lib/i18n-push-readiness";
+import {PushAlertsButton} from "@/components/PushAlertsButton";
 
 export default async function NotificationsPage() {
   const locale = await getRequestLocale();
   const t = messages[locale];
   const loadMoreLabels = marketplaceT(locale);
-  const pushHint = pushReadinessT(locale);
   const s = await createClient();
   const {
     data: {user},
@@ -54,10 +53,7 @@ export default async function NotificationsPage() {
             </form>
           )}
         </div>
-        <aside className="push-readiness-note" aria-label={pushHint.title}>
-          <strong>{pushHint.title}</strong>
-          <p>{pushHint.body}</p>
-        </aside>
+        <PushAlertsButton locale={locale} />
         {totalNotifications === 0 ? (
           <div className="empty-state">
             <h2>{t.notifications.emptyTitle}</h2>
