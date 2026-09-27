@@ -498,6 +498,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/messages` SSR first 24 conversations; **Load more** via `/api/messages/conversations`
 - See [docs/PHASE_37_MESSAGES_INBOX_PAGINATION.md](docs/PHASE_37_MESSAGES_INBOX_PAGINATION.md)
 
+### Phase 38 — Notifications pagination
+
+- `/notifications` SSR first 24; **Load more** via `/api/notifications`; accurate unread total for “mark all read”
+- See [docs/PHASE_38_NOTIFICATIONS_PAGINATION.md](docs/PHASE_38_NOTIFICATIONS_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
