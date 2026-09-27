@@ -28,4 +28,4 @@ Five inspection slots, AI condition analysis, and listing video are not in the s
 - [ ] Profile no longer duplicates the operational link grid
 - [ ] `npm run lint`, `npm run typecheck`, `npm run build`
 
-**Next:** _(awaiting approval — do not start Phase 9.8 from this doc)_
+**Next:** [PHASE_9_8_BETA_DEPLOYMENT.md](./PHASE_9_8_BETA_DEPLOYMENT.md)

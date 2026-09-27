@@ -24,6 +24,7 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 ## Community
 
 - [ ] Profile
+- [ ] Workspace (`/workspace` KPIs and publish CTA; anonymous users redirect to `/auth`)
 - [ ] Edit profile
 - [ ] Favourite
 - [ ] Contact seller
@@ -72,7 +73,7 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 
 - [ ] `NEXT_PUBLIC_SITE_URL` matches deployed URL
 - [ ] Supabase Auth redirect URLs include `https://YOUR_DOMAIN/auth/callback`
-- [ ] Migrations `0001`–`0008` applied in order on production database
+- [ ] Migrations `0001`–`0009` applied in order on production database
 - [ ] Google provider enabled in Supabase (see [GOOGLE_AUTH_SETUP.md](./GOOGLE_AUTH_SETUP.md))
 - [ ] Storage buckets `book-images` and `avatars` exist with expected policies
 - [ ] HTTPS enforced on production domain
