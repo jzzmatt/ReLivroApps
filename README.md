@@ -493,6 +493,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/profile/listings` SSR first 24; **Load more** via `/api/profile/listings`
 - See [docs/PHASE_36_MY_LISTINGS_PAGINATION.md](docs/PHASE_36_MY_LISTINGS_PAGINATION.md)
 
+### Phase 37 — Messages inbox pagination
+
+- `/messages` SSR first 24 conversations; **Load more** via `/api/messages/conversations`
+- See [docs/PHASE_37_MESSAGES_INBOX_PAGINATION.md](docs/PHASE_37_MESSAGES_INBOX_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
