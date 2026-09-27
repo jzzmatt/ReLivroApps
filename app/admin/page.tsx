@@ -17,7 +17,22 @@ export default async function AdminPage() {
   if (!profile || !["admin", "moderator"].includes(profile.role)) redirect("/profile");
   const {data} = await s.rpc("admin_dashboard_stats");
   const {data: analytics} = await s.from("admin_analytics_summary").select("*").single();
+  const {data: breakdown} = await s.rpc("admin_analytics_breakdown");
   const stats = data || {};
+  const activity = (breakdown || {}) as {
+    events?: {name?: string; events?: number}[];
+    paths?: {path?: string; events?: number}[];
+  };
+  const eventRows = Array.isArray(activity.events) ? activity.events : [];
+  const pathRows = Array.isArray(activity.paths) ? activity.paths : [];
+  const eventLabel: Record<string, string> = {
+    page_view: t.eventPageView,
+    favorite_add: t.eventFavoriteAdd,
+    favorite_remove: t.eventFavoriteRemove,
+    seller_contact: t.eventSellerContact,
+    listing_published: t.eventListingPublished,
+  };
+  const numberFormat = locale === "pt" ? "pt-AO" : locale === "fr" ? "fr-FR" : "en-GB";
 
   const kpis: [string, number][] = [
     [t.users, stats.users || 0],
@@ -52,7 +67,7 @@ export default async function AdminPage() {
           {kpis.map(([label, value]) => (
             <div key={label}>
               <span>{label}</span>
-              <strong>{Number(value).toLocaleString(locale === "pt" ? "pt-AO" : locale === "fr" ? "fr-FR" : "en-GB")}</strong>
+              <strong>{Number(value).toLocaleString(numberFormat)}</strong>
             </div>
           ))}
         </div>
@@ -60,9 +75,41 @@ export default async function AdminPage() {
           {analyticsKpis.map(([label, value]) => (
             <div key={label}>
               <span>{label}</span>
-              <strong>{Number(value).toLocaleString(locale === "pt" ? "pt-AO" : locale === "fr" ? "fr-FR" : "en-GB")}</strong>
+              <strong>{Number(value).toLocaleString(numberFormat)}</strong>
             </div>
           ))}
+        </div>
+        <div className="admin-activity">
+          <section>
+            <h2>{t.activityTitle}</h2>
+            {eventRows.length === 0 ? (
+              <p>{t.activityEmpty}</p>
+            ) : (
+              <ul>
+                {eventRows.map((row) => (
+                  <li key={row.name || "event"}>
+                    <span>{eventLabel[row.name || ""] || row.name}</span>
+                    <strong>{Number(row.events || 0).toLocaleString(numberFormat)}</strong>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+          <section>
+            <h2>{t.topPages}</h2>
+            {pathRows.length === 0 ? (
+              <p>{t.activityEmpty}</p>
+            ) : (
+              <ul>
+                {pathRows.map((row) => (
+                  <li key={row.path || "path"}>
+                    <span>{row.path}</span>
+                    <strong>{Number(row.events || 0).toLocaleString(numberFormat)}</strong>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         </div>
         <div className="admin-actions">
           <Link href="/admin/listings">

@@ -594,6 +594,21 @@ Exit beta and enable public SEO when smoke tests are green:
 - Optional browser alerts for new messages. In-app notifications stay in place
 - See [docs/PHASE_56_WEB_PUSH.md](docs/PHASE_56_WEB_PUSH.md)
 
+### Phase 57 — Deeper analytics
+
+- Staff see 7-day event counts and top pages. Favourites, seller contact, and publish are recorded
+- See [docs/PHASE_57_DEEPER_ANALYTICS.md](docs/PHASE_57_DEEPER_ANALYTICS.md)
+
+### Phase 58 — Offline mode
+
+- A lost connection shows an offline page. Account pages are not cached
+- See [docs/PHASE_58_OFFLINE.md](docs/PHASE_58_OFFLINE.md)
+
+### Phase 59 — Installable app
+
+- The browser can offer to install ReLivroApps. Store apps need Apple and Google accounts
+- See [docs/PHASE_59_INSTALLABLE_APP.md](docs/PHASE_59_INSTALLABLE_APP.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc

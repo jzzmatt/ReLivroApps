@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {trackEvent} from "@/components/AnalyticsTracker";
 import {createClient} from "@/lib/supabase/client";
 
 const defaultLabels = {
@@ -36,6 +37,7 @@ export function ContactSellerButton({
       alert(error.message);
       return;
     }
+    void trackEvent("seller_contact", {book_id: bookId});
     router.push("/messages/" + data);
   }
 

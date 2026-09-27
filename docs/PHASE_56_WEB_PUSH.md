@@ -48,4 +48,4 @@ Generate a key pair with `npx web-push generate-vapid-keys`.
 - [x] A person who is not in the conversation cannot fan out a push
 - [x] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval)_
+**Next:** [Phase 57 — Deeper analytics](PHASE_57_DEEPER_ANALYTICS.md)

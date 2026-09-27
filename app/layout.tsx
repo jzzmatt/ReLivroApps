@@ -1,7 +1,9 @@
 import type {Metadata, Viewport} from "next";
 import "./globals.css";
 import {AnalyticsTracker} from "@/components/AnalyticsTracker";
+import {AppServiceWorker} from "@/components/AppServiceWorker";
 import {BetaBanner} from "@/components/BetaBanner";
+import {InstallAppButton} from "@/components/InstallAppButton";
 import {SupabaseConfigBanner} from "@/components/SupabaseConfigBanner";
 import {htmlLang, openGraphLocale} from "@/lib/html-lang";
 import {siteMetadataT} from "@/lib/i18n-metadata";
@@ -57,6 +59,8 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       <body>
         <SupabaseConfigBanner/>
         <BetaBanner/>
+        <AppServiceWorker/>
+        <InstallAppButton/>
         <AnalyticsTracker/>
         {children}
       </body>
