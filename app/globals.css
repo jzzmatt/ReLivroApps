@@ -63,4 +63,5 @@
 .seller-more-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
 .seller-more-head h2{margin:8px 0 0;font-size:clamp(26px,4vw,34px);letter-spacing:-.04em}
 .seller-more-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.seller-hero-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:160px}
 .favorites-grid{margin-top:20px}
