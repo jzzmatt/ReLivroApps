@@ -1,12 +1,12 @@
 import Link from "next/link";
 import {AppShell} from "@/components/AppShell";
-import {BookCard} from "@/components/BookCard";
+import {FavoritesGridClient} from "@/components/FavoritesGridClient";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
-import type {Book} from "@/lib/books";
+import {booksFromFavoriteRows} from "@/lib/favorites-books";
 import {messages} from "@/lib/i18n";
 import {marketplaceT} from "@/lib/i18n-marketplace";
+import {FAVORITES_LIST_SELECT, MARKETPLACE_PAGE_SIZE} from "@/lib/marketplace-query";
 import {getRequestLocale} from "@/lib/locale-server";
-import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
 
 export default async function FavoritesPage() {
@@ -33,17 +33,15 @@ export default async function FavoritesPage() {
     );
   }
 
-  const {data: favRows} = await supabase
+  const {data: favRows, count} = await supabase
     .from("favorites")
-    .select(
-      "book_id, books:book_id(*, book_images(id,storage_path,sort_order), profiles!books_seller_id_fkey(display_name,avatar_url))",
-    )
+    .select(FAVORITES_LIST_SELECT, {count: "exact"})
     .eq("user_id", user.id)
-    .order("created_at", {ascending: false});
+    .order("created_at", {ascending: false})
+    .range(0, MARKETPLACE_PAGE_SIZE - 1);
 
-  const books = (favRows || [])
-    .map((row) => oneRelation(row.books as Book | Book[] | null))
-    .filter((book): book is Book => !!book && book.is_published);
+  const books = booksFromFavoriteRows(favRows);
+  const totalFavorites = count ?? books.length;
 
   return (
     <AppShell>
@@ -59,18 +57,14 @@ export default async function FavoritesPage() {
             </Link>
           </div>
         ) : (
-          <div className="book-grid favorites-grid">
-            {books.map((book, i) => (
-              <BookCard
-                key={book.id}
-                book={book}
-                index={i}
-                isFavorite
-                labels={marketLabels}
-                imagesPublicBase={imagesPublicBase}
-              />
-            ))}
-          </div>
+          <FavoritesGridClient
+            books={books}
+            totalFavorites={totalFavorites}
+            pageSize={MARKETPLACE_PAGE_SIZE}
+            labels={marketLabels}
+            locale={locale}
+            imagesPublicBase={imagesPublicBase}
+          />
         )}
       </section>
     </AppShell>

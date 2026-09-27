@@ -483,6 +483,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/privacidade` and `/termos` metadata, breadcrumbs, `WebPage` JSON-LD
 - See [docs/PHASE_34_LEGAL_SEO.md](docs/PHASE_34_LEGAL_SEO.md)
 
+### Phase 35 — Favorites pagination
+
+- `/profile/favorites` SSR first 24; **Load more** via `/api/favorites/books`
+- See [docs/PHASE_35_FAVORITES_PAGINATION.md](docs/PHASE_35_FAVORITES_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
