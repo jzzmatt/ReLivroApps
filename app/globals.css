@@ -59,4 +59,8 @@
 .conversation-partner-line{margin:8px 0;color:var(--muted);font-size:15px}
 .conversation-partner-line a{font-weight:800;color:var(--blue)}
 .conversation-seller-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:800;color:var(--blue)}
+.seller-more-section{margin-top:32px;padding-top:28px;border-top:1px solid var(--line)}
+.seller-more-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.seller-more-head h2{margin:8px 0 0;font-size:clamp(26px,4vw,34px);letter-spacing:-.04em}
+.seller-more-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 .favorites-grid{margin-top:20px}

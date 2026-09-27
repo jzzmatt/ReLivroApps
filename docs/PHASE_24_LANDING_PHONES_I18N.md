@@ -23,4 +23,4 @@ Demo book titles in mocks remain representative (school subjects); labels and CT
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_25_SELLER_MORE_LISTINGS.md](./PHASE_25_SELLER_MORE_LISTINGS.md)
