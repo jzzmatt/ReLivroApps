@@ -166,7 +166,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
             <h1>{book.title}</h1>
             <p className="detail-price">{formatPrice(book.price_kz)}</p>
             {book.description && <p className="detail-description">{book.description}</p>}
-            <div className="seller-mini">
+            <Link className="seller-mini seller-mini-link" href={"/seller/" + book.seller_id}>
               <div className="seller-avatar">
                 {book.profiles?.avatar_url ? (
                   <img src={book.profiles.avatar_url} alt="" />
@@ -185,8 +185,9 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
                     <span>({formatReviewCount(reviewCount, locale)})</span>
                   </div>
                 )}
+                <span className="seller-profile-cta">{t.viewSellerProfile}</span>
               </div>
-            </div>
+            </Link>
             <div className="detail-info">
               <div>
                 <small>{t.condition}</small>
