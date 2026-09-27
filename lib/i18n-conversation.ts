@@ -17,6 +17,8 @@ export const conversationMessages = {
     chatWith: "Conversa com",
     memberFallback: "Membro ReLivroApps",
     viewSeller: "Ver perfil do vendedor",
+    loadEarlier: "Carregar mensagens anteriores",
+    loadingEarlier: "A carregar...",
   },
   fr: {
     back: "← Conversations",
@@ -34,6 +36,8 @@ export const conversationMessages = {
     chatWith: "Conversation avec",
     memberFallback: "Membre ReLivroApps",
     viewSeller: "Voir le profil du vendeur",
+    loadEarlier: "Charger les messages précédents",
+    loadingEarlier: "Chargement...",
   },
   en: {
     back: "← Conversations",
@@ -51,6 +55,8 @@ export const conversationMessages = {
     chatWith: "Chat with",
     memberFallback: "ReLivroApps member",
     viewSeller: "View seller profile",
+    loadEarlier: "Load earlier messages",
+    loadingEarlier: "Loading...",
   },
 } as const;
 

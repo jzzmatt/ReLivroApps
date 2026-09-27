@@ -80,4 +80,5 @@
 .favorites-catalog-size{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
 .my-listings-count{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
 .messages-inbox-count{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
+.message-thread-load-older{display:flex;justify-content:center;padding:12px 12px 4px;position:sticky;top:0;z-index:1;background:linear-gradient(#f2f5f8 70%,transparent)}
 .notifications-catalog-size{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
