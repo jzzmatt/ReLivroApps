@@ -1,18 +1,14 @@
 import type {MetadataRoute} from "next";
+import {buildDynamicSitemap} from "@/lib/sitemap-entries";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app").replace(
   /\/$/,
   "",
 );
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-  const routes = ["/", "/books", "/auth", "/sell", "/ajuda", "/privacidade", "/termos"];
+/** Include live listings when Supabase is configured (request-time). */
+export const dynamic = "force-dynamic";
 
-  return routes.map((path) => ({
-    url: `${siteUrl}${path}`,
-    lastModified,
-    changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : 0.7,
-  }));
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  return buildDynamicSitemap(siteUrl);
 }
