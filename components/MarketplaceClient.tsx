@@ -15,11 +15,13 @@ export function MarketplaceClient({
   favorites,
   labels,
   locale,
+  imagesPublicBase,
 }: {
   books: Book[];
   favorites: string[];
   labels: MarketplaceLabels;
   locale: Locale;
+  imagesPublicBase?: string | null;
 }) {
   const [query, setQuery] = useState("");
   const [subject, setSubject] = useState("Todos");
@@ -76,7 +78,14 @@ export function MarketplaceClient({
       </div>
       <div className="book-grid">
         {filtered.map((book, i) => (
-          <BookCard key={book.id} book={book} index={i} isFavorite={favorites.includes(book.id)} labels={labels} />
+          <BookCard
+            key={book.id}
+            book={book}
+            index={i}
+            isFavorite={favorites.includes(book.id)}
+            labels={labels}
+            imagesPublicBase={imagesPublicBase}
+          />
         ))}
       </div>
     </>

@@ -5,6 +5,7 @@ import {messages} from "@/lib/i18n";
 import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import type {Book} from "@/lib/books";
+import {bookImagesPublicBase} from "@/lib/book-image-url";
 import {createClient} from "@/lib/supabase/server";
 import {isSupabaseConfigured} from "@/lib/supabase/public-env";
 
@@ -15,6 +16,7 @@ export default async function BooksPage() {
   const locale = await getRequestLocale();
   const t = messages[locale];
   const marketLabels = marketplaceT(locale);
+  const imagesPublicBase = bookImagesPublicBase();
 
   let books: Book[] = [];
   let favorites: string[] = [];
@@ -79,6 +81,7 @@ export default async function BooksPage() {
             favorites={favorites}
             labels={marketLabels}
             locale={locale}
+            imagesPublicBase={imagesPublicBase}
           />
         )}
       </section>
