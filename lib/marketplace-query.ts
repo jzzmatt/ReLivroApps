@@ -6,3 +6,6 @@ export const MARKETPLACE_BOOK_SELECT =
 
 /** Favorites join shape for list + pagination APIs. */
 export const FAVORITES_LIST_SELECT = `book_id, books:book_id(${MARKETPLACE_BOOK_SELECT})`;
+
+/** Seller dashboard listing rows (manage own books). */
+export const MY_LISTINGS_SELECT = "*,book_images(id,storage_path,sort_order)";

@@ -1,5 +1,3 @@
-import {getSiteUrl} from "@/lib/site-url";
-
 export function HelpFaqJsonLd({
   faqs,
 }: {
