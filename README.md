@@ -411,6 +411,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/messages` highlights threads with unread incoming messages
 - See [docs/PHASE_21_MESSAGES_UNREAD.md](docs/PHASE_21_MESSAGES_UNREAD.md)
 
+### Phase 22 — Inbox previews & live nav badges
+
+- Nav ✉ / ♢ badges refresh on route change and tab focus
+- `/messages` shows last-message preview and date per thread
+- See [docs/PHASE_22_INBOX_BADGES.md](docs/PHASE_22_INBOX_BADGES.md)
+
 ### Validation commands
 
 ```bash

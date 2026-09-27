@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {shellT} from "@/lib/i18n-shell";
 import {createClient} from "@/lib/supabase/client";
 import {useClientLocale} from "@/lib/use-client-locale";
+import {useNavBadgeRefresh} from "@/lib/use-nav-badge-refresh";
 
 export function NotificationNavLink({
   className,
@@ -17,31 +18,24 @@ export function NotificationNavLink({
   const t = shellT(locale);
   const [unread, setUnread] = useState(0);
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadUnread = useCallback(async () => {
     const supabase = createClient();
-
-    async function loadUnread() {
-      const {
-        data: {user},
-      } = await supabase.auth.getUser();
-      if (!user || cancelled) {
-        if (!cancelled) setUnread(0);
-        return;
-      }
-      const {count} = await supabase
-        .from("notifications")
-        .select("id", {count: "exact", head: true})
-        .eq("user_id", user.id)
-        .eq("is_read", false);
-      if (!cancelled) setUnread(count || 0);
+    const {
+      data: {user},
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setUnread(0);
+      return;
     }
-
-    void loadUnread();
-    return () => {
-      cancelled = true;
-    };
+    const {count} = await supabase
+      .from("notifications")
+      .select("id", {count: "exact", head: true})
+      .eq("user_id", user.id)
+      .eq("is_read", false);
+    setUnread(count || 0);
   }, []);
+
+  useNavBadgeRefresh(loadUnread);
 
   const badge = unread > 99 ? "99+" : String(unread);
   const ariaLabel =

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {unreadMessageCount} from "@/lib/messages-unread";
 import {shellT} from "@/lib/i18n-shell";
 import {createClient} from "@/lib/supabase/client";
 import {useClientLocale} from "@/lib/use-client-locale";
+import {useNavBadgeRefresh} from "@/lib/use-nav-badge-refresh";
 
 export function MessageNavLink({
   className,
@@ -18,27 +19,19 @@ export function MessageNavLink({
   const t = shellT(locale);
   const [unread, setUnread] = useState(0);
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadUnread = useCallback(async () => {
     const supabase = createClient();
-
-    async function loadUnread() {
-      const {
-        data: {user},
-      } = await supabase.auth.getUser();
-      if (!user || cancelled) {
-        if (!cancelled) setUnread(0);
-        return;
-      }
-      const count = await unreadMessageCount(supabase, user.id);
-      if (!cancelled) setUnread(count);
+    const {
+      data: {user},
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setUnread(0);
+      return;
     }
-
-    void loadUnread();
-    return () => {
-      cancelled = true;
-    };
+    setUnread(await unreadMessageCount(supabase, user.id));
   }, []);
+
+  useNavBadgeRefresh(loadUnread);
 
   const badge = unread > 99 ? "99+" : String(unread);
   const ariaLabel = unread > 0 ? `${t.ariaMessages} (${unread})` : t.ariaMessages;
