@@ -7,6 +7,8 @@ export const marketplaceMessages = {
     all: "Todos",
     sortRecent: "Mais recentes",
     viewBook: "Ver livro →",
+    seller: "Vendedor",
+    sellerDefault: "Membro ReLivroApps",
     defaultCountry: "Angola",
     modes: {Venda: "Venda", Troca: "Troca", Oferta: "Oferta"} as Record<ListingMode, string>,
     conditions: {
@@ -28,6 +30,8 @@ export const marketplaceMessages = {
     all: "Tous",
     sortRecent: "Plus récents",
     viewBook: "Voir le livre →",
+    seller: "Vendeur",
+    sellerDefault: "Membre ReLivroApps",
     defaultCountry: "Angola",
     modes: {Venda: "Vente", Troca: "Échange", Oferta: "Offre"} as Record<ListingMode, string>,
     conditions: {
@@ -49,6 +53,8 @@ export const marketplaceMessages = {
     all: "All",
     sortRecent: "Most recent",
     viewBook: "View book →",
+    seller: "Seller",
+    sellerDefault: "ReLivroApps member",
     defaultCountry: "Angola",
     modes: {Venda: "Sale", Troca: "Exchange", Oferta: "Offer"} as Record<ListingMode, string>,
     conditions: {

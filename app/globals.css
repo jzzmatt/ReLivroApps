@@ -35,3 +35,9 @@
 .seller-listings-section{margin-top:28px}
 .seller-listings-section h2{margin:8px 0 18px;font-size:clamp(28px,4vw,36px);letter-spacing:-.04em}
 .seller-public-page .profile-hero{align-items:start}
+.book-card-seller-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:0 14px 12px;font-size:12px;color:var(--muted)}
+.book-card-seller-label{font-weight:800;color:#64748b}
+.book-card-seller-name{font-weight:800;color:var(--blue);text-decoration:none}
+.book-card-seller-name:hover{text-decoration:underline}
+.notifications-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.notifications-head h1{margin:8px 0 0}

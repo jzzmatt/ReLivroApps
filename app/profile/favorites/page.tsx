@@ -1,12 +1,11 @@
 import Link from "next/link";
-import {cookies} from "next/headers";
 import {AppShell} from "@/components/AppShell";
 import {createClient} from "@/lib/supabase/server";
-import {messages, type Locale} from "@/lib/i18n";
+import {messages} from "@/lib/i18n";
+import {getRequestLocale} from "@/lib/locale-server";
 
 export default async function FavoritesPage() {
-  const cookieStore = await cookies();
-  const locale = (cookieStore.get("relivro-locale")?.value as Locale) || "pt";
+  const locale = await getRequestLocale();
   const t = messages[locale];
   const supabase = await createClient();
   const {data: {user}} = await supabase.auth.getUser();
@@ -25,8 +24,8 @@ export default async function FavoritesPage() {
   return (
     <AppShell>
       <section className="profile-page container">
-        <span className="eyebrow">GUARDADOS</span>
-        <h1>Os meus favoritos</h1>
+        <span className="eyebrow">{t.favorites.eyebrow}</span>
+        <h1>{t.favorites.title}</h1>
         <div className="favorite-list">
           {data?.length ? data.map(item => (
             <Link className="favorite-row" href={"/books/" + item.book_id} key={item.book_id}>
