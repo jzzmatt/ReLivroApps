@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {MobileNav} from "@/components/MobileNav";
+import {MessageNavLink} from "@/components/MessageNavLink";
 import {NotificationNavLink} from "@/components/NotificationNavLink";
 import {shellT} from "@/lib/i18n-shell";
 import {useClientLocale} from "@/lib/use-client-locale";
@@ -26,9 +27,9 @@ export function AppShell({children}: {children: React.ReactNode}) {
             <Link href="/books" aria-label={t.ariaSearch}>
               ⌕
             </Link>
-            <Link href="/messages" aria-label={t.ariaMessages}>
+            <MessageNavLink className="header-messages-link">
               ✉
-            </Link>
+            </MessageNavLink>
             <NotificationNavLink className="header-notifications-link">
               ♢
             </NotificationNavLink>

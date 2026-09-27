@@ -405,6 +405,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Unread count badge on notifications in header and mobile nav
 - See [docs/PHASE_20_FAVORITES_NOTIFICATIONS.md](docs/PHASE_20_FAVORITES_NOTIFICATIONS.md)
 
+### Phase 21 — Messaging unread indicators
+
+- Unread message badge on ✉ in header and mobile nav
+- `/messages` highlights threads with unread incoming messages
+- See [docs/PHASE_21_MESSAGES_UNREAD.md](docs/PHASE_21_MESSAGES_UNREAD.md)
+
 ### Validation commands
 
 ```bash

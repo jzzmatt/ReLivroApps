@@ -11,6 +11,7 @@ export const conversationMessages = {
     composerPlaceholder: "Escreva uma mensagem...",
     send: "Enviar",
     sending: "A enviar...",
+    unread: "Nova mensagem",
   },
   fr: {
     back: "← Conversations",
@@ -22,6 +23,7 @@ export const conversationMessages = {
     composerPlaceholder: "Écrivez un message...",
     send: "Envoyer",
     sending: "Envoi...",
+    unread: "Nouveau message",
   },
   en: {
     back: "← Conversations",
@@ -33,6 +35,7 @@ export const conversationMessages = {
     composerPlaceholder: "Write a message...",
     send: "Send",
     sending: "Sending...",
+    unread: "New message",
   },
 } as const;
 
