@@ -523,6 +523,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/messages/[id]` latest 40 messages SSR; **Load earlier** via paginated messages API
 - See [docs/PHASE_42_MESSAGE_THREAD_PAGINATION.md](docs/PHASE_42_MESSAGE_THREAD_PAGINATION.md)
 
+### Phase 43 — Admin listings pagination
+
+- `/admin/listings` SSR first 24; **Load more** via staff-only `/api/admin/listings`
+- See [docs/PHASE_43_ADMIN_LISTINGS_PAGINATION.md](docs/PHASE_43_ADMIN_LISTINGS_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
