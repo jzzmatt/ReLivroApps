@@ -5,7 +5,6 @@ export const marketplaceMessages = {
   pt: {
     searchPlaceholder: "Pesquisar por título, disciplina ou localização...",
     all: "Todos",
-    results: (n: number) => `${n} livros encontrados`,
     sortRecent: "Mais recentes",
     viewBook: "Ver livro →",
     defaultCountry: "Angola",
@@ -27,7 +26,6 @@ export const marketplaceMessages = {
   fr: {
     searchPlaceholder: "Rechercher par titre, matière ou lieu...",
     all: "Tous",
-    results: (n: number) => `${n} livre${n === 1 ? "" : "s"} trouvé${n === 1 ? "" : "s"}`,
     sortRecent: "Plus récents",
     viewBook: "Voir le livre →",
     defaultCountry: "Angola",
@@ -49,7 +47,6 @@ export const marketplaceMessages = {
   en: {
     searchPlaceholder: "Search by title, subject or location...",
     all: "All",
-    results: (n: number) => `${n} book${n === 1 ? "" : "s"} found`,
     sortRecent: "Most recent",
     viewBook: "View book →",
     defaultCountry: "Angola",
@@ -70,8 +67,19 @@ export const marketplaceMessages = {
   },
 } as const satisfies Record<Locale, unknown>;
 
-export type MarketplaceLabels = ReturnType<typeof marketplaceT>;
+export type MarketplaceLabels = (typeof marketplaceMessages)[Locale];
 
-export function marketplaceT(locale: Locale) {
+export function marketplaceT(locale: Locale): MarketplaceLabels {
   return marketplaceMessages[locale] ?? marketplaceMessages.pt;
+}
+
+/** Client-safe (not passed from RSC props). */
+export function formatMarketplaceResults(locale: Locale, count: number): string {
+  if (locale === "fr") {
+    return `${count} livre${count === 1 ? "" : "s"} trouvé${count === 1 ? "" : "s"}`;
+  }
+  if (locale === "en") {
+    return `${count} book${count === 1 ? "" : "s"} found`;
+  }
+  return `${count} livros encontrados`;
 }

@@ -6,7 +6,7 @@ import type {Book, ListingMode} from "@/lib/books";
 import {modes, subjects} from "@/lib/books";
 import type {Locale} from "@/lib/i18n";
 import {labelSubject} from "@/lib/i18n-catalog";
-import type {MarketplaceLabels} from "@/lib/i18n-marketplace";
+import {formatMarketplaceResults, type MarketplaceLabels} from "@/lib/i18n-marketplace";
 
 type ModeFilter = "Todos" | ListingMode;
 
@@ -71,7 +71,7 @@ export function MarketplaceClient({
         ))}
       </div>
       <div className="results-head">
-        <strong>{labels.results(filtered.length)}</strong>
+        <strong>{formatMarketplaceResults(locale, filtered.length)}</strong>
         <span>{labels.sortRecent}</span>
       </div>
       <div className="book-grid">
