@@ -95,7 +95,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   } = await supabase.auth.getUser();
   const {data} = await supabase
     .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url,city,municipality,school)")
+    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url,city,municipality,school,school_verified_at)")
     .eq("id", id)
     .maybeSingle();
   if (!data) notFound();
@@ -274,7 +274,11 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
             <div className="safe-note">🛡 {t.safeNote}</div>
             <div className="payment-note">{t.paymentNote}</div>
             {book.profiles?.school?.trim() ? (
-              <SchoolCommunityBadge locale={locale} schoolName={book.profiles.school.trim()} />
+              <SchoolCommunityBadge
+                locale={locale}
+                schoolName={book.profiles.school.trim()}
+                verified={Boolean(book.profiles.school_verified_at)}
+              />
             ) : null}
             {!own && <ReportListingButton bookId={book.id} labels={market.report} />}
             {moreBooks.length > 0 && (

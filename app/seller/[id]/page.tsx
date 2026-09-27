@@ -85,7 +85,7 @@ export default async function SellerPublicPage({params}: PageProps) {
 
   const {data: profile} = await supabase
     .from("profiles")
-    .select("id,display_name,avatar_url,city,municipality,school,bio,created_at")
+    .select("id,display_name,avatar_url,city,municipality,school,school_verified_at,bio,created_at")
     .eq("id", id)
     .maybeSingle();
   if (!profile) notFound();
@@ -160,7 +160,11 @@ export default async function SellerPublicPage({params}: PageProps) {
               {profile.school ? " · " + profile.school : ""}
             </p>
             {profile.school?.trim() ? (
-              <SchoolCommunityBadge locale={locale} schoolName={profile.school.trim()} />
+              <SchoolCommunityBadge
+                locale={locale}
+                schoolName={profile.school.trim()}
+                verified={Boolean(profile.school_verified_at)}
+              />
             ) : null}
             {memberSince && (
               <p className="seller-member-since">

@@ -29,4 +29,4 @@ Payments, native push, and verified school stay out of this phase.
 - [ ] **Show all** restores the unfiltered list
 - [ ] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval — payments, native push, and verified school)_
+**Next:** [Phase 54 — Verified school](PHASE_54_VERIFIED_SCHOOL.md)

@@ -48,6 +48,13 @@ export default async function AdminUsers() {
           locale={locale}
           noNameLabel={t.users.noName}
           loadMoreLabels={loadMoreLabels}
+          schoolLabels={{
+            verifySchool: t.users.verifySchool,
+            clearSchool: t.users.clearSchool,
+            schoolVerified: t.users.schoolVerified,
+            schoolFailed: t.users.schoolFailed,
+            busy: t.actions.busy,
+          }}
         />
       </section>
     </AppShell>
