@@ -399,6 +399,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Favorites page fully localized
 - See [docs/PHASE_19_SELLER_CUES_NOTIFICATIONS.md](docs/PHASE_19_SELLER_CUES_NOTIFICATIONS.md)
 
+### Phase 20 — Favorites grid & notification badge
+
+- `/profile/favorites` uses marketplace-style book cards with thumbnails
+- Unread count badge on notifications in header and mobile nav
+- See [docs/PHASE_20_FAVORITES_NOTIFICATIONS.md](docs/PHASE_20_FAVORITES_NOTIFICATIONS.md)
+
 ### Validation commands
 
 ```bash
