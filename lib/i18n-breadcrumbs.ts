@@ -5,16 +5,22 @@ export const breadcrumbMessages = {
     home: "Início",
     books: "Livros",
     help: "Ajuda",
+    privacy: "Privacidade",
+    terms: "Termos",
   },
   fr: {
     home: "Accueil",
     books: "Livres",
     help: "Aide",
+    privacy: "Confidentialité",
+    terms: "Conditions",
   },
   en: {
     home: "Home",
     books: "Books",
     help: "Help",
+    privacy: "Privacy",
+    terms: "Terms",
   },
 } as const satisfies Record<Locale, unknown>;
 

@@ -1,15 +1,53 @@
+import type {Metadata} from "next";
 import Link from "next/link";
+import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
+import {Breadcrumbs} from "@/components/Breadcrumbs";
+import {WebPageJsonLd} from "@/components/WebPageJsonLd";
+import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
 import {legalT} from "@/lib/i18n-legal";
 import {getRequestLocale} from "@/lib/locale-server";
+import {getSiteUrl} from "@/lib/site-url";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale();
+  const t = legalT(locale).terms;
+  const canonical = `${getSiteUrl()}/termos`;
+
+  return {
+    title: t.title,
+    description: t.metaDescription,
+    alternates: {canonical},
+    openGraph: {
+      title: t.title,
+      description: t.metaDescription,
+      url: canonical,
+      type: "website",
+      siteName: "ReLivroApps",
+    },
+    twitter: {
+      card: "summary",
+      title: t.title,
+      description: t.metaDescription,
+    },
+  };
+}
 
 export default async function TermsPage() {
   const locale = await getRequestLocale();
   const t = legalT(locale).terms;
   const nav = legalT(locale);
+  const bc = breadcrumbsT(locale);
+  const breadcrumbItems = [
+    {href: "/", label: bc.home},
+    {label: bc.terms},
+  ];
 
   return (
     <main className="legal-page">
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <WebPageJsonLd path="/termos" name={t.title} description={t.metaDescription} />
       <div className="container">
+        <Breadcrumbs items={breadcrumbItems} />
         <Link className="back-link" href="/">
           {nav.backHome}
         </Link>
