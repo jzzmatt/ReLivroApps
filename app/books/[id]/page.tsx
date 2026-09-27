@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import {notFound} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
+import {BookCard} from "@/components/BookCard";
 import {BookImage} from "@/components/BookImage";
 import {bookImagesPublicBase, storageImageUrl} from "@/lib/book-image-url";
 import {BookViewTracker} from "@/components/BookViewTracker";
@@ -119,6 +120,21 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
         .eq("reviewer_id", user.id)
         .maybeSingle()
     : {data: null};
+
+  const {data: moreListings} = await supabase
+    .from("books")
+    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
+    .eq("seller_id", book.seller_id)
+    .eq("is_published", true)
+    .neq("id", book.id)
+    .order("created_at", {ascending: false})
+    .limit(4);
+  const moreBooks = (moreListings || []) as Book[];
+  const {data: favRows} = user
+    ? await supabase.from("favorites").select("book_id").eq("user_id", user.id)
+    : {data: []};
+  const favoriteIds = (favRows || []).map((f) => f.book_id);
+
   const sellerName = book.profiles?.display_name || t.memberDefault;
   const modeLabel = t.modes[book.mode] ?? book.mode;
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
@@ -228,6 +244,31 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
             </div>
             <div className="safe-note">🛡 {t.safeNote}</div>
             {!own && <ReportListingButton bookId={book.id} labels={market.report} />}
+            {moreBooks.length > 0 && (
+              <section className="seller-more-section" aria-labelledby="seller-more-heading">
+                <div className="seller-more-head">
+                  <div>
+                    <span className="eyebrow">{t.seller}</span>
+                    <h2 id="seller-more-heading">{t.moreFromSeller}</h2>
+                  </div>
+                  <Link className="secondary-button" href={"/seller/" + book.seller_id}>
+                    {t.viewAllSellerListings}
+                  </Link>
+                </div>
+                <div className="book-grid seller-more-grid">
+                  {moreBooks.map((b, i) => (
+                    <BookCard
+                      key={b.id}
+                      book={b}
+                      index={i}
+                      isFavorite={favoriteIds.includes(b.id)}
+                      labels={market}
+                      imagesPublicBase={imagesPublicBase}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
             <section className="reviews-section" aria-labelledby="seller-reviews-heading">
               <span className="eyebrow">{rt.sectionEyebrow}</span>
               <h2 id="seller-reviews-heading">{rt.sectionTitle}</h2>

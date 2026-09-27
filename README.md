@@ -428,6 +428,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Hero carousel phone UI strings follow PT / FR / EN language switcher
 - See [docs/PHASE_24_LANDING_PHONES_I18N.md](docs/PHASE_24_LANDING_PHONES_I18N.md)
 
+### Phase 25 — More from this seller (book detail)
+
+- Book detail shows up to four other listings from the same seller
+- Link to full `/seller/[id]` profile (PT / FR / EN)
+- See [docs/PHASE_25_SELLER_MORE_LISTINGS.md](docs/PHASE_25_SELLER_MORE_LISTINGS.md)
+
 ### Validation commands
 
 ```bash
