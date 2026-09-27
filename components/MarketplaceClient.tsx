@@ -11,21 +11,29 @@ import {formatMarketplaceResults, type MarketplaceLabels} from "@/lib/i18n-marke
 type ModeFilter = "Todos" | ListingMode;
 
 export function MarketplaceClient({
-  books,
+  books: initialBooks,
+  totalPublished,
+  pageSize,
   favorites,
   labels,
   locale,
   imagesPublicBase,
 }: {
   books: Book[];
+  totalPublished: number;
+  pageSize: number;
   favorites: string[];
   labels: MarketplaceLabels;
   locale: Locale;
   imagesPublicBase?: string | null;
 }) {
+  const [books, setBooks] = useState(initialBooks);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [query, setQuery] = useState("");
   const [subject, setSubject] = useState("Todos");
   const [mode, setMode] = useState<ModeFilter>("Todos");
+
+  const hasMore = books.length < totalPublished;
 
   const filtered = useMemo(
     () =>
@@ -39,6 +47,30 @@ export function MarketplaceClient({
       ),
     [books, query, subject, mode],
   );
+
+  async function loadMore() {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = Math.floor(books.length / pageSize) + 1;
+      const res = await fetch(`/api/books?page=${nextPage}&limit=${pageSize}`);
+      const json = (await res.json()) as {books?: Book[]; error?: string};
+      if (!res.ok || !json.books) return;
+      setBooks((prev) => {
+        const seen = new Set(prev.map((b) => b.id));
+        const merged = [...prev];
+        for (const book of json.books || []) {
+          if (!seen.has(book.id)) {
+            seen.add(book.id);
+            merged.push(book);
+          }
+        }
+        return merged;
+      });
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   const modeOptions: {value: ModeFilter; label: string}[] = [
     {value: "Todos", label: labels.all},
@@ -88,6 +120,13 @@ export function MarketplaceClient({
           />
         ))}
       </div>
+      {hasMore && (
+        <div className="marketplace-load-more">
+          <button type="button" className="secondary-button" disabled={loadingMore} onClick={() => void loadMore()}>
+            {loadingMore ? labels.loadingMore : labels.loadMore}
+          </button>
+        </div>
+      )}
     </>
   );
 }
