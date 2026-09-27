@@ -518,6 +518,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Admin routes, `/messages/[id]`, `/books/[id]/edit` layouts; auth/sell use shared helper
 - See [docs/PHASE_41_ADMIN_THREAD_EDIT_METADATA.md](docs/PHASE_41_ADMIN_THREAD_EDIT_METADATA.md)
 
+### Phase 42 — Message thread pagination
+
+- `/messages/[id]` latest 40 messages SSR; **Load earlier** via paginated messages API
+- See [docs/PHASE_42_MESSAGE_THREAD_PAGINATION.md](docs/PHASE_42_MESSAGE_THREAD_PAGINATION.md)
+
 ### Validation commands
 
 ```bash

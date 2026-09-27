@@ -2,6 +2,9 @@ import Link from "next/link";
 import {notFound, redirect} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
 import {MessageComposer} from "@/components/MessageComposer";
+import {MessageThreadClient} from "@/components/MessageThreadClient";
+import {fetchThreadMessageBatch} from "@/lib/message-thread-fetch";
+import {MESSAGE_THREAD_PAGE_SIZE} from "@/lib/message-thread-query";
 import {
   isSellerSide,
   otherParticipantId,
@@ -48,11 +51,9 @@ export default async function ConversationPage({params}: {params: Promise<{id: s
   const otherName = participantName(otherProfile, t.memberFallback);
   const otherIsSeller = isSellerSide(conversation, otherId);
 
-  const {data: messages} = await s
-    .from("messages")
-    .select("id,sender_id,body,created_at")
-    .eq("conversation_id", id)
-    .order("created_at", {ascending: true});
+  const {messages, hasOlder} = await fetchThreadMessageBatch(s, id, {
+    limit: MESSAGE_THREAD_PAGE_SIZE,
+  });
 
   await s.rpc("mark_conversation_messages_read", {p_conversation_id: id});
 
@@ -87,24 +88,14 @@ export default async function ConversationPage({params}: {params: Promise<{id: s
             {t.viewBook}
           </Link>
         </div>
-        <div className="message-thread">
-          {messages?.length ? (
-            messages.map((m) => (
-              <div className={"message-bubble " + (m.sender_id === user.id ? "mine" : "theirs")} key={m.id}>
-                {m.body}
-                <small>
-                  {new Date(m.created_at).toLocaleString(numberLocale, {
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </small>
-              </div>
-            ))
-          ) : (
-            <div className="thread-empty">{t.threadEmpty}</div>
-          )}
-        </div>
+        <MessageThreadClient
+          conversationId={id}
+          messages={messages}
+          hasOlder={hasOlder}
+          pageSize={MESSAGE_THREAD_PAGE_SIZE}
+          userId={user.id}
+          locale={locale}
+        />
         <MessageComposer conversationId={id} />
       </section>
     </AppShell>
