@@ -6,15 +6,29 @@ import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import type {Book} from "@/lib/books";
 import {createClient} from "@/lib/supabase/server";
+import {isSupabaseConfigured} from "@/lib/supabase/public-env";
+
+/** Always read Supabase env at request time (Vercel runtime vars). */
+export const dynamic = "force-dynamic";
 
 export default async function BooksPage() {
   const locale = await getRequestLocale();
   const t = messages[locale];
   const marketLabels = marketplaceT(locale);
+
+  if (!isSupabaseConfigured()) {
+    return (
+      <AppShell>
+        <section className="marketplace container">
+          <div className="empty-state">{t.market.error}</div>
+        </section>
+      </AppShell>
+    );
+  }
+
   const supabase = await createClient();
-  const {
-    data: {user},
-  } = await supabase.auth.getUser();
+  const {data: authData} = await supabase.auth.getUser();
+  const user = authData?.user ?? null;
   const {data, error} = await supabase
     .from("books")
     .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
