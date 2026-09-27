@@ -13,11 +13,13 @@ export function BookCard({
   index = 0,
   isFavorite = false,
   labels,
+  imagesPublicBase,
 }: {
   book: Book;
   index?: number;
   isFavorite?: boolean;
   labels: MarketplaceLabels;
+  imagesPublicBase?: string | null;
 }) {
   const image = book.book_images?.slice().sort((a, b) => a.sort_order - b.sort_order)[0];
   const modeLabel = labels.modes[book.mode] ?? book.mode;
@@ -35,7 +37,12 @@ export function BookCard({
     >
       <Link href={"/books/" + book.id} className="book-card-link">
         <div className="book-art">
-          <BookImage path={image?.storage_path} title={book.title} className="book-image" />
+          <BookImage
+            path={image?.storage_path}
+            title={book.title}
+            className="book-image"
+            imagesPublicBase={imagesPublicBase}
+          />
         </div>
         <div className="book-card-body">
           <div className="book-card-top">

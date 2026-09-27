@@ -2,7 +2,8 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import {notFound} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
-import {BookImage, storageImageUrl} from "@/components/BookImage";
+import {BookImage} from "@/components/BookImage";
+import {bookImagesPublicBase, storageImageUrl} from "@/lib/book-image-url";
 import {BookViewTracker} from "@/components/BookViewTracker";
 import {ContactSellerButton} from "@/components/ContactSellerButton";
 import {FavoriteButton} from "@/components/FavoriteButton";
@@ -25,10 +26,10 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel
   "",
 );
 
-function firstImageUrl(images: BookImageRow[] | undefined): string | null {
+function firstImageUrl(images: BookImageRow[] | undefined, imagesPublicBase: string | null): string | null {
   if (!images?.length) return null;
   const sorted = [...images].sort((a, b) => a.sort_order - b.sort_order);
-  return storageImageUrl(sorted[0]?.storage_path);
+  return storageImageUrl(sorted[0]?.storage_path, imagesPublicBase);
 }
 
 export async function generateMetadata({
@@ -52,7 +53,7 @@ export async function generateMetadata({
     data.description?.slice(0, 160) ||
     `${data.subject} · ${data.grade} · ${data.city || "Angola"}`;
 
-  const ogImage = firstImageUrl((data.book_images || []) as BookImageRow[]);
+  const ogImage = firstImageUrl((data.book_images || []) as BookImageRow[], bookImagesPublicBase());
 
   return {
     title: data.title,
@@ -81,6 +82,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const rt = reviewsT(locale);
   const market = marketplaceT(locale);
   const dateLocale = localeTag(locale);
+  const imagesPublicBase = bookImagesPublicBase();
   const supabase = await createClient();
   const {
     data: {user},
@@ -132,7 +134,12 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
           <div>
             <div className="detail-art book-art">
               {images[0] ? (
-                <BookImage path={images[0].storage_path} title={book.title} className="detail-image" />
+                <BookImage
+                  path={images[0].storage_path}
+                  title={book.title}
+                  className="detail-image"
+                  imagesPublicBase={imagesPublicBase}
+                />
               ) : (
                 <span>{book.subject.slice(0, 1)}</span>
               )}
@@ -145,6 +152,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
                     path={image.storage_path}
                     title={book.title}
                     className="detail-thumb"
+                    imagesPublicBase={imagesPublicBase}
                   />
                 ))}
               </div>

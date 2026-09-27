@@ -7,6 +7,7 @@ import {ListingStatusActions} from "@/components/ListingStatusActions";
 import type {Book} from "@/lib/books";
 import {listingsManageT} from "@/lib/i18n-listings-manage";
 import {getRequestLocale} from "@/lib/locale-server";
+import {bookImagesPublicBase} from "@/lib/book-image-url";
 import {createClient} from "@/lib/supabase/server";
 
 export default async function ListingsPage() {
@@ -23,6 +24,7 @@ export default async function ListingsPage() {
     .eq("seller_id", user.id)
     .order("created_at", {ascending: false});
   const books = (data || []) as Book[];
+  const imagesPublicBase = bookImagesPublicBase();
   const numberLocale = locale === "pt" ? "pt-AO" : locale === "fr" ? "fr-FR" : "en-GB";
 
   const statusLabels = {
@@ -59,7 +61,12 @@ export default async function ListingsPage() {
               return (
                 <article className="listing-row" key={book.id}>
                   <div className="listing-thumb">
-                    <BookImage path={image?.storage_path} title={book.title} className="book-image" />
+                    <BookImage
+                      path={image?.storage_path}
+                      title={book.title}
+                      className="book-image"
+                      imagesPublicBase={imagesPublicBase}
+                    />
                   </div>
                   <div className="listing-info">
                     <Link href={"/books/" + book.id}>
