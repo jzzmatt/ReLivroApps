@@ -26,6 +26,30 @@ export const appRouteMessages = {
       title: "Notificações",
       description: "Alertas da sua actividade no ReLivroApps.",
     },
+    adminDashboard: {
+      title: "Administração",
+      description: "Moderação, actividade e saúde do marketplace ReLivroApps.",
+    },
+    adminListings: {
+      title: "Moderar anúncios",
+      description: "Rever e moderar anúncios de livros escolares.",
+    },
+    adminReports: {
+      title: "Denúncias",
+      description: "Denúncias de anúncios pendentes de moderação.",
+    },
+    adminUsers: {
+      title: "Utilizadores",
+      description: "Gestão de contas de utilizadores ReLivroApps.",
+    },
+    bookEdit: {
+      title: "Editar anúncio",
+      description: "Actualizar fotos, preço e detalhes do livro publicado.",
+    },
+    messageThread: {
+      title: "Conversa",
+      description: "Mensagens privadas sobre um livro escolar no ReLivroApps.",
+    },
   },
   fr: {
     profile: {
@@ -52,6 +76,30 @@ export const appRouteMessages = {
       title: "Notifications",
       description: "Alertes liées à votre activité sur ReLivroApps.",
     },
+    adminDashboard: {
+      title: "Administration",
+      description: "Modération, activité et santé du marketplace ReLivroApps.",
+    },
+    adminListings: {
+      title: "Modérer les annonces",
+      description: "Examiner et modérer les annonces de livres scolaires.",
+    },
+    adminReports: {
+      title: "Signalements",
+      description: "Signalements d’annonces en attente de modération.",
+    },
+    adminUsers: {
+      title: "Utilisateurs",
+      description: "Gestion des comptes utilisateurs ReLivroApps.",
+    },
+    bookEdit: {
+      title: "Modifier l’annonce",
+      description: "Mettre à jour photos, prix et détails du livre publié.",
+    },
+    messageThread: {
+      title: "Conversation",
+      description: "Messages privés à propos d’un livre scolaire sur ReLivroApps.",
+    },
   },
   en: {
     profile: {
@@ -77,6 +125,30 @@ export const appRouteMessages = {
     notifications: {
       title: "Notifications",
       description: "Alerts about your activity on ReLivroApps.",
+    },
+    adminDashboard: {
+      title: "Administration",
+      description: "Moderation, activity and marketplace health on ReLivroApps.",
+    },
+    adminListings: {
+      title: "Moderate listings",
+      description: "Review and moderate school book listings.",
+    },
+    adminReports: {
+      title: "Reports",
+      description: "Listing reports pending moderation.",
+    },
+    adminUsers: {
+      title: "Users",
+      description: "ReLivroApps user account management.",
+    },
+    bookEdit: {
+      title: "Edit listing",
+      description: "Update photos, price and details for a published book.",
+    },
+    messageThread: {
+      title: "Conversation",
+      description: "Private messages about a school book on ReLivroApps.",
     },
   },
 } as const satisfies Record<Locale, unknown>;

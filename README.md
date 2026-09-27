@@ -513,6 +513,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Profile, favorites, listings, messages, notifications: layouts + `noindex` (PT / FR / EN)
 - See [docs/PHASE_40_PRIVATE_APP_METADATA.md](docs/PHASE_40_PRIVATE_APP_METADATA.md)
 
+### Phase 41 — Admin, thread & book-edit metadata
+
+- Admin routes, `/messages/[id]`, `/books/[id]/edit` layouts; auth/sell use shared helper
+- See [docs/PHASE_41_ADMIN_THREAD_EDIT_METADATA.md](docs/PHASE_41_ADMIN_THREAD_EDIT_METADATA.md)
+
 ### Validation commands
 
 ```bash
