@@ -3,6 +3,7 @@ import type {Locale} from "@/lib/i18n";
 export const shellMessages = {
   pt: {
     headerNavAria: "Navegação principal",
+    ariaBooks: "Explorar livros",
     ariaSearch: "Pesquisar livros",
     ariaMessages: "Mensagens",
     ariaNotifications: "Notificações",
@@ -37,6 +38,7 @@ export const shellMessages = {
   },
   fr: {
     headerNavAria: "Navigation principale",
+    ariaBooks: "Explorer les livres",
     ariaSearch: "Rechercher des livres",
     ariaMessages: "Messages",
     ariaNotifications: "Notifications",
@@ -71,6 +73,7 @@ export const shellMessages = {
   },
   en: {
     headerNavAria: "Main navigation",
+    ariaBooks: "Explore books",
     ariaSearch: "Search books",
     ariaMessages: "Messages",
     ariaNotifications: "Notifications",
