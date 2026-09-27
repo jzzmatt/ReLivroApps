@@ -9,7 +9,7 @@ This runbook complements [PRODUCTION_SMOKE_TEST.md](./PRODUCTION_SMOKE_TEST.md) 
 ## 1. Pre-flight (Supabase)
 
 1. **Backup** the production database (Supabase Dashboard → Database → Backups, or manual dump before schema changes).
-2. Confirm migrations **`0001` through `0008`** are applied **in order**:
+2. Confirm migrations **`0001` through `0009`** are applied **in order**:
 
 ```text
 0001_relivroapps_foundation.sql
@@ -20,13 +20,14 @@ This runbook complements [PRODUCTION_SMOKE_TEST.md](./PRODUCTION_SMOKE_TEST.md) 
 0006_analytics_observability.sql
 0007_storage_book_images_hardening.sql
 0008_google_oauth_profile_names.sql
+0009_seller_workspace_signals.sql
 ```
 
 3. Quick verification (SQL editor):
 
 ```sql
 select version, name from supabase_migrations.schema_migrations order by version;
--- Expect rows for 0001–0008 (exact naming depends on how you applied files).
+-- Expect rows for 0001–0009 (exact naming depends on how you applied files).
 
 select id, name, public from storage.buckets where id in ('book-images', 'avatars');
 ```
@@ -102,7 +103,8 @@ After changing env vars: **Redeploy** production.
 | Step | Done |
 |------|------|
 | DB backup taken | ☐ |
-| Migrations 0001–0008 verified | ☐ |
+| Migrations 0001–0009 verified (`seller_workspace_signals`) | ☐ |
+| Signed-in `/workspace` loads for a seller | ☐ |
 | Vercel env vars set + redeploy | ☐ |
 | Auth redirect URLs match live domain | ☐ |
 | Google OAuth tested on production | ☐ |

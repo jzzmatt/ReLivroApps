@@ -295,7 +295,7 @@ update public.profiles set role = 'admin' where id = '<AUTH_USER_UUID>';
 
 ### Production checklist
 
-- [ ] All migrations `0001`–`0008` on production database
+- [ ] All migrations `0001`–`0009` on production database
 - [ ] Env vars set in Vercel (no service role in client)
 - [ ] Auth redirect URLs for production domain
 - [ ] `NEXT_PUBLIC_SITE_URL` matches live URL
