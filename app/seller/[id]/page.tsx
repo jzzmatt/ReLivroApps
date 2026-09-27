@@ -4,6 +4,7 @@ import type {Metadata} from "next";
 import {AppShell} from "@/components/AppShell";
 import {BookCard} from "@/components/BookCard";
 import {ProfileStats} from "@/components/ProfileStats";
+import {SellerProfileJsonLd} from "@/components/SellerProfileJsonLd";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
@@ -16,13 +17,9 @@ import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
+import {getSiteUrl} from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
-
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app").replace(
-  /\/$/,
-  "",
-);
 
 type PageProps = {params: Promise<{id: string}>};
 
@@ -43,14 +40,16 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
     st.metaDescription;
   const ogImage =
     profile?.avatar_url?.startsWith("http") ? profile.avatar_url : undefined;
+  const canonical = `${getSiteUrl()}/seller/${id}`;
 
   return {
     title: `${name} · ReLivroApps`,
     description,
+    alternates: {canonical},
     openGraph: {
       title: name,
       description,
-      url: `${siteUrl}/seller/${id}`,
+      url: canonical,
       type: "profile",
       siteName: "ReLivroApps",
       ...(ogImage ? {images: [{url: ogImage, alt: name}]} : {}),
@@ -117,8 +116,19 @@ export default async function SellerPublicPage({params}: PageProps) {
     ? new Date(profile.created_at).toLocaleDateString(dateLocale, {month: "long", year: "numeric"})
     : null;
 
+  const profileDescription =
+    profile.bio ||
+    [profile.city, profile.municipality].filter(Boolean).join(", ") ||
+    st.metaDescription;
+
   return (
     <AppShell>
+      <SellerProfileJsonLd
+        sellerId={id}
+        name={displayName}
+        description={profileDescription}
+        imageUrl={profile.avatar_url?.startsWith("http") ? profile.avatar_url : null}
+      />
       <section className="profile-page seller-public-page container">
         <div className="profile-hero">
           <div className="profile-avatar-large">

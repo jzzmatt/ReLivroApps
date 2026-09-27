@@ -445,6 +445,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/sitemap.xml` includes published `/books/[id]` and `/seller/[id]` URLs when Supabase is configured
 - See [docs/PHASE_27_SEO_SITEMAP.md](docs/PHASE_27_SEO_SITEMAP.md)
 
+### Phase 28 — Structured data & canonical URLs
+
+- JSON-LD on book detail (`Book` + `Offer`) and seller profile (`ProfilePage`)
+- Canonical URLs in metadata via `getSiteUrl()`
+- See [docs/PHASE_28_STRUCTURED_DATA.md](docs/PHASE_28_STRUCTURED_DATA.md)
+
 ### Validation commands
 
 ```bash
