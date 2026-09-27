@@ -14,6 +14,9 @@ export const conversationMessages = {
     unread: "Nova mensagem",
     previewYou: "Tu:",
     previewEmpty: "Sem mensagens ainda.",
+    chatWith: "Conversa com",
+    memberFallback: "Membro ReLivroApps",
+    viewSeller: "Ver perfil do vendedor",
   },
   fr: {
     back: "← Conversations",
@@ -28,6 +31,9 @@ export const conversationMessages = {
     unread: "Nouveau message",
     previewYou: "Vous :",
     previewEmpty: "Pas encore de messages.",
+    chatWith: "Conversation avec",
+    memberFallback: "Membre ReLivroApps",
+    viewSeller: "Voir le profil du vendeur",
   },
   en: {
     back: "← Conversations",
@@ -42,6 +48,9 @@ export const conversationMessages = {
     unread: "New message",
     previewYou: "You:",
     previewEmpty: "No messages yet.",
+    chatWith: "Chat with",
+    memberFallback: "ReLivroApps member",
+    viewSeller: "View seller profile",
   },
 } as const;
 
