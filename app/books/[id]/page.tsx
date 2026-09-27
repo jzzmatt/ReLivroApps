@@ -87,7 +87,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   } = await supabase.auth.getUser();
   const {data} = await supabase
     .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles(display_name,avatar_url,city,municipality)")
+    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url,city,municipality)")
     .eq("id", id)
     .maybeSingle();
   if (!data) notFound();

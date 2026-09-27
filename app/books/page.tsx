@@ -17,7 +17,7 @@ export default async function BooksPage() {
   } = await supabase.auth.getUser();
   const {data, error} = await supabase
     .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles(display_name,avatar_url)")
+    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
     .eq("is_published", true)
     .order("created_at", {ascending: false});
   const books = (data || []) as Book[];
