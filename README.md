@@ -473,6 +473,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/seller/[id]` SSR first 24 listings; **Load more** via `/api/sellers/[id]/books`
 - See [docs/PHASE_32_SELLER_LISTINGS_PAGINATION.md](docs/PHASE_32_SELLER_LISTINGS_PAGINATION.md)
 
+### Phase 33 — Help page SEO
+
+- `/ajuda` metadata, breadcrumbs, and `FAQPage` JSON-LD (PT / FR / EN)
+- See [docs/PHASE_33_HELP_SEO.md](docs/PHASE_33_HELP_SEO.md)
+
 ### Validation commands
 
 ```bash

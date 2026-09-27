@@ -4,6 +4,8 @@ export const helpMessages = {
   pt: {
     eyebrow: "AJUDA",
     title: "Como funciona o ReLivroApps",
+    metaDescription:
+      "Perguntas frequentes sobre contas, publicar livros, contactar vendedores e segurança no ReLivroApps.",
     lead: "Respostas rápidas para estudantes, famílias e escolas.",
     faqs: [
       {
@@ -34,6 +36,8 @@ export const helpMessages = {
   fr: {
     eyebrow: "AIDE",
     title: "Comment fonctionne ReLivroApps",
+    metaDescription:
+      "FAQ sur les comptes, la publication de livres, le contact vendeur et la sécurité sur ReLivroApps.",
     lead: "Réponses rapides pour élèves, familles et écoles.",
     faqs: [
       {
@@ -64,6 +68,8 @@ export const helpMessages = {
   en: {
     eyebrow: "HELP",
     title: "How ReLivroApps works",
+    metaDescription:
+      "FAQ on accounts, publishing books, contacting sellers and safety on ReLivroApps.",
     lead: "Quick answers for students, families and schools.",
     faqs: [
       {
