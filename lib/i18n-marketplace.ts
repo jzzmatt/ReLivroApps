@@ -95,3 +95,14 @@ export function formatMarketplaceResults(locale: Locale, count: number): string 
   }
   return `${count} livros encontrados`;
 }
+
+/** Loaded catalog slice vs total published (pagination). */
+export function formatMarketplaceCatalogSize(locale: Locale, loaded: number, total: number): string {
+  if (locale === "fr") {
+    return `${loaded} sur ${total} annonce${total === 1 ? "" : "s"}`;
+  }
+  if (locale === "en") {
+    return `${loaded} of ${total} listing${total === 1 ? "" : "s"}`;
+  }
+  return `${loaded} de ${total} anúncios`;
+}

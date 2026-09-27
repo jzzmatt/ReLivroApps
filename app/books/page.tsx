@@ -1,7 +1,13 @@
+import type {Metadata} from "next";
 import Link from "next/link";
 import {AppShell} from "@/components/AppShell";
+import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
+import {Breadcrumbs} from "@/components/Breadcrumbs";
 import {MarketplaceClient} from "@/components/MarketplaceClient";
+import {MarketplaceItemListJsonLd} from "@/components/MarketplaceItemListJsonLd";
 import {messages} from "@/lib/i18n";
+import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
+import {getSiteUrl} from "@/lib/site-url";
 import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import type {Book} from "@/lib/books";
@@ -13,11 +19,37 @@ import {isSupabaseConfigured} from "@/lib/supabase/public-env";
 /** Always read Supabase env at request time (Vercel runtime vars). */
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale();
+  const t = messages[locale];
+  const canonical = `${getSiteUrl()}/books`;
+
+  return {
+    title: t.market.title,
+    description: t.market.description,
+    alternates: {canonical},
+    openGraph: {
+      title: t.market.title,
+      description: t.market.description,
+      url: canonical,
+      type: "website",
+      siteName: "ReLivroApps",
+    },
+    twitter: {
+      card: "summary",
+      title: t.market.title,
+      description: t.market.description,
+    },
+  };
+}
+
 export default async function BooksPage() {
   const locale = await getRequestLocale();
   const t = messages[locale];
+  const bc = breadcrumbsT(locale);
   const marketLabels = marketplaceT(locale);
   const imagesPublicBase = bookImagesPublicBase();
+  const breadcrumbItems = [{label: bc.books}];
 
   let books: Book[] = [];
   let totalPublished = 0;
@@ -60,7 +92,12 @@ export default async function BooksPage() {
 
   return (
     <AppShell>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      {books.length > 0 ? (
+        <MarketplaceItemListJsonLd books={books.map((b) => ({id: b.id, title: b.title}))} />
+      ) : null}
       <section className="marketplace container">
+        <Breadcrumbs items={breadcrumbItems} />
         <div className="marketplace-head">
           <div>
             <span className="eyebrow">{t.market.eyebrow}</span>
