@@ -508,6 +508,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Locale-aware `/auth` and `/sell` metadata via route layouts (`noindex` for private flows)
 - See [docs/PHASE_39_AUTH_SELL_METADATA.md](docs/PHASE_39_AUTH_SELL_METADATA.md)
 
+### Phase 40 — Private app route metadata
+
+- Profile, favorites, listings, messages, notifications: layouts + `noindex` (PT / FR / EN)
+- See [docs/PHASE_40_PRIVATE_APP_METADATA.md](docs/PHASE_40_PRIVATE_APP_METADATA.md)
+
 ### Validation commands
 
 ```bash
