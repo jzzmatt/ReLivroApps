@@ -417,6 +417,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/messages` shows last-message preview and date per thread
 - See [docs/PHASE_22_INBOX_BADGES.md](docs/PHASE_22_INBOX_BADGES.md)
 
+### Phase 23 — Conversation participant context
+
+- Inbox and thread show the other participant’s name
+- Buyers can open the seller’s public profile from a thread
+- See [docs/PHASE_23_CONVERSATION_CONTEXT.md](docs/PHASE_23_CONVERSATION_CONTEXT.md)
+
 ### Validation commands
 
 ```bash

@@ -1,18 +1,17 @@
 import Link from "next/link";
-import {cookies} from "next/headers";
 import {AppShell} from "@/components/AppShell";
 import {createClient} from "@/lib/supabase/server";
 import {ProfileStats} from "@/components/ProfileStats";
 import {ProfileLogoutButton} from "@/components/ProfileLogoutButton";
 import {StarRating} from "@/components/StarRating";
-import {messages, type Locale} from "@/lib/i18n";
+import {messages} from "@/lib/i18n";
 import {reviewsT} from "@/lib/i18n-reviews";
 import {localeTag} from "@/lib/locale-format";
+import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
 
 export default async function ProfilePage() {
-  const cookieStore = await cookies();
-  const locale = (cookieStore.get("relivro-locale")?.value as Locale) || "pt";
+  const locale = await getRequestLocale();
   const t = messages[locale];
   const rt = reviewsT(locale);
   const dateLocale = localeTag(locale);
