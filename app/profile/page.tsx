@@ -10,6 +10,7 @@ import {reviewsT} from "@/lib/i18n-reviews";
 import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
+import {SchoolCommunityBadge} from "@/components/SchoolCommunityBadge";
 
 export default async function ProfilePage() {
   const locale = await getRequestLocale();
@@ -61,6 +62,13 @@ export default async function ProfilePage() {
               {[profile?.city, profile?.municipality].filter(Boolean).join(", ") || "Angola"}
               {profile?.school ? " · " + profile.school : ""}
             </p>
+            {profile?.school?.trim() ? (
+              <SchoolCommunityBadge
+                locale={locale}
+                schoolName={profile.school.trim()}
+                verified={Boolean(profile.school_verified_at)}
+              />
+            ) : null}
             {profile?.bio && <div className="profile-bio">{profile.bio}</div>}
           </div>
           <Link className="secondary-button" href="/profile/edit">{t.profile.edit}</Link>

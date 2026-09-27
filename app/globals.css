@@ -88,7 +88,9 @@
 .admin-listings-count{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
 .payment-note{margin-top:12px;background:#f4f6fa;border-radius:14px;padding:14px;color:#3d5068;font-size:12px;line-height:1.55}
 .school-trust-badge{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;border-radius:999px;background:#eaf1ff;border:1px solid rgba(60,120,216,.25);font-size:12px;line-height:1.35}
+.school-trust-badge.verified{background:#e8f6ee;border-color:rgba(20,108,67,.28)}
 .school-trust-badge-label{font-weight:800;color:#2767c8}
+.school-trust-badge.verified .school-trust-badge-label{color:#146c43}
 .school-trust-badge-school{color:#102d52}
 .push-readiness-note{margin:0 0 22px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);font-size:13px;line-height:1.55;color:#536170}
 .push-readiness-note strong{display:block;margin-bottom:6px;color:var(--navy);font-size:14px}

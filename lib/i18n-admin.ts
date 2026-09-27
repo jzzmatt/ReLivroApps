@@ -30,7 +30,14 @@ export const adminMessages = {
       emptyText: "Não existem denúncias pendentes.",
       removedBook: "Livro removido",
     },
-    users: {title: "Utilizadores.", noName: "Sem nome"},
+    users: {
+      title: "Utilizadores.",
+      noName: "Sem nome",
+      verifySchool: "Verificar escola",
+      clearSchool: "Retirar verificação",
+      schoolVerified: "Escola verificada",
+      schoolFailed: "Não foi possível atualizar a verificação.",
+    },
     actions: {
       busy: "...",
       publish: "Publicar",
@@ -70,7 +77,14 @@ export const adminMessages = {
       emptyText: "Il n’y a pas de signalements en attente.",
       removedBook: "Livre supprimé",
     },
-    users: {title: "Utilisateurs.", noName: "Sans nom"},
+    users: {
+      title: "Utilisateurs.",
+      noName: "Sans nom",
+      verifySchool: "Vérifier l’école",
+      clearSchool: "Retirer la vérification",
+      schoolVerified: "École vérifiée",
+      schoolFailed: "Impossible de mettre à jour la vérification.",
+    },
     actions: {
       busy: "...",
       publish: "Publier",
@@ -110,7 +124,14 @@ export const adminMessages = {
       emptyText: "There are no pending reports.",
       removedBook: "Removed book",
     },
-    users: {title: "Users.", noName: "No name"},
+    users: {
+      title: "Users.",
+      noName: "No name",
+      verifySchool: "Verify school",
+      clearSchool: "Remove verification",
+      schoolVerified: "Verified school",
+      schoolFailed: "The verification could not be updated.",
+    },
     actions: {
       busy: "...",
       publish: "Publish",

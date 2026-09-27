@@ -579,6 +579,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Marketplace filter for the signed-in profile city. No browser location and no distance
 - See [docs/PHASE_53_NEARBY_CITY.md](docs/PHASE_53_NEARBY_CITY.md)
 
+### Phase 54 — Verified school
+
+- Admins confirm a profile school. Members cannot set the stamp. Changing the school name clears it
+- See [docs/PHASE_54_VERIFIED_SCHOOL.md](docs/PHASE_54_VERIFIED_SCHOOL.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc
