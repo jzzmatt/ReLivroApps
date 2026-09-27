@@ -25,4 +25,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_32_SELLER_LISTINGS_PAGINATION.md](./PHASE_32_SELLER_LISTINGS_PAGINATION.md)

@@ -468,6 +468,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - “Loaded of total” hint when catalog exceeds first page
 - See [docs/PHASE_31_MARKETPLACE_SEO.md](docs/PHASE_31_MARKETPLACE_SEO.md)
 
+### Phase 32 — Seller listings pagination
+
+- `/seller/[id]` SSR first 24 listings; **Load more** via `/api/sellers/[id]/books`
+- See [docs/PHASE_32_SELLER_LISTINGS_PAGINATION.md](docs/PHASE_32_SELLER_LISTINGS_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
