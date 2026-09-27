@@ -24,4 +24,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_37_MESSAGES_INBOX_PAGINATION.md](./PHASE_37_MESSAGES_INBOX_PAGINATION.md)
