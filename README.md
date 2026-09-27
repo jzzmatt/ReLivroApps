@@ -564,6 +564,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - In-app notification expectations on `/notifications` before native push
 - See [docs/PHASE_49_PUSH_READINESS.md](docs/PHASE_49_PUSH_READINESS.md)
 
+### Phase 51 — Inspection photos
+
+- `/sell` how-to guide and five required inspection photos
+- See [docs/PHASE_51_INSPECTION_PHOTOS.md](docs/PHASE_51_INSPECTION_PHOTOS.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc

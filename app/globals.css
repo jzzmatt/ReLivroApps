@@ -116,5 +116,16 @@
 .workspace-activity li{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .workspace-listing-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:13px;font-weight:800;color:var(--blue)}
 .profile-workspace-cta{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 22px}
+.publish-guide{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;margin:18px 0}
+.publish-guide h2{margin:8px 0 12px;font-size:28px}
+.publish-guide ol{margin:0;padding-left:20px;color:#3d5068;line-height:1.55}
+.publish-guide li+li{margin-top:8px}
+.inspection-slots{border:0;margin:0;padding:0}
+.inspection-slots legend{font-weight:800;margin-bottom:6px}
+.inspection-slots>p{margin:0 0 12px;color:var(--muted);font-size:13px}
+.inspection-slot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.inspection-slot{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:14px;background:#fffaf1;font-size:13px;font-weight:800}
+.inspection-slot small{font-weight:600;color:var(--muted);word-break:break-all}
+.inspection-progress{margin:12px 0 0;font-weight:800}
 @media(max-width:900px){.workspace-kpi-grid,.workspace-inbox,.workspace-main-grid{grid-template-columns:1fr 1fr}.workspace-status-row{grid-template-columns:repeat(3,1fr)}.workspace-header{flex-direction:column;align-items:flex-start}}
 @media(max-width:640px){.workspace-kpi-grid,.workspace-inbox,.workspace-main-grid,.workspace-status-row{grid-template-columns:1fr 1fr}.workspace-header-actions,.workspace-header-actions .button,.workspace-header-actions .secondary-button{width:100%}}

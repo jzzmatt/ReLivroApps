@@ -10,14 +10,23 @@ import {messages} from "@/lib/i18n";
 import {useClientLocale} from "@/lib/use-client-locale";
 import {createClient} from "@/lib/supabase/client";
 import {listingSchema} from "@/lib/validation";
+import {inspectionT} from "@/lib/i18n-inspection";
+import {fillTemplate} from "@/lib/i18n-workspace";
+import {
+  INSPECTION_SLOT_ORDER,
+  INSPECTION_SLOTS,
+  inspectionFileError,
+  type InspectionSlot,
+} from "@/lib/inspection-photos";
 
 export default function SellPage() {
   const router = useRouter();
   const locale = useClientLocale();
   const t = messages[locale].sell;
+  const guide = inspectionT(locale);
   const catalog = marketplaceT(locale);
   const [userId, setUserId] = useState<string | null>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<Partial<Record<InspectionSlot, File>>>({});
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState<(typeof subjects)[number]>(subjects[0]);
   const [grade, setGrade] = useState<(typeof grades)[number]>(grades[3]);
@@ -58,10 +67,24 @@ export default function SellPage() {
       setLoading(false);
       return;
     }
-    if (files.some((f) => !["image/jpeg", "image/png", "image/webp"].includes(f.type) || f.size > 5 * 1024 * 1024)) {
-      setError(t.uploadError);
+    const selected = INSPECTION_SLOTS.map((slot) => files[slot]).filter((file): file is File => Boolean(file));
+    if (selected.length !== INSPECTION_SLOTS.length) {
+      setError(guide.missing);
       setLoading(false);
       return;
+    }
+    for (const file of selected) {
+      const problem = inspectionFileError(file);
+      if (problem === "type") {
+        setError(guide.fileType);
+        setLoading(false);
+        return;
+      }
+      if (problem === "size") {
+        setError(guide.fileSize);
+        setLoading(false);
+        return;
+      }
     }
     const supabase = createClient();
     const {data: book, error: bookError} = await supabase
@@ -86,19 +109,39 @@ export default function SellPage() {
       setLoading(false);
       return;
     }
-    for (let i = 0; i < files.slice(0, 5).length; i++) {
-      const file = files[i];
+    let uploadFailed = false;
+    for (const slot of INSPECTION_SLOTS) {
+      const file = files[slot];
+      if (!file) {
+        uploadFailed = true;
+        break;
+      }
       const safe = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
-      const path = userId + "/" + book.id + "/" + Date.now() + "-" + i + "-" + safe;
+      const path = userId + "/" + book.id + "/" + slot + "-" + Date.now() + "-" + safe;
       const upload = await supabase.storage.from("book-images").upload(path, file, {
         upsert: false,
         contentType: file.type,
       });
       if (upload.error) {
-        setError(t.uploadError);
+        uploadFailed = true;
         break;
       }
-      await supabase.from("book_images").insert({book_id: book.id, storage_path: path, sort_order: i});
+      const {error: imageError} = await supabase.from("book_images").insert({
+        book_id: book.id,
+        storage_path: path,
+        sort_order: INSPECTION_SLOT_ORDER[slot],
+        slot,
+      });
+      if (imageError) {
+        uploadFailed = true;
+        break;
+      }
+    }
+    if (uploadFailed) {
+      await supabase.from("books").delete().eq("id", book.id);
+      setError(guide.uploadFailed);
+      setLoading(false);
+      return;
     }
     setLoading(false);
     router.push("/books/" + book.id);
@@ -110,19 +153,47 @@ export default function SellPage() {
         <span className="eyebrow">{t.eyebrow}</span>
         <h1>{t.title}</h1>
         <p className="lead">{t.lead}</p>
+        <section className="publish-guide" aria-labelledby="publish-guide-title">
+          <span className="eyebrow">{guide.guideEyebrow}</span>
+          <h2 id="publish-guide-title">{guide.guideTitle}</h2>
+          <ol>
+            {guide.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </section>
         <form className="sell-form" onSubmit={submit}>
-          <label className="upload-zone">
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              hidden
-              onChange={(e) => setFiles(Array.from(e.target.files || []).slice(0, 5))}
-            />
-            <span>＋</span>
-            <strong>{files.length ? `${files.length} ${t.photosSelected}` : t.photos}</strong>
-            <small>{t.photosHint}</small>
-          </label>
+          <fieldset className="inspection-slots">
+            <legend>{guide.slotsTitle}</legend>
+            <p>{guide.slotsHint}</p>
+            <div className="inspection-slot-grid">
+              {INSPECTION_SLOTS.map((slot) => (
+                <label key={slot} className="inspection-slot">
+                  <span>{guide.slots[slot]}</span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      setFiles((current) => {
+                        const next = {...current};
+                        if (file) next[slot] = file;
+                        else delete next[slot];
+                        return next;
+                      });
+                    }}
+                  />
+                  <small>{files[slot]?.name || "—"}</small>
+                </label>
+              ))}
+            </div>
+            <p className="inspection-progress">
+              {fillTemplate(guide.photoProgress, {
+                count: INSPECTION_SLOTS.filter((slot) => files[slot]).length,
+              })}
+            </p>
+          </fieldset>
           <label>
             {t.bookTitle}
             <input value={title} onChange={(e) => setTitle(e.target.value)} required />

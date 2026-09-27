@@ -3,6 +3,7 @@ import {BookImage} from "@/components/BookImage";
 import {ListingActions} from "@/components/ListingActions";
 import {ListingStatusActions} from "@/components/ListingStatusActions";
 import {listingsManageT} from "@/lib/i18n-listings-manage";
+import {inspectionT} from "@/lib/i18n-inspection";
 import {fillTemplate, workspaceT} from "@/lib/i18n-workspace";
 import type {Locale} from "@/lib/i18n";
 import type {WorkspaceListing} from "@/lib/workspace-query";
@@ -20,6 +21,7 @@ export function WorkspaceRecentListings({
   numberLocale: string;
 }) {
   const t = workspaceT(locale);
+  const photos = inspectionT(locale);
   const manage = listingsManageT(locale);
 
   if (listings.length === 0) {
@@ -66,7 +68,7 @@ export function WorkspaceRecentListings({
                   {book.condition} · {book.city || "Angola"} · {book.priceKz.toLocaleString(numberLocale)} Kz
                 </p>
                 <p className="workspace-listing-meta">
-                  {fillTemplate(t.photos, {count: book.photoCount})}
+                  {fillTemplate(photos.photoProgress, {count: Math.min(book.photoCount, 5)})}
                   {" · "}
                   {fillTemplate(t.views, {count: book.viewCount})}
                   {" · "}
