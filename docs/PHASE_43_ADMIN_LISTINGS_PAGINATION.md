@@ -23,4 +23,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — admin reports/users pagination, push notifications, payments)_
+**Next:** [PHASE_44_ADMIN_REPORTS_PAGINATION.md](./PHASE_44_ADMIN_REPORTS_PAGINATION.md)

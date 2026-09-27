@@ -18,6 +18,8 @@ export const detailMessages = {
     contactBusy: "A abrir conversa...",
     safeNote:
       "Compra e contacto seguros. Nunca partilhe dados de pagamento fora da plataforma.",
+    paymentNote:
+      "Pagamentos são acordados directamente entre comprador e vendedor (dinheiro, transferência ou outro meio). A ReLivroApps não processa pagamentos nem cobranças in-app — use as mensagens para combinar encontro e preço.",
     defaultCountry: "Angola",
     metaNotFound: "Livro",
     modes: {Venda: "Venda", Troca: "Troca", Oferta: "Oferta"} as Record<ListingMode, string>,
@@ -44,6 +46,8 @@ export const detailMessages = {
     contactBusy: "Ouverture de la conversation...",
     safeNote:
       "Achat et contact sécurisés. Ne partagez jamais vos données de paiement en dehors de la plateforme.",
+    paymentNote:
+      "Les paiements se font directement entre acheteur et vendeur (espèces, virement ou autre). ReLivroApps ne traite pas les paiements in-app — utilisez la messagerie pour convenir du lieu et du prix.",
     defaultCountry: "Angola",
     metaNotFound: "Livre",
     modes: {Venda: "Vente", Troca: "Échange", Oferta: "Offre"} as Record<ListingMode, string>,
@@ -70,6 +74,8 @@ export const detailMessages = {
     contactBusy: "Opening conversation...",
     safeNote:
       "Buy and contact safely. Never share payment details outside the platform.",
+    paymentNote:
+      "Payment is arranged peer-to-peer between buyer and seller (cash, transfer, or other). ReLivroApps does not process in-app checkout — use messages to agree on meetup and price.",
     defaultCountry: "Angola",
     metaNotFound: "Book",
     modes: {Venda: "Sale", Troca: "Exchange", Oferta: "Offer"} as Record<ListingMode, string>,
