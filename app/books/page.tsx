@@ -16,28 +16,39 @@ export default async function BooksPage() {
   const t = messages[locale];
   const marketLabels = marketplaceT(locale);
 
-  if (!isSupabaseConfigured()) {
-    return (
-      <AppShell>
-        <section className="marketplace container">
-          <div className="empty-state">{t.market.error}</div>
-        </section>
-      </AppShell>
-    );
-  }
+  let books: Book[] = [];
+  let favorites: string[] = [];
+  let loadError: unknown = null;
 
-  const supabase = await createClient();
-  const {data: authData} = await supabase.auth.getUser();
-  const user = authData?.user ?? null;
-  const {data, error} = await supabase
-    .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
-    .eq("is_published", true)
-    .order("created_at", {ascending: false});
-  const books = (data || []) as Book[];
-  const {data: favorites} = user
-    ? await supabase.from("favorites").select("book_id").eq("user_id", user.id)
-    : {data: []};
+  try {
+    if (!isSupabaseConfigured()) {
+      return (
+        <AppShell>
+          <section className="marketplace container">
+            <div className="empty-state">{t.market.error}</div>
+          </section>
+        </AppShell>
+      );
+    }
+
+    const supabase = await createClient();
+    const {data: authData} = await supabase.auth.getUser();
+    const user = authData?.user ?? null;
+    const {data, error} = await supabase
+      .from("books")
+      .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
+      .eq("is_published", true)
+      .order("created_at", {ascending: false});
+    if (error) loadError = error;
+    else books = (data || []) as Book[];
+    const {data: favRows} = user
+      ? await supabase.from("favorites").select("book_id").eq("user_id", user.id)
+      : {data: []};
+    favorites = (favRows || []).map((f) => f.book_id);
+  } catch (err) {
+    console.error("[books] load failed", err);
+    loadError = err;
+  }
 
   return (
     <AppShell>
@@ -52,7 +63,7 @@ export default async function BooksPage() {
             {t.market.publish}
           </Link>
         </div>
-        {error ? (
+        {loadError ? (
           <div className="empty-state">{t.market.error}</div>
         ) : books.length === 0 ? (
           <div className="empty-state">
@@ -65,7 +76,7 @@ export default async function BooksPage() {
         ) : (
           <MarketplaceClient
             books={books}
-            favorites={(favorites || []).map((f) => f.book_id)}
+            favorites={favorites}
             labels={marketLabels}
             locale={locale}
           />
