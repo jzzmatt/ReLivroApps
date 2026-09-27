@@ -488,6 +488,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/profile/favorites` SSR first 24; **Load more** via `/api/favorites/books`
 - See [docs/PHASE_35_FAVORITES_PAGINATION.md](docs/PHASE_35_FAVORITES_PAGINATION.md)
 
+### Phase 36 — My listings pagination
+
+- `/profile/listings` SSR first 24; **Load more** via `/api/profile/listings`
+- See [docs/PHASE_36_MY_LISTINGS_PAGINATION.md](docs/PHASE_36_MY_LISTINGS_PAGINATION.md)
+
 ### Validation commands
 
 ```bash
