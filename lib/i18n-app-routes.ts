@@ -2,9 +2,13 @@ import type {Locale} from "@/lib/i18n";
 
 export const appRouteMessages = {
   pt: {
+    workspace: {
+      title: "Meu espaço",
+      description: "Gerir livros, publicações e actividade no ReLivroApps.",
+    },
     profile: {
       title: "O meu perfil",
-      description: "Gerir a sua conta ReLivroApps, estatísticas e atalhos para anúncios e favoritos.",
+      description: "Conta, reputação e dados pessoais no ReLivroApps.",
     },
     profileEdit: {
       title: "Editar perfil",
@@ -52,9 +56,13 @@ export const appRouteMessages = {
     },
   },
   fr: {
+    workspace: {
+      title: "Mon espace",
+      description: "Gérer livres, annonces et activité sur ReLivroApps.",
+    },
     profile: {
       title: "Mon profil",
-      description: "Gérez votre compte ReLivroApps, statistiques et raccourcis vers annonces et favoris.",
+      description: "Compte, réputation et informations personnelles sur ReLivroApps.",
     },
     profileEdit: {
       title: "Modifier le profil",
@@ -102,9 +110,13 @@ export const appRouteMessages = {
     },
   },
   en: {
+    workspace: {
+      title: "My Workspace",
+      description: "Manage books, listings and activity on ReLivroApps.",
+    },
     profile: {
       title: "My profile",
-      description: "Manage your ReLivroApps account, stats and shortcuts to listings and favorites.",
+      description: "Account, reputation and personal details on ReLivroApps.",
     },
     profileEdit: {
       title: "Edit profile",

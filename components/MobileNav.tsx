@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {NavIcon} from "@/components/NavIcon";
 import {MessageNavLink} from "@/components/MessageNavLink";
-import {NotificationNavLink} from "@/components/NotificationNavLink";
 import {shellT} from "@/lib/i18n-shell";
 import {useClientLocale} from "@/lib/use-client-locale";
 
@@ -24,10 +23,10 @@ export function MobileNav() {
       <Link href="/sell" className="mobile-add" aria-label={t.mobilePublish}>
         <span>＋</span>
       </Link>
-      <NotificationNavLink className="mobile-notifications-link">
-        <NavIcon name="notifications" />
-        <small>{t.mobileNotices}</small>
-      </NotificationNavLink>
+      <Link href="/workspace">
+        <NavIcon name="workspace" />
+        <small>{t.mobileWorkspace}</small>
+      </Link>
       <Link href="/profile">
         <NavIcon name="profile" />
         <small>{t.mobileProfile}</small>

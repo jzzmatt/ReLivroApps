@@ -28,6 +28,9 @@ export function AppShell({children}: {children: React.ReactNode}) {
             <Link href="/books" className="header-nav-icon" aria-label={t.ariaBooks}>
               <NavIcon name="books" />
             </Link>
+            <Link href="/workspace" className="header-nav-icon" aria-label={t.ariaWorkspace}>
+              <NavIcon name="workspace" />
+            </Link>
             <MessageNavLink className="header-messages-link header-nav-icon">
               <NavIcon name="messages" />
             </MessageNavLink>

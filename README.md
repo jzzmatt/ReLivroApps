@@ -317,6 +317,12 @@ DEMO_USER_PASSWORD='…' npm run seed:demo:sql > demo-seed.sql
 
 See [docs/PHASE_9_6_DATA_SEEDING.md](docs/PHASE_9_6_DATA_SEEDING.md). Demo emails: `*@demo.example.com` (admin: `admin.demo@demo.example.com`).
 
+### Phase 9.7.1 — Dedicated seller workspace
+
+- `/workspace` dashboard: KPIs, publication summary, recent listings, activity, notification and message summaries
+- Profile stays account-focused and links to the workspace
+- See [docs/PHASE_9_7_1_SELLER_WORKSPACE.md](docs/PHASE_9_7_1_SELLER_WORKSPACE.md)
+
 ### Phase 9.8 — Beta deployment
 
 Closed beta on Vercel + Supabase (not a public marketing launch unless you approve one).
