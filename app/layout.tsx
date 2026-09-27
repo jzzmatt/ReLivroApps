@@ -7,9 +7,10 @@ import {htmlLang, openGraphLocale} from "@/lib/html-lang";
 import {siteMetadataT} from "@/lib/i18n-metadata";
 import {getRequestLocale} from "@/lib/locale-server";
 import {getSiteUrl} from "@/lib/site-url";
+import {isClosedBeta} from "@/lib/site-mode";
 
 const siteUrl = getSiteUrl();
-const isBeta = process.env.NEXT_PUBLIC_BETA === "true";
+const isBeta = isClosedBeta();
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale();

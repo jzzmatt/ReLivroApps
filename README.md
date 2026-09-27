@@ -337,8 +337,8 @@ Closed beta on Vercel + Supabase (not a public marketing launch unless you appro
 Exit beta and enable public SEO when smoke tests are green:
 
 1. Follow [docs/PHASE_9_9_PUBLIC_LAUNCH.md](docs/PHASE_9_9_PUBLIC_LAUNCH.md).
-2. Set `NEXT_PUBLIC_BETA=false` (or remove) in Vercel Production → **Redeploy**.
-3. Verify `/sitemap.xml`, `/robots.txt`, `/privacidade`, `/termos`.
+2. Set `NEXT_PUBLIC_BETA=false` (or remove) in Vercel Production → **Redeploy**. Default in code is already public when the variable is unset.
+3. Verify `/sitemap.xml`, `/robots.txt` (public crawl, private areas disallowed), `/privacidade`, `/termos`.
 4. Re-run [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md) on production.
 
 ### Phase 10 — Post-launch discovery & support

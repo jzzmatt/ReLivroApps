@@ -15,6 +15,6 @@ export async function generateSitemaps() {
 export default async function sitemap(props: {
   id: Promise<number>;
 }): Promise<MetadataRoute.Sitemap> {
-  const id = await props.id;
-  return buildSitemapById(siteUrl, id);
+  const id = Number(await props.id);
+  return buildSitemapById(siteUrl, Number.isFinite(id) ? id : 0);
 }

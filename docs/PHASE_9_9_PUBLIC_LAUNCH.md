@@ -27,7 +27,7 @@ Expected results:
 
 ## 2. SEO & legal
 
-- [ ] Open `/robots.txt` — allows `/`, references sitemap
+- [ ] Open `/robots.txt` — allows `/`, references sitemap, and disallows `/workspace`, `/profile`, `/admin`, `/messages`, `/notifications`
 - [ ] Open `/sitemap.xml` — includes `/`, `/books`, `/auth`, `/privacidade`, `/termos`
 - [ ] Review `/privacidade` and `/termos` (PT / FR / EN via language cookie)
 - [ ] Optional: add custom domain in Vercel and update Supabase Auth URLs + `NEXT_PUBLIC_SITE_URL`
