@@ -589,6 +589,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Seller chooses cash, bank transfer, or to be agreed. The app does not take payment
 - See [docs/PHASE_55_PAYMENT_ARRANGEMENT.md](docs/PHASE_55_PAYMENT_ARRANGEMENT.md)
 
+### Phase 56 — Browser push alerts
+
+- Optional browser alerts for new messages. In-app notifications stay in place
+- See [docs/PHASE_56_WEB_PUSH.md](docs/PHASE_56_WEB_PUSH.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc

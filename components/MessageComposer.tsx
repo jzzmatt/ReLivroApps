@@ -33,6 +33,12 @@ export function MessageComposer({conversationId}: {conversationId: string}) {
     });
     if (!error) {
       setBody("");
+      void fetch("/api/push/fanout", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({conversationId}),
+        keepalive: true,
+      });
       router.refresh();
     } else alert(error.message);
     setSending(false);
