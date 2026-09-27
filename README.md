@@ -434,6 +434,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Link to full `/seller/[id]` profile (PT / FR / EN)
 - See [docs/PHASE_25_SELLER_MORE_LISTINGS.md](docs/PHASE_25_SELLER_MORE_LISTINGS.md)
 
+### Phase 26 — Share seller profile & social preview
+
+- Share button on `/seller/[id]` (Web Share or copy link, PT / FR / EN)
+- Open Graph / Twitter metadata for seller public pages
+- See [docs/PHASE_26_SELLER_SHARE.md](docs/PHASE_26_SELLER_SHARE.md)
+
 ### Validation commands
 
 ```bash

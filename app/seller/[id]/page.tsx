@@ -4,6 +4,7 @@ import type {Metadata} from "next";
 import {AppShell} from "@/components/AppShell";
 import {BookCard} from "@/components/BookCard";
 import {ProfileStats} from "@/components/ProfileStats";
+import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
 import type {Book} from "@/lib/books";
@@ -18,6 +19,11 @@ import {createClient} from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app").replace(
+  /\/$/,
+  "",
+);
+
 type PageProps = {params: Promise<{id: string}>};
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
@@ -25,11 +31,36 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const locale = await getRequestLocale();
   const st = sellerProfileT(locale);
   const supabase = await createClient();
-  const {data: profile} = await supabase.from("profiles").select("display_name").eq("id", id).maybeSingle();
+  const {data: profile} = await supabase
+    .from("profiles")
+    .select("display_name,avatar_url,bio,city,municipality")
+    .eq("id", id)
+    .maybeSingle();
   const name = profile?.display_name?.trim() || st.metaTitle;
+  const description =
+    profile?.bio?.slice(0, 160) ||
+    [profile?.city, profile?.municipality].filter(Boolean).join(", ") ||
+    st.metaDescription;
+  const ogImage =
+    profile?.avatar_url?.startsWith("http") ? profile.avatar_url : undefined;
+
   return {
     title: `${name} · ReLivroApps`,
-    description: st.metaDescription,
+    description,
+    openGraph: {
+      title: name,
+      description,
+      url: `${siteUrl}/seller/${id}`,
+      type: "profile",
+      siteName: "ReLivroApps",
+      ...(ogImage ? {images: [{url: ogImage, alt: name}]} : {}),
+    },
+    twitter: {
+      card: ogImage ? "summary" : "summary",
+      title: name,
+      description,
+      ...(ogImage ? {images: [ogImage]} : {}),
+    },
   };
 }
 
@@ -118,9 +149,17 @@ export default async function SellerPublicPage({params}: PageProps) {
               </div>
             )}
           </div>
-          <Link className="secondary-button" href="/books">
-            {detailLabels.back}
-          </Link>
+          <div className="seller-hero-actions">
+            <ShareListingButton
+              variant="seller"
+              title={displayName}
+              path={"/seller/" + id}
+              locale={locale}
+            />
+            <Link className="secondary-button" href="/books">
+              {detailLabels.back}
+            </Link>
+          </div>
         </div>
 
         <ProfileStats

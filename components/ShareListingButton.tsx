@@ -8,10 +8,12 @@ export function ShareListingButton({
   title,
   path,
   locale = "pt",
+  variant = "listing",
 }: {
   title: string;
   path: string;
   locale?: Locale;
+  variant?: "listing" | "seller";
 }) {
   const [labels, setLabels] = useState<ShareLabels>(shareT(locale));
 
@@ -33,9 +35,11 @@ export function ShareListingButton({
     }
   }
 
+  const buttonLabel = variant === "seller" ? labels.shareSeller : labels.share;
+
   return (
     <button type="button" className="secondary-button" onClick={onShare}>
-      {labels.share}
+      {buttonLabel}
     </button>
   );
 }
