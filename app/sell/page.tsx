@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {trackEvent} from "@/components/AnalyticsTracker";
 import {AppShell} from "@/components/AppShell";
 import {conditions, grades, modes, paymentArrangements, subjects, type BookCondition, type ListingMode, type PaymentArrangement} from "@/lib/books";
 import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
@@ -236,6 +237,7 @@ export default function SellPage() {
       }
     }
     setLoading(false);
+    void trackEvent("listing_published", {book_id: book.id});
     router.push("/books/" + book.id);
   }
 
