@@ -5,6 +5,7 @@ import {AppShell} from "@/components/AppShell";
 import {BookCard} from "@/components/BookCard";
 import {BookImage} from "@/components/BookImage";
 import {bookImagesPublicBase, storageImageUrl} from "@/lib/book-image-url";
+import {BookListingJsonLd} from "@/components/BookListingJsonLd";
 import {BookViewTracker} from "@/components/BookViewTracker";
 import {ContactSellerButton} from "@/components/ContactSellerButton";
 import {FavoriteButton} from "@/components/FavoriteButton";
@@ -21,11 +22,7 @@ import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
-
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app").replace(
-  /\/$/,
-  "",
-);
+import {getSiteUrl} from "@/lib/site-url";
 
 function firstImageUrl(images: BookImageRow[] | undefined, imagesPublicBase: string | null): string | null {
   if (!images?.length) return null;
@@ -55,14 +52,16 @@ export async function generateMetadata({
     `${data.subject} · ${data.grade} · ${data.city || "Angola"}`;
 
   const ogImage = firstImageUrl((data.book_images || []) as BookImageRow[], bookImagesPublicBase());
+  const canonical = `${getSiteUrl()}/books/${id}`;
 
   return {
     title: data.title,
     description,
+    alternates: {canonical},
     openGraph: {
       title: data.title,
       description,
-      url: `${siteUrl}/books/${id}`,
+      url: canonical,
       type: "website",
       siteName: "ReLivroApps",
       ...(ogImage ? {images: [{url: ogImage, alt: data.title}]} : {}),
@@ -139,8 +138,18 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const modeLabel = t.modes[book.mode] ?? book.mode;
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
 
+  const listingImage = firstImageUrl(images as BookImageRow[], imagesPublicBase);
+
   return (
     <AppShell>
+      <BookListingJsonLd
+        bookId={book.id}
+        title={book.title}
+        description={book.description}
+        priceKz={Number(book.price_kz)}
+        imageUrl={listingImage}
+        sellerName={sellerName}
+      />
       <BookViewTracker bookId={book.id} />
       <section className="detail-page container">
         <Link className="back-link" href="/books">
