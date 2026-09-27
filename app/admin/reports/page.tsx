@@ -1,42 +1,40 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
-import {AdminReportAction} from "@/components/AdminReportAction";
+import {AdminReportsClient} from "@/components/AdminReportsClient";
 import {AppShell} from "@/components/AppShell";
+import {requireStaff} from "@/lib/admin-access";
+import {
+  ADMIN_REPORTS_PAGE_SIZE,
+  ADMIN_REPORTS_SELECT,
+  type AdminReportRow,
+} from "@/lib/admin-reports-query";
 import {adminT} from "@/lib/i18n-admin";
+import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
+import {localeTag} from "@/lib/locale-format";
 import {createClient} from "@/lib/supabase/server";
-
-type ReportRow = {
-  id: string;
-  book_id: string;
-  reason: string;
-  details: string | null;
-  created_at: string;
-  books: {title: string; is_published: boolean; status: string} | {title: string; is_published: boolean; status: string}[] | null;
-};
-
-function reportBookTitle(books: ReportRow["books"], fallback: string): string {
-  if (!books) return fallback;
-  const book = Array.isArray(books) ? books[0] : books;
-  return book?.title || fallback;
-}
 
 export default async function AdminReports() {
   const locale = await getRequestLocale();
   const t = adminT(locale);
+  const loadMoreLabels = marketplaceT(locale);
+  const dateLocale = localeTag(locale);
   const s = await createClient();
   const {
     data: {user},
   } = await s.auth.getUser();
   if (!user) redirect("/auth");
-  const {data: p} = await s.from("profiles").select("role").eq("id", user.id).single();
-  if (!p || !["admin", "moderator"].includes(p.role)) redirect("/profile");
-  const {data: reports} = await s
+
+  if (!(await requireStaff(s, user.id))) redirect("/profile");
+
+  const {data, count} = await s
     .from("listing_reports")
-    .select("id,book_id,reason,details,created_at,books(title,is_published,status)")
-    .order("created_at", {ascending: false});
-  const rows = (reports || []) as ReportRow[];
-  const dateLocale = locale === "pt" ? "pt-AO" : locale === "fr" ? "fr-FR" : "en-GB";
+    .select(ADMIN_REPORTS_SELECT, {count: "exact"})
+    .order("created_at", {ascending: false})
+    .range(0, ADMIN_REPORTS_PAGE_SIZE - 1);
+
+  const rows = (data || []) as AdminReportRow[];
+  const totalReports = count ?? rows.length;
 
   return (
     <AppShell>
@@ -45,27 +43,23 @@ export default async function AdminReports() {
           {t.back}
         </Link>
         <h1>{t.reports.title}</h1>
-        <div className="admin-table">
-          {rows.length ? (
-            rows.map((r) => (
-              <article key={r.id}>
-                <div>
-                  <strong>{reportBookTitle(r.books, t.reports.removedBook)}</strong>
-                  <span>
-                    {r.reason} · {new Date(r.created_at).toLocaleDateString(dateLocale)}
-                  </span>
-                  <small>{r.details || ""}</small>
-                </div>
-                <AdminReportAction id={r.id} labels={t.actions}/>
-              </article>
-            ))
-          ) : (
-            <div className="empty-state">
-              <h2>{t.reports.emptyTitle}</h2>
-              <p>{t.reports.emptyText}</p>
-            </div>
-          )}
-        </div>
+        {totalReports === 0 ? (
+          <div className="empty-state">
+            <h2>{t.reports.emptyTitle}</h2>
+            <p>{t.reports.emptyText}</p>
+          </div>
+        ) : (
+          <AdminReportsClient
+            reports={rows}
+            totalReports={totalReports}
+            pageSize={ADMIN_REPORTS_PAGE_SIZE}
+            locale={locale}
+            removedBookLabel={t.reports.removedBook}
+            actionLabels={t.actions}
+            loadMoreLabels={loadMoreLabels}
+            dateLocale={dateLocale}
+          />
+        )}
       </section>
     </AppShell>
   );

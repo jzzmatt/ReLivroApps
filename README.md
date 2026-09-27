@@ -528,6 +528,41 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/admin/listings` SSR first 24; **Load more** via staff-only `/api/admin/listings`
 - See [docs/PHASE_43_ADMIN_LISTINGS_PAGINATION.md](docs/PHASE_43_ADMIN_LISTINGS_PAGINATION.md)
 
+### Phase 44 — Admin reports pagination
+
+- `/admin/reports` SSR first 24; **Load more** via staff-only `/api/admin/reports`
+- See [docs/PHASE_44_ADMIN_REPORTS_PAGINATION.md](docs/PHASE_44_ADMIN_REPORTS_PAGINATION.md)
+
+### Phase 45 — Admin users pagination
+
+- `/admin/users` SSR first 24; **Load more** via admin-only `/api/admin/users`
+- See [docs/PHASE_45_ADMIN_USERS_PAGINATION.md](docs/PHASE_45_ADMIN_USERS_PAGINATION.md)
+
+### Phase 46 — Sitemap scaling
+
+- Sitemap index + chunked `/books/[id]` URLs (5 000 per file); sellers on static chunk
+- See [docs/PHASE_46_SITEMAP_SCALING.md](docs/PHASE_46_SITEMAP_SCALING.md)
+
+### Phase 47 — School trust UI
+
+- Self-declared **School community** badge on seller profile and book detail (PT / FR / EN)
+- See [docs/PHASE_47_SCHOOL_TRUST_UI.md](docs/PHASE_47_SCHOOL_TRUST_UI.md)
+
+### Phase 48 — Payment UX copy
+
+- Peer-to-peer payment expectations on book detail (no in-app checkout)
+- See [docs/PHASE_48_PAYMENT_UX_COPY.md](docs/PHASE_48_PAYMENT_UX_COPY.md)
+
+### Phase 49 — Push readiness
+
+- In-app notification expectations on `/notifications` before native push
+- See [docs/PHASE_49_PUSH_READINESS.md](docs/PHASE_49_PUSH_READINESS.md)
+
+### Phase 50 — Roadmap complete
+
+- Phases 1–50 documented; post-MVP backlog called out in phase doc
+- See [docs/PHASE_50_ROADMAP_COMPLETE.md](docs/PHASE_50_ROADMAP_COMPLETE.md)
+
 ### Validation commands
 
 ```bash

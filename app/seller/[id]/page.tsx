@@ -7,6 +7,7 @@ import {ProfileStats} from "@/components/ProfileStats";
 import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
 import {Breadcrumbs} from "@/components/Breadcrumbs";
 import {SellerProfileJsonLd} from "@/components/SellerProfileJsonLd";
+import {SchoolCommunityBadge} from "@/components/SchoolCommunityBadge";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
@@ -158,6 +159,9 @@ export default async function SellerPublicPage({params}: PageProps) {
               {[profile.city, profile.municipality].filter(Boolean).join(", ") || detailLabels.defaultCountry}
               {profile.school ? " · " + profile.school : ""}
             </p>
+            {profile.school?.trim() ? (
+              <SchoolCommunityBadge locale={locale} schoolName={profile.school.trim()} />
+            ) : null}
             {memberSince && (
               <p className="seller-member-since">
                 {st.memberSince} {memberSince}
