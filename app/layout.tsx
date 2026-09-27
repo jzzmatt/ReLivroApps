@@ -6,8 +6,9 @@ import {SupabaseConfigBanner} from "@/components/SupabaseConfigBanner";
 import {htmlLang, openGraphLocale} from "@/lib/html-lang";
 import {siteMetadataT} from "@/lib/i18n-metadata";
 import {getRequestLocale} from "@/lib/locale-server";
+import {getSiteUrl} from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://relivroapps.vercel.app";
+const siteUrl = getSiteUrl();
 const isBeta = process.env.NEXT_PUBLIC_BETA === "true";
 
 export async function generateMetadata(): Promise<Metadata> {
