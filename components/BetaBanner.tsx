@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {defaultLocale, messages, type Locale} from "@/lib/i18n";
+import {isClosedBeta} from "@/lib/site-mode";
 
 const DISMISS_KEY = "relivro-beta-banner-dismissed";
 
@@ -14,7 +15,7 @@ function readLocale(): Locale {
 
 /** Shown when NEXT_PUBLIC_BETA=true at build time. Dismissal stored in localStorage. */
 export function BetaBanner() {
-  const enabled = process.env.NEXT_PUBLIC_BETA === "true";
+  const enabled = isClosedBeta();
   const [visible, setVisible] = useState(false);
   const [locale, setLocale] = useState<Locale>(defaultLocale);
 
