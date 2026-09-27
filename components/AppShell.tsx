@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {MobileNav} from "@/components/MobileNav";
+import {NavIcon} from "@/components/NavIcon";
 import {MessageNavLink} from "@/components/MessageNavLink";
 import {NotificationNavLink} from "@/components/NotificationNavLink";
 import {shellT} from "@/lib/i18n-shell";
@@ -24,17 +25,17 @@ export function AppShell({children}: {children: React.ReactNode}) {
             </span>
           </Link>
           <nav className="app-header-actions" aria-label={t.headerNavAria}>
-            <Link href="/books" aria-label={t.ariaSearch}>
-              ⌕
+            <Link href="/books" className="header-nav-icon" aria-label={t.ariaBooks}>
+              <NavIcon name="books" />
             </Link>
-            <MessageNavLink className="header-messages-link">
-              ✉
+            <MessageNavLink className="header-messages-link header-nav-icon">
+              <NavIcon name="messages" />
             </MessageNavLink>
-            <NotificationNavLink className="header-notifications-link">
-              ♢
+            <NotificationNavLink className="header-notifications-link header-nav-icon">
+              <NavIcon name="notifications" />
             </NotificationNavLink>
-            <Link href="/profile" aria-label={t.ariaProfile}>
-              ♙
+            <Link href="/profile" className="header-nav-icon" aria-label={t.ariaProfile}>
+              <NavIcon name="profile" />
             </Link>
           </nav>
         </div>
