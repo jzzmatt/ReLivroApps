@@ -2,7 +2,7 @@ import Link from "next/link";
 import {notFound, redirect} from "next/navigation";
 import type {Metadata} from "next";
 import {AppShell} from "@/components/AppShell";
-import {BookCard} from "@/components/BookCard";
+import {SellerListingsClient} from "@/components/SellerListingsClient";
 import {ProfileStats} from "@/components/ProfileStats";
 import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
 import {Breadcrumbs} from "@/components/Breadcrumbs";
@@ -21,6 +21,7 @@ import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
 import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
 import {getSiteUrl} from "@/lib/site-url";
+import {MARKETPLACE_BOOK_SELECT, MARKETPLACE_PAGE_SIZE} from "@/lib/marketplace-query";
 
 export const dynamic = "force-dynamic";
 
@@ -88,13 +89,15 @@ export default async function SellerPublicPage({params}: PageProps) {
     .maybeSingle();
   if (!profile) notFound();
 
-  const {data: listingRows} = await supabase
+  const {data: listingRows, count: listingCount} = await supabase
     .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
+    .select(MARKETPLACE_BOOK_SELECT, {count: "exact"})
     .eq("seller_id", id)
     .eq("is_published", true)
-    .order("created_at", {ascending: false});
+    .order("created_at", {ascending: false})
+    .range(0, MARKETPLACE_PAGE_SIZE - 1);
   const books = (listingRows || []) as Book[];
+  const totalListings = listingCount ?? books.length;
 
   const {data: ratingRows} = await supabase.from("seller_reviews").select("rating").eq("seller_id", id);
   const reviewCount = ratingRows?.length || 0;
@@ -183,7 +186,7 @@ export default async function SellerPublicPage({params}: PageProps) {
         </div>
 
         <ProfileStats
-          books={books.length}
+          books={totalListings}
           reviews={reviewCount}
           rating={avgRating}
           labels={{books: rt.statsBooks, reviews: rt.statsReviews, rating: rt.statsRating}}
@@ -192,21 +195,19 @@ export default async function SellerPublicPage({params}: PageProps) {
         <div className="seller-listings-section">
           <span className="eyebrow">{st.eyebrow}</span>
           <h2>{st.listingsTitle}</h2>
-          {books.length === 0 ? (
+          {totalListings === 0 ? (
             <p className="review-hint">{st.listingsEmpty}</p>
           ) : (
-            <div className="book-grid">
-              {books.map((book, i) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  index={i}
-                  isFavorite={favorites.includes(book.id)}
-                  labels={marketLabels}
-                  imagesPublicBase={imagesPublicBase}
-                />
-              ))}
-            </div>
+            <SellerListingsClient
+              sellerId={id}
+              books={books}
+              totalListings={totalListings}
+              pageSize={MARKETPLACE_PAGE_SIZE}
+              favorites={favorites}
+              labels={marketLabels}
+              locale={locale}
+              imagesPublicBase={imagesPublicBase}
+            />
           )}
         </div>
 
