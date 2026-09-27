@@ -27,4 +27,4 @@ Shared helper: `privateRouteMetadata()` + `lib/i18n-app-routes.ts`.
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_41_ADMIN_THREAD_EDIT_METADATA.md](./PHASE_41_ADMIN_THREAD_EDIT_METADATA.md)
