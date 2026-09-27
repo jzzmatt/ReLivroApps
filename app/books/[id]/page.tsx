@@ -18,6 +18,7 @@ import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
 import {formatPrice, type Book, type BookImage as BookImageRow} from "@/lib/books";
 import {detailT} from "@/lib/i18n-detail";
+import {listingMediaT} from "@/lib/i18n-listing-media";
 import {labelGrade, labelSubject} from "@/lib/i18n-catalog";
 import {marketplaceT} from "@/lib/i18n-marketplace";
 import {formatReviewCount, reviewsT} from "@/lib/i18n-reviews";
@@ -83,6 +84,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const {id} = await params;
   const locale = await getRequestLocale();
   const t = detailT(locale);
+  const media = listingMediaT(locale);
   const rt = reviewsT(locale);
   const market = marketplaceT(locale);
   const dateLocale = localeTag(locale);
@@ -141,6 +143,8 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const sellerName = book.profiles?.display_name || t.memberDefault;
   const modeLabel = t.modes[book.mode] ?? book.mode;
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
+  const videoUrl =
+    book.is_published && book.video_path ? storageImageUrl(book.video_path, imagesPublicBase) : null;
 
   const listingImage = firstImageUrl(images as BookImageRow[], imagesPublicBase);
   const bc = breadcrumbsT(locale);
@@ -193,6 +197,11 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
                 ))}
               </div>
             )}
+            {videoUrl ? (
+              <video id="listing-video" className="listing-video" controls preload="metadata" src={videoUrl}>
+                {media.watchVideo}
+              </video>
+            ) : null}
           </div>
           <div className="detail-copy">
             <div className="detail-topline">

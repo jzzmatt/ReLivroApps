@@ -4,6 +4,7 @@ import {ListingActions} from "@/components/ListingActions";
 import {ListingStatusActions} from "@/components/ListingStatusActions";
 import {listingsManageT} from "@/lib/i18n-listings-manage";
 import {inspectionT} from "@/lib/i18n-inspection";
+import {listingMediaT} from "@/lib/i18n-listing-media";
 import {fillTemplate, workspaceT} from "@/lib/i18n-workspace";
 import type {Locale} from "@/lib/i18n";
 import type {WorkspaceListing} from "@/lib/workspace-query";
@@ -22,6 +23,7 @@ export function WorkspaceRecentListings({
 }) {
   const t = workspaceT(locale);
   const photos = inspectionT(locale);
+  const media = listingMediaT(locale);
   const manage = listingsManageT(locale);
 
   if (listings.length === 0) {
@@ -73,6 +75,14 @@ export function WorkspaceRecentListings({
                   {fillTemplate(t.views, {count: book.viewCount})}
                   {" · "}
                   {fillTemplate(t.favs, {count: book.favoriteCount})}
+                </p>
+                <p className="workspace-listing-meta">
+                  <span className={"listing-badge" + (book.aiAnalyzed ? " done" : "")}>
+                    {book.aiAnalyzed ? media.aiDone : media.aiPending}
+                  </span>
+                  {book.isPublished && book.hasVideo ? (
+                    <Link href={"/books/" + book.id + "#listing-video"}>{media.watchVideo}</Link>
+                  ) : null}
                 </p>
                 <div className="listing-status-line">
                   <span className={"listing-status " + (book.isPublished ? "live" : "paused")}>

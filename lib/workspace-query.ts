@@ -15,6 +15,8 @@ export type WorkspaceListing = {
   photoCount: number;
   viewCount: number;
   favoriteCount: number;
+  hasVideo: boolean;
+  aiAnalyzed: boolean;
 };
 
 export type WorkspaceActivity = {
@@ -148,6 +150,8 @@ export async function loadWorkspace(
     photoCount: book.book_images?.length ?? 0,
     viewCount: viewsByBook.get(book.id) ?? 0,
     favoriteCount: favoriteByBook.get(book.id) ?? 0,
+    hasVideo: Boolean(book.video_path),
+    aiAnalyzed: Boolean(book.ai_analyzed_at),
   }));
 
   const activity: WorkspaceActivity[] = [

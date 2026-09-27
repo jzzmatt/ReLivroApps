@@ -32,4 +32,4 @@ AI condition analysis and listing video are not in this phase (external API / ex
 - [ ] A complete publish stores five rows with distinct slots
 - [ ] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval — AI analysis and video still need an external API or storage decision)_
+**Next:** [Phase 52 — Listing video and AI condition suggestion](PHASE_52_LISTING_VIDEO_AI.md)
