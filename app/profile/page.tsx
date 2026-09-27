@@ -5,6 +5,7 @@ import {ProfileStats} from "@/components/ProfileStats";
 import {ProfileLogoutButton} from "@/components/ProfileLogoutButton";
 import {StarRating} from "@/components/StarRating";
 import {messages} from "@/lib/i18n";
+import {workspaceT} from "@/lib/i18n-workspace";
 import {reviewsT} from "@/lib/i18n-reviews";
 import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
@@ -13,6 +14,7 @@ import {oneRelation} from "@/lib/supabase-relations";
 export default async function ProfilePage() {
   const locale = await getRequestLocale();
   const t = messages[locale];
+  const workspace = workspaceT(locale);
   const rt = reviewsT(locale);
   const dateLocale = localeTag(locale);
   const s = await createClient();
@@ -69,6 +71,19 @@ export default async function ProfilePage() {
           rating={rating}
           labels={{books: rt.statsBooks, reviews: rt.statsReviews, rating: rt.statsRating}}
         />
+        <div className="profile-workspace-cta">
+          <Link className="button" href="/workspace">
+            {workspace.goToWorkspace}
+          </Link>
+          <Link className="secondary-button" href="/profile/favorites">
+            {workspace.savedFavorites}
+          </Link>
+          {isStaff && (
+            <Link className="secondary-button" href="/admin">
+              {t.profile.admin}
+            </Link>
+          )}
+        </div>
         {recentReviews && recentReviews.length > 0 && (
           <div className="profile-reviews">
             <span className="eyebrow">{rt.sectionEyebrow}</span>
@@ -88,15 +103,6 @@ export default async function ProfilePage() {
             })}
           </div>
         )}
-        <div className="profile-links-grid">
-          <Link href="/sell">{t.profile.publish}</Link>
-          <Link href="/profile/listings">{t.profile.listings}</Link>
-          <Link href="/profile/favorites">{t.profile.favorites}</Link>
-          <Link href="/messages">{t.profile.messages}</Link>
-          <Link href="/notifications">{t.profile.notifications}</Link>
-          <Link href="/books">{t.profile.explore}</Link>
-          {isStaff && <Link href="/admin">{t.profile.admin}</Link>}
-        </div>
         <ProfileLogoutButton label={t.profile.logout}/>
       </section>
     </AppShell>

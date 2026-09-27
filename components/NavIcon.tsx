@@ -1,5 +1,5 @@
 type NavIconProps = {
-  name: "books" | "messages" | "notifications" | "profile";
+  name: "books" | "workspace" | "messages" | "notifications" | "profile";
   className?: string;
 };
 
@@ -39,6 +39,15 @@ export function NavIcon({name, className = "nav-icon"}: NavIconProps) {
             strokeWidth="1.75"
             strokeLinecap="round"
           />
+        </svg>
+      );
+    case "workspace":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.75" />
         </svg>
       );
     case "messages":
