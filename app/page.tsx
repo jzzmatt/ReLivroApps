@@ -7,6 +7,12 @@ import {HeroBannerArtwork} from "@/components/HeroBannerArtwork";
 import {LandingJsonLd} from "@/components/LandingJsonLd";
 import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 import {landingT} from "@/lib/i18n-landing";
+import {
+  landingPhonesT,
+  phoneMockTypes,
+  type LandingPhoneCopy,
+  type PhoneMockType,
+} from "@/lib/i18n-landing-phones";
 import {shareT} from "@/lib/i18n-share";
 import {shellT} from "@/lib/i18n-shell";
 import {messages, type Locale} from "@/lib/i18n";
@@ -17,21 +23,28 @@ const benefitIcons = [
   {key: "book" as const, icon: "book" as const, glyph: "▣"},
 ];
 
-const phones = [
-  {title: "Livros que ligam estudantes", type: "home"},
-  {title: "Matemática 10ª Classe", type: "detail"},
-  {title: "32 resultados", type: "search"},
-  {title: "Publicar livro", type: "publish"},
-  {title: "João Silva", type: "profile"},
-];
+function PhoneMockup({
+  type,
+  copy,
+  index,
+}: {
+  type: PhoneMockType;
+  copy: LandingPhoneCopy;
+  index: number;
+}) {
+  const title = copy.titles[type];
+  const h = copy.home;
+  const d = copy.detail;
+  const s = copy.search;
+  const p = copy.publish;
+  const pr = copy.profile;
 
-function PhoneMockup({title, type}: {title: string; type: string}) {
   return (
     <motion.div
       className={"phone phone-" + type}
       initial={{opacity: 0, y: 28}}
       animate={{opacity: 1, y: 0}}
-      transition={{duration: 0.55, delay: phones.findIndex((p) => p.type === type) * 0.08}}
+      transition={{duration: 0.55, delay: index * 0.08}}
       whileHover={{y: -10, scale: 1.025}}
     >
       <div className="phone-top">
@@ -46,51 +59,58 @@ function PhoneMockup({title, type}: {title: string; type: string}) {
       <div className="phone-screen">
         {type === "home" && (
           <>
-            <div className="phone-search">⌕ Pesquisar livros, disciplinas...</div>
+            <div className="phone-search">{h.search}</div>
             <div className="phone-banner">
-              Livros que ligam
+              {h.bannerLine1}
               <br />
-              estudantes
+              {h.bannerLine2}
             </div>
             <div className="phone-chips">
-              <i>Matemática</i>
-              <i>Português</i>
-              <i>Ciências</i>
+              {h.chips.map((chip) => (
+                <i key={chip}>{chip}</i>
+              ))}
             </div>
             <div className="phone-list-card">
-              <b>Matemática 10ª Classe</b>
-              <small>Usado · Bom estado</small>
-              <strong>8 000 Kz</strong>
+              <b>{h.cardTitle}</b>
+              <small>{h.cardMeta}</small>
+              <strong>{h.cardPrice}</strong>
             </div>
           </>
         )}
         {type === "detail" && (
           <>
             <div className="book-cover">
-              Matemática<small>10ª Classe</small>
+              {d.coverSubject}
+              <small>{d.coverGrade}</small>
             </div>
             <h4>{title}</h4>
-            <small>Estado · Bom estado</small>
-            <small>Disciplina · Matemática</small>
-            <small>Localização · Lobito, Angola</small>
-            <button type="button">Contactar vendedor</button>
+            <small>
+              {d.condition} · {d.conditionValue}
+            </small>
+            <small>
+              {d.subject} · {d.subjectValue}
+            </small>
+            <small>
+              {d.location} · {d.locationValue}
+            </small>
+            <button type="button">{d.contact}</button>
           </>
         )}
         {type === "search" && (
           <>
-            <div className="phone-search">⌕ Matemática 10ª classe</div>
+            <div className="phone-search">{s.query}</div>
             <div className="filter-row">
-              <b>Todos</b>
-              <span>Venda</span>
-              <span>Troca</span>
+              <b>{s.filterAll}</b>
+              <span>{s.filterSale}</span>
+              <span>{s.filterExchange}</span>
             </div>
-            {[8, 6, 12].map((price) => (
+            {s.prices.map((price) => (
               <div className="result-row" key={price}>
                 <div className="tiny-cover">M</div>
                 <div>
-                  <b>Matemática 10ª Classe</b>
-                  <small>Bom estado</small>
-                  <strong>{price} 000 Kz</strong>
+                  <b>{s.resultTitle}</b>
+                  <small>{s.resultMeta}</small>
+                  <strong>{price}</strong>
                 </div>
               </div>
             ))}
@@ -98,19 +118,18 @@ function PhoneMockup({title, type}: {title: string; type: string}) {
         )}
         {type === "publish" && (
           <>
-            <h4>Publicar livro</h4>
+            <h4>{p.heading}</h4>
             <div className="step-row">
-              <b>1</b>
-              <span>Informações</span>
-              <span>2 Fotos</span>
-              <span>3 Revisão</span>
+              {p.steps.map((step) => (
+                <span key={step}>{step}</span>
+              ))}
             </div>
-            {["Título do livro", "Disciplina", "Classe", "Localização", "Preço (Kz)"].map((x) => (
+            {p.fields.map((x) => (
               <div className="input-line" key={x}>
                 {x}
               </div>
             ))}
-            <button>Continuar</button>
+            <button type="button">{p.continue}</button>
           </>
         )}
         {type === "profile" && (
@@ -119,21 +138,19 @@ function PhoneMockup({title, type}: {title: string; type: string}) {
               <div className="avatar">JS</div>
               <div>
                 <b>{title}</b>
-                <small>Estudante</small>
+                <small>{pr.role}</small>
               </div>
             </div>
-            {["Os meus anúncios", "Os meus favoritos", "Mensagens", "Compras", "Trocas", "Definições"].map(
-              (x) => (
-                <div className="menu-row" key={x}>
-                  {x}
-                  <span>›</span>
-                </div>
-              ),
-            )}
+            {pr.menu.map((x) => (
+              <div className="menu-row" key={x}>
+                {x}
+                <span>›</span>
+              </div>
+            ))}
             <div className="eco-note">
-              Contribua
+              {pr.ecoTitle}
               <br />
-              <small>Uma segunda vida aos livros.</small>
+              <small>{pr.ecoBody}</small>
             </div>
           </>
         )}
@@ -153,6 +170,7 @@ export default function Home() {
   const [locale, setLocale] = useState<Locale>("pt");
   const t = messages[locale];
   const land = landingT(locale);
+  const phones = landingPhonesT(locale);
   const share = shareT(locale);
   const shell = shellT(locale);
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim();
@@ -220,8 +238,8 @@ export default function Home() {
               <span>◈</span>
             </div>
             <div className="phones-row">
-              {phones.map((phone) => (
-                <PhoneMockup key={phone.type} {...phone} />
+              {phoneMockTypes.map((type, index) => (
+                <PhoneMockup key={type} type={type} copy={phones} index={index} />
               ))}
             </div>
           </div>

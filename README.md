@@ -423,6 +423,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Buyers can open the seller’s public profile from a thread
 - See [docs/PHASE_23_CONVERSATION_CONTEXT.md](docs/PHASE_23_CONVERSATION_CONTEXT.md)
 
+### Phase 24 — Landing phone mockups i18n
+
+- Hero carousel phone UI strings follow PT / FR / EN language switcher
+- See [docs/PHASE_24_LANDING_PHONES_I18N.md](docs/PHASE_24_LANDING_PHONES_I18N.md)
+
 ### Validation commands
 
 ```bash
