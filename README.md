@@ -457,6 +457,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `BreadcrumbList` structured data for SEO
 - See [docs/PHASE_29_BREADCRUMBS.md](docs/PHASE_29_BREADCRUMBS.md)
 
+### Phase 30 — Marketplace pagination (load more)
+
+- `/books` SSR first 24 listings; **Load more** via paginated `/api/books`
+- See [docs/PHASE_30_MARKETPLACE_PAGINATION.md](docs/PHASE_30_MARKETPLACE_PAGINATION.md)
+
 ### Validation commands
 
 ```bash

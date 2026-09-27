@@ -6,6 +6,7 @@ import {marketplaceT} from "@/lib/i18n-marketplace";
 import {getRequestLocale} from "@/lib/locale-server";
 import type {Book} from "@/lib/books";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
+import {MARKETPLACE_BOOK_SELECT, MARKETPLACE_PAGE_SIZE} from "@/lib/marketplace-query";
 import {createClient} from "@/lib/supabase/server";
 import {isSupabaseConfigured} from "@/lib/supabase/public-env";
 
@@ -19,6 +20,7 @@ export default async function BooksPage() {
   const imagesPublicBase = bookImagesPublicBase();
 
   let books: Book[] = [];
+  let totalPublished = 0;
   let favorites: string[] = [];
   let loadError: unknown = null;
 
@@ -36,13 +38,17 @@ export default async function BooksPage() {
     const supabase = await createClient();
     const {data: authData} = await supabase.auth.getUser();
     const user = authData?.user ?? null;
-    const {data, error} = await supabase
+    const {data, error, count} = await supabase
       .from("books")
-      .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url)")
+      .select(MARKETPLACE_BOOK_SELECT, {count: "exact"})
       .eq("is_published", true)
-      .order("created_at", {ascending: false});
+      .order("created_at", {ascending: false})
+      .range(0, MARKETPLACE_PAGE_SIZE - 1);
     if (error) loadError = error;
-    else books = (data || []) as Book[];
+    else {
+      books = (data || []) as Book[];
+      totalPublished = count ?? books.length;
+    }
     const {data: favRows} = user
       ? await supabase.from("favorites").select("book_id").eq("user_id", user.id)
       : {data: []};
@@ -78,6 +84,8 @@ export default async function BooksPage() {
         ) : (
           <MarketplaceClient
             books={books}
+            totalPublished={totalPublished}
+            pageSize={MARKETPLACE_PAGE_SIZE}
             favorites={favorites}
             labels={marketLabels}
             locale={locale}
