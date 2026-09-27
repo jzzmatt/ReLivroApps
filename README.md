@@ -386,6 +386,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Seller average and review list; profile stats + recent feedback i18n
 - See [docs/PHASE_17_SELLER_REVIEWS.md](docs/PHASE_17_SELLER_REVIEWS.md)
 
+### Phase 18 — Public seller profiles (trust & discovery)
+
+- Public `/seller/[id]` page with active listings, ratings, and recent feedback
+- Book detail seller block links to the public profile (PT / FR / EN)
+- See [docs/PHASE_18_SELLER_PROFILE.md](docs/PHASE_18_SELLER_PROFILE.md)
+
 ### Validation commands
 
 ```bash

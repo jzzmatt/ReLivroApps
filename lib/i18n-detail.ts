@@ -5,6 +5,7 @@ export const detailMessages = {
   pt: {
     back: "← Voltar aos livros",
     seller: "Vendedor",
+    viewSellerProfile: "Ver perfil do vendedor",
     memberDefault: "Membro ReLivroApps",
     condition: "Estado",
     location: "Localização",
@@ -28,6 +29,7 @@ export const detailMessages = {
   fr: {
     back: "← Retour aux livres",
     seller: "Vendeur",
+    viewSellerProfile: "Voir le profil du vendeur",
     memberDefault: "Membre ReLivroApps",
     condition: "État",
     location: "Localisation",
@@ -51,6 +53,7 @@ export const detailMessages = {
   en: {
     back: "← Back to books",
     seller: "Seller",
+    viewSellerProfile: "View seller profile",
     memberDefault: "ReLivroApps member",
     condition: "Condition",
     location: "Location",

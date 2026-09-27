@@ -23,3 +23,5 @@
 - [ ] `npm run build` passes
 
 **Sign-off:** ___________________ **Date:** ___________
+
+**Next:** [PHASE_18_SELLER_PROFILE.md](./PHASE_18_SELLER_PROFILE.md)
