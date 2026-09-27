@@ -49,4 +49,9 @@
 .conversation-row.unread{background:#fff8f3;border-color:#ffd8c4}
 .conversation-row.unread strong{color:var(--navy)}
 .conversation-unread-label{display:inline-block;margin-top:4px;font-size:11px;font-weight:800;color:var(--orange)}
+.conversation-row-main{min-width:0}
+.conversation-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.conversation-time{color:var(--muted);font-size:11px;white-space:nowrap}
+.conversation-preview{margin:4px 0 0;color:#536170;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conversation-price{margin:4px 0 0;color:var(--muted);font-size:12px}
 .favorites-grid{margin-top:20px}

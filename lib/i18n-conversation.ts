@@ -12,6 +12,8 @@ export const conversationMessages = {
     send: "Enviar",
     sending: "A enviar...",
     unread: "Nova mensagem",
+    previewYou: "Tu:",
+    previewEmpty: "Sem mensagens ainda.",
   },
   fr: {
     back: "← Conversations",
@@ -24,6 +26,8 @@ export const conversationMessages = {
     send: "Envoyer",
     sending: "Envoi...",
     unread: "Nouveau message",
+    previewYou: "Vous :",
+    previewEmpty: "Pas encore de messages.",
   },
   en: {
     back: "← Conversations",
@@ -36,6 +40,8 @@ export const conversationMessages = {
     send: "Send",
     sending: "Sending...",
     unread: "New message",
+    previewYou: "You:",
+    previewEmpty: "No messages yet.",
   },
 } as const;
 

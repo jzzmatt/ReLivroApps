@@ -3,6 +3,7 @@ import {redirect} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
 import {conversationT} from "@/lib/i18n-conversation";
 import {messages} from "@/lib/i18n";
+import {latestMessagesByConversation, truncatePreview} from "@/lib/messages-inbox";
 import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {unreadConversationIds} from "@/lib/messages-unread";
@@ -26,7 +27,12 @@ export default async function MessagesPage() {
     .or("buyer_id.eq." + user.id + ",seller_id.eq." + user.id)
     .order("last_message_at", {ascending: false});
 
+  const rows = data || [];
   const unreadIds = await unreadConversationIds(s, user.id);
+  const lastByConversation = await latestMessagesByConversation(
+    s,
+    rows.map((c) => c.id),
+  );
 
   return (
     <AppShell>
@@ -35,10 +41,17 @@ export default async function MessagesPage() {
         <h1>{t.messages.title}</h1>
         <p className="messages-intro">{t.messages.intro}</p>
         <div className="conversation-list">
-          {data?.length ? (
-            data.map((c) => {
+          {rows.length ? (
+            rows.map((c) => {
               const book = oneRelation(c.books);
               const hasUnread = unreadIds.has(c.id);
+              const last = lastByConversation.get(c.id);
+              const preview = last
+                ? last.sender_id === user.id
+                  ? `${conv.previewYou} ${truncatePreview(last.body)}`
+                  : truncatePreview(last.body)
+                : conv.previewEmpty;
+              const when = last?.created_at || c.last_message_at;
               return (
                 <Link
                   href={"/messages/" + c.id}
@@ -46,9 +59,19 @@ export default async function MessagesPage() {
                   key={c.id}
                 >
                   <div className="conversation-icon">💬</div>
-                  <div>
-                    <strong>{book?.title || conv.bookFallback}</strong>
-                    <p>{Number(book?.price_kz || 0).toLocaleString(numberLocale)} Kz</p>
+                  <div className="conversation-row-main">
+                    <div className="conversation-row-top">
+                      <strong>{book?.title || conv.bookFallback}</strong>
+                      {when && (
+                        <small className="conversation-time">
+                          {new Date(when).toLocaleDateString(numberLocale)}
+                        </small>
+                      )}
+                    </div>
+                    <p className="conversation-preview">{preview}</p>
+                    <p className="conversation-price">
+                      {Number(book?.price_kz || 0).toLocaleString(numberLocale)} Kz
+                    </p>
                     {hasUnread && <span className="conversation-unread-label">{conv.unread}</span>}
                   </div>
                   <span>→</span>
