@@ -1,6 +1,7 @@
 "use client";
 
-import {useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
+import Link from "next/link";
 import {BookCard} from "@/components/BookCard";
 import type {Book, ListingMode} from "@/lib/books";
 import {modes, subjects} from "@/lib/books";
@@ -11,6 +12,7 @@ import {
   formatMarketplaceResults,
   type MarketplaceLabels,
 } from "@/lib/i18n-marketplace";
+import {fillTemplate} from "@/lib/i18n-workspace";
 
 type ModeFilter = "Todos" | ListingMode;
 
@@ -22,6 +24,8 @@ export function MarketplaceClient({
   labels,
   locale,
   imagesPublicBase,
+  viewerCity,
+  signedIn,
 }: {
   books: Book[];
   totalPublished: number;
@@ -30,14 +34,21 @@ export function MarketplaceClient({
   labels: MarketplaceLabels;
   locale: Locale;
   imagesPublicBase?: string | null;
+  viewerCity: string | null;
+  signedIn: boolean;
 }) {
   const [books, setBooks] = useState(initialBooks);
   const [loadingMore, setLoadingMore] = useState(false);
   const [query, setQuery] = useState("");
   const [subject, setSubject] = useState("Todos");
   const [mode, setMode] = useState<ModeFilter>("Todos");
+  const [nearby, setNearby] = useState(false);
+  const [nearbyTotal, setNearbyTotal] = useState<number | null>(null);
+  const [nearbyError, setNearbyError] = useState("");
+  const requestId = useRef(0);
 
-  const hasMore = books.length < totalPublished;
+  const activeTotal = nearby && nearbyTotal != null ? nearbyTotal : totalPublished;
+  const hasMore = books.length < activeTotal;
 
   const filtered = useMemo(
     () =>
@@ -52,18 +63,28 @@ export function MarketplaceClient({
     [books, query, subject, mode],
   );
 
+  async function fetchPage(page: number, city: string | null) {
+    const params = new URLSearchParams({page: String(page), limit: String(pageSize)});
+    if (city) params.set("city", city);
+    const res = await fetch("/api/books?" + params.toString());
+    const json = (await res.json()) as {books?: Book[]; total?: number};
+    if (!res.ok || !json.books || typeof json.total !== "number") return null;
+    return {books: json.books, total: json.total};
+  }
+
   async function loadMore() {
     if (loadingMore || !hasMore) return;
+    const id = ++requestId.current;
+    const city = nearby ? viewerCity : null;
     setLoadingMore(true);
     try {
       const nextPage = Math.floor(books.length / pageSize) + 1;
-      const res = await fetch(`/api/books?page=${nextPage}&limit=${pageSize}`);
-      const json = (await res.json()) as {books?: Book[]; error?: string};
-      if (!res.ok || !json.books) return;
+      const result = await fetchPage(nextPage, city);
+      if (id !== requestId.current || !result) return;
       setBooks((prev) => {
         const seen = new Set(prev.map((b) => b.id));
         const merged = [...prev];
-        for (const book of json.books || []) {
+        for (const book of result.books) {
           if (!seen.has(book.id)) {
             seen.add(book.id);
             merged.push(book);
@@ -72,7 +93,34 @@ export function MarketplaceClient({
         return merged;
       });
     } finally {
-      setLoadingMore(false);
+      if (id === requestId.current) setLoadingMore(false);
+    }
+  }
+
+  async function toggleNearby() {
+    if (!viewerCity || loadingMore) return;
+    const id = ++requestId.current;
+    if (nearby) {
+      setNearby(false);
+      setNearbyError("");
+      setNearbyTotal(null);
+      setBooks(initialBooks);
+      return;
+    }
+    setLoadingMore(true);
+    setNearbyError("");
+    try {
+      const result = await fetchPage(1, viewerCity);
+      if (id !== requestId.current) return;
+      if (!result) {
+        setNearbyError(labels.nearbyFailed);
+        return;
+      }
+      setBooks(result.books);
+      setNearbyTotal(result.total);
+      setNearby(true);
+    } finally {
+      if (id === requestId.current) setLoadingMore(false);
     }
   }
 
@@ -108,6 +156,27 @@ export function MarketplaceClient({
           </button>
         ))}
       </div>
+      <div className="nearby-bar">
+        {viewerCity ? (
+          nearby ? (
+            <>
+              <span className="active">{fillTemplate(labels.nearbyOn, {city: viewerCity})}</span>
+              <button type="button" disabled={loadingMore} onClick={() => void toggleNearby()}>
+                {labels.nearbyAll}
+              </button>
+            </>
+          ) : (
+            <button type="button" disabled={loadingMore} onClick={() => void toggleNearby()}>
+              {fillTemplate(labels.nearby, {city: viewerCity})}
+            </button>
+          )
+        ) : signedIn ? (
+          <Link href="/profile/edit">{labels.nearbyAddCity}</Link>
+        ) : (
+          <Link href="/auth">{labels.nearbySignIn}</Link>
+        )}
+      </div>
+      {nearbyError ? <p className="nearby-note">{nearbyError}</p> : null}
       <div className="results-head">
         <div className="results-head-main">
           <strong>{formatMarketplaceResults(locale, filtered.length)}</strong>
@@ -119,18 +188,24 @@ export function MarketplaceClient({
         </div>
         <span>{labels.sortRecent}</span>
       </div>
-      <div className="book-grid">
-        {filtered.map((book, i) => (
-          <BookCard
-            key={book.id}
-            book={book}
-            index={i}
-            isFavorite={favorites.includes(book.id)}
-            labels={labels}
-            imagesPublicBase={imagesPublicBase}
-          />
-        ))}
-      </div>
+      {nearby && viewerCity && !query && subject === "Todos" && mode === "Todos" && filtered.length === 0 && !loadingMore ? (
+        <div className="empty-state">
+          <p>{fillTemplate(labels.nearbyEmpty, {city: viewerCity})}</p>
+        </div>
+      ) : (
+        <div className="book-grid">
+          {filtered.map((book, i) => (
+            <BookCard
+              key={book.id}
+              book={book}
+              index={i}
+              isFavorite={favorites.includes(book.id)}
+              labels={labels}
+              imagesPublicBase={imagesPublicBase}
+            />
+          ))}
+        </div>
+      )}
       {hasMore && (
         <div className="marketplace-load-more">
           <button type="button" className="secondary-button" disabled={loadingMore} onClick={() => void loadMore()}>

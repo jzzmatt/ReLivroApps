@@ -37,4 +37,4 @@ Apply the same migration on production if that database is not the staging proje
 - [ ] A published listing with a video shows the player; an unpublished listing does not
 - [ ] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval — geolocation, payments, native push, and verified school stay out of this phase)_
+**Next:** [Phase 53 — Nearby listings by city](PHASE_53_NEARBY_CITY.md)

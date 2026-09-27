@@ -574,6 +574,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Optional short video on published listings; AI condition is a suggestion only
 - See [docs/PHASE_52_LISTING_VIDEO_AI.md](docs/PHASE_52_LISTING_VIDEO_AI.md)
 
+### Phase 53 — Nearby listings by city
+
+- Marketplace filter for the signed-in profile city. No browser location and no distance
+- See [docs/PHASE_53_NEARBY_CITY.md](docs/PHASE_53_NEARBY_CITY.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc
