@@ -1,5 +1,6 @@
 import {type NextRequest, NextResponse} from "next/server";
 import {createServerClient} from "@supabase/ssr";
+import {supabaseAuthCookieOptions} from "@/lib/supabase/cookie-options";
 import {getSupabasePublicEnv} from "@/lib/supabase/public-env";
 
 export async function middleware(request: NextRequest) {
@@ -37,6 +38,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     const supabase = createServerClient(env.url, env.anonKey, {
+      cookieOptions: supabaseAuthCookieOptions(),
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll(cookiesToSet) {

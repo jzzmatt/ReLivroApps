@@ -68,3 +68,4 @@ Redeploy after env changes.
 | Login works but no profile | Confirm `handle_new_user` trigger exists (migration `0001`); run `0008` for Google names |
 | Works on prod, not preview | Add preview origin + callback in Google and Supabase, or test Google only on production |
 | Lands on `http://localhost:3000/?code=...` (stuck on home, not logged in) | Add **`http://localhost:3000/auth/callback`** under Supabase **Authentication → URL Configuration → Redirect URLs**. The app also forwards `/?code=` to `/auth/callback`, but whitelisting the callback URL is required for a reliable session. |
+| `PKCE code verifier not found in storage` on `/auth` | Start Google sign-in again on the **same browser** (do not open the OAuth link in another tab/device). Ensure **`NEXT_PUBLIC_SITE_URL`** matches the URL in the address bar. After deploy, clear site cookies once if you hit an old redirect loop. The app stores the verifier in cookies via `@supabase/ssr` on `/auth/callback`. |
