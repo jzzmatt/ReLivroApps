@@ -13,6 +13,7 @@ import {getRequestLocale} from "@/lib/locale-server";
 import type {Book} from "@/lib/books";
 import {bookImagesPublicBase} from "@/lib/book-image-url";
 import {MARKETPLACE_BOOK_SELECT, MARKETPLACE_PAGE_SIZE} from "@/lib/marketplace-query";
+import {normalizeCity} from "@/lib/nearby-city";
 import {createClient} from "@/lib/supabase/server";
 import {isSupabaseConfigured} from "@/lib/supabase/public-env";
 
@@ -55,6 +56,8 @@ export default async function BooksPage() {
   let totalPublished = 0;
   let favorites: string[] = [];
   let loadError: unknown = null;
+  let signedIn = false;
+  let viewerCity: string | null = null;
 
   try {
     if (!isSupabaseConfigured()) {
@@ -85,6 +88,11 @@ export default async function BooksPage() {
       ? await supabase.from("favorites").select("book_id").eq("user_id", user.id)
       : {data: []};
     favorites = (favRows || []).map((f) => f.book_id);
+    if (user) {
+      signedIn = true;
+      const {data: profile} = await supabase.from("profiles").select("city").eq("id", user.id).maybeSingle();
+      viewerCity = normalizeCity(profile?.city);
+    }
   } catch (err) {
     console.error("[books] load failed", err);
     loadError = err;
@@ -127,6 +135,8 @@ export default async function BooksPage() {
             labels={marketLabels}
             locale={locale}
             imagesPublicBase={imagesPublicBase}
+            viewerCity={viewerCity}
+            signedIn={signedIn}
           />
         )}
       </section>
