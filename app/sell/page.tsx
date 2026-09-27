@@ -18,15 +18,21 @@ import {
   inspectionFileError,
   type InspectionSlot,
 } from "@/lib/inspection-photos";
+import {listingMediaT} from "@/lib/i18n-listing-media";
+import {videoFileError} from "@/lib/listing-video";
 
 export default function SellPage() {
   const router = useRouter();
   const locale = useClientLocale();
   const t = messages[locale].sell;
   const guide = inspectionT(locale);
+  const media = listingMediaT(locale);
   const catalog = marketplaceT(locale);
   const [userId, setUserId] = useState<string | null>(null);
   const [files, setFiles] = useState<Partial<Record<InspectionSlot, File>>>({});
+  const [video, setVideo] = useState<File | null>(null);
+  const [suggestion, setSuggestion] = useState<{condition: BookCondition; note: string} | null>(null);
+  const [analyzing, setAnalyzing] = useState(false);
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState<(typeof subjects)[number]>(subjects[0]);
   const [grade, setGrade] = useState<(typeof grades)[number]>(grades[3]);
@@ -45,6 +51,63 @@ export default function SellPage() {
       else setUserId(data.user.id);
     });
   }, [router]);
+
+  function selectedPhotos(): File[] | null {
+    const selected = INSPECTION_SLOTS.map((slot) => files[slot]).filter((file): file is File => Boolean(file));
+    if (selected.length !== INSPECTION_SLOTS.length) {
+      setError(guide.missing);
+      return null;
+    }
+    for (const file of selected) {
+      const problem = inspectionFileError(file);
+      if (problem === "type") {
+        setError(guide.fileType);
+        return null;
+      }
+      if (problem === "size") {
+        setError(guide.fileSize);
+        return null;
+      }
+    }
+    return selected;
+  }
+
+  async function analyzePhotos() {
+    if (!userId || analyzing || loading) return;
+    setError("");
+    if (!selectedPhotos()) return;
+    setAnalyzing(true);
+    const form = new FormData();
+    for (const slot of INSPECTION_SLOTS) {
+      const file = files[slot];
+      if (file) form.append(slot, file);
+    }
+    const response = await fetch("/api/listings/analyze-condition", {method: "POST", body: form});
+    setAnalyzing(false);
+    if (response.status === 401) {
+      router.replace("/auth");
+      return;
+    }
+    if (response.status === 503) {
+      setError(media.unavailable);
+      return;
+    }
+    if (response.status === 400) {
+      const body = (await response.json().catch(() => null)) as {error?: string} | null;
+      setError(body?.error === "size" ? guide.fileSize : guide.fileType);
+      return;
+    }
+    if (!response.ok) {
+      setError(media.analyzeFailed);
+      return;
+    }
+    const body = (await response.json()) as {condition?: BookCondition; note?: string};
+    if (!body.condition || !conditions.includes(body.condition)) {
+      setError(media.analyzeFailed);
+      return;
+    }
+    setSuggestion({condition: body.condition, note: body.note || ""});
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -67,21 +130,19 @@ export default function SellPage() {
       setLoading(false);
       return;
     }
-    const selected = INSPECTION_SLOTS.map((slot) => files[slot]).filter((file): file is File => Boolean(file));
-    if (selected.length !== INSPECTION_SLOTS.length) {
-      setError(guide.missing);
+    if (!selectedPhotos()) {
       setLoading(false);
       return;
     }
-    for (const file of selected) {
-      const problem = inspectionFileError(file);
+    if (video) {
+      const problem = videoFileError(video);
       if (problem === "type") {
-        setError(guide.fileType);
+        setError(media.videoType);
         setLoading(false);
         return;
       }
       if (problem === "size") {
-        setError(guide.fileSize);
+        setError(media.videoSize);
         setLoading(false);
         return;
       }
@@ -101,6 +162,12 @@ export default function SellPage() {
         municipality,
         description,
         is_published: true,
+        ...(suggestion
+          ? {
+              ai_suggested_condition: suggestion.condition,
+              ai_analyzed_at: new Date().toISOString(),
+            }
+          : {}),
       })
       .select("id")
       .single();
@@ -142,6 +209,27 @@ export default function SellPage() {
       setError(guide.uploadFailed);
       setLoading(false);
       return;
+    }
+    if (video) {
+      const safe = video.name.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+      const path = userId + "/" + book.id + "/video-" + Date.now() + "-" + safe;
+      const upload = await supabase.storage.from("book-images").upload(path, video, {
+        upsert: false,
+        contentType: video.type,
+      });
+      if (upload.error) {
+        await supabase.from("books").delete().eq("id", book.id);
+        setError(media.videoFailed);
+        setLoading(false);
+        return;
+      }
+      const {error: videoError} = await supabase.from("books").update({video_path: path}).eq("id", book.id);
+      if (videoError) {
+        await supabase.from("books").delete().eq("id", book.id);
+        setError(media.videoFailed);
+        setLoading(false);
+        return;
+      }
     }
     setLoading(false);
     router.push("/books/" + book.id);
@@ -194,6 +282,15 @@ export default function SellPage() {
               })}
             </p>
           </fieldset>
+          <label className="listing-video-field">
+            {media.videoLabel}
+            <input
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime"
+              onChange={(e) => setVideo(e.target.files?.[0] ?? null)}
+            />
+            <small>{video?.name || media.videoHint}</small>
+          </label>
           <label>
             {t.bookTitle}
             <input value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -235,6 +332,22 @@ export default function SellPage() {
                 ))}
               </select>
             </label>
+          </div>
+          <div className="listing-video-field">
+            <button type="button" className="secondary-button" disabled={analyzing || loading} onClick={analyzePhotos}>
+              {analyzing ? media.analyzing : media.analyze}
+            </button>
+            {suggestion ? (
+              <div className="ai-suggestion">
+                <p>
+                  {media.suggestionLead} <strong>{catalog.conditions[suggestion.condition]}</strong>
+                </p>
+                {suggestion.note ? <p>{suggestion.note}</p> : null}
+                <button type="button" className="secondary-button" onClick={() => setCondition(suggestion.condition)}>
+                  {media.applySuggestion}
+                </button>
+              </div>
+            ) : null}
           </div>
           <div className="form-two">
             <label>

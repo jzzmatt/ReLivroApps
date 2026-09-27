@@ -57,7 +57,7 @@ Set for **Production** (and Preview if you test PRs against real Supabase):
 | `NEXT_PUBLIC_SITE_URL` | Must match the URL users open (no trailing slash mismatch in Auth) |
 | `NEXT_PUBLIC_BETA` | Set to `true` during closed beta (shows onboarding banner; `noindex` in metadata) |
 
-Do **not** add `SUPABASE_SERVICE_ROLE_KEY` or `OPENAI_API_KEY` unless you run server-side scripts in CI (not required for normal app traffic).
+Do **not** add `SUPABASE_SERVICE_ROLE_KEY` for normal app traffic. `OPENAI_API_KEY` is optional and server-only: it powers condition suggestions on `/sell`. Without it, sellers still choose the condition themselves. Never expose it as `NEXT_PUBLIC_`.
 
 After changing env vars: **Redeploy** production.
 

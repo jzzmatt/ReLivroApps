@@ -569,6 +569,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/sell` how-to guide and five required inspection photos
 - See [docs/PHASE_51_INSPECTION_PHOTOS.md](docs/PHASE_51_INSPECTION_PHOTOS.md)
 
+### Phase 52 — Listing video and AI condition
+
+- Optional short video on published listings; AI condition is a suggestion only
+- See [docs/PHASE_52_LISTING_VIDEO_AI.md](docs/PHASE_52_LISTING_VIDEO_AI.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc
