@@ -25,4 +25,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — e.g. payments, push notifications, school verification)_
+**Next:** [PHASE_19_SELLER_CUES_NOTIFICATIONS.md](./PHASE_19_SELLER_CUES_NOTIFICATIONS.md)

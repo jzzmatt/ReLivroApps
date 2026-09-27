@@ -24,6 +24,7 @@ export function BookCard({
   const image = book.book_images?.slice().sort((a, b) => a.sort_order - b.sort_order)[0];
   const modeLabel = labels.modes[book.mode] ?? book.mode;
   const conditionLabel = labels.conditions[book.condition] ?? book.condition;
+  const sellerName = book.profiles?.display_name?.trim() || labels.sellerDefault;
 
   return (
     <motion.article
@@ -59,6 +60,12 @@ export function BookCard({
           </div>
         </div>
       </Link>
+      <div className="book-card-seller-row">
+        <span className="book-card-seller-label">{labels.seller}</span>
+        <Link href={"/seller/" + book.seller_id} className="book-card-seller-name">
+          {sellerName}
+        </Link>
+      </div>
     </motion.article>
   );
 }

@@ -392,6 +392,13 @@ Exit beta and enable public SEO when smoke tests are green:
 - Book detail seller block links to the public profile (PT / FR / EN)
 - See [docs/PHASE_18_SELLER_PROFILE.md](docs/PHASE_18_SELLER_PROFILE.md)
 
+### Phase 19 — Marketplace seller cues & notifications polish
+
+- Book cards link seller name to `/seller/[id]`
+- Notifications: mark read on open, mark all read, safer deep links
+- Favorites page fully localized
+- See [docs/PHASE_19_SELLER_CUES_NOTIFICATIONS.md](docs/PHASE_19_SELLER_CUES_NOTIFICATIONS.md)
+
 ### Validation commands
 
 ```bash
