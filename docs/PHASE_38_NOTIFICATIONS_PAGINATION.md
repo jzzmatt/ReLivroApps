@@ -24,4 +24,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_39_AUTH_SELL_METADATA.md](./PHASE_39_AUTH_SELL_METADATA.md)

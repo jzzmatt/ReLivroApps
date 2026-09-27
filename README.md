@@ -503,6 +503,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/notifications` SSR first 24; **Load more** via `/api/notifications`; accurate unread total for “mark all read”
 - See [docs/PHASE_38_NOTIFICATIONS_PAGINATION.md](docs/PHASE_38_NOTIFICATIONS_PAGINATION.md)
 
+### Phase 39 — Auth & sell metadata
+
+- Locale-aware `/auth` and `/sell` metadata via route layouts (`noindex` for private flows)
+- See [docs/PHASE_39_AUTH_SELL_METADATA.md](docs/PHASE_39_AUTH_SELL_METADATA.md)
+
 ### Validation commands
 
 ```bash
