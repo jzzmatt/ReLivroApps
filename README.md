@@ -478,6 +478,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/ajuda` metadata, breadcrumbs, and `FAQPage` JSON-LD (PT / FR / EN)
 - See [docs/PHASE_33_HELP_SEO.md](docs/PHASE_33_HELP_SEO.md)
 
+### Phase 34 — Legal pages SEO
+
+- `/privacidade` and `/termos` metadata, breadcrumbs, `WebPage` JSON-LD
+- See [docs/PHASE_34_LEGAL_SEO.md](docs/PHASE_34_LEGAL_SEO.md)
+
 ### Validation commands
 
 ```bash

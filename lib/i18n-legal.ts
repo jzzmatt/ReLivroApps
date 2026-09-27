@@ -4,6 +4,8 @@ export const legalMessages = {
   pt: {
     privacy: {
       title: "Privacidade",
+      metaDescription:
+        "Como o ReLivroApps recolhe, utiliza e protege os seus dados pessoais no marketplace de livros escolares.",
       updated: "Última actualização: Setembro 2026",
       sections: [
         {
@@ -26,6 +28,8 @@ export const legalMessages = {
     },
     terms: {
       title: "Termos de utilização",
+      metaDescription:
+        "Regras de utilização do ReLivroApps: contas, anúncios, conduta e responsabilidades dos utilizadores.",
       updated: "Última actualização: Setembro 2026",
       sections: [
         {
@@ -51,6 +55,8 @@ export const legalMessages = {
   fr: {
     privacy: {
       title: "Confidentialité",
+      metaDescription:
+        "Comment ReLivroApps collecte, utilise et protège vos données sur le marketplace de livres scolaires.",
       updated: "Dernière mise à jour : septembre 2026",
       sections: [
         {
@@ -73,6 +79,8 @@ export const legalMessages = {
     },
     terms: {
       title: "Conditions d’utilisation",
+      metaDescription:
+        "Règles d’utilisation de ReLivroApps : comptes, annonces, conduite et responsabilités des utilisateurs.",
       updated: "Dernière mise à jour : septembre 2026",
       sections: [
         {
@@ -98,6 +106,8 @@ export const legalMessages = {
   en: {
     privacy: {
       title: "Privacy",
+      metaDescription:
+        "How ReLivroApps collects, uses and protects your personal data on the school book marketplace.",
       updated: "Last updated: September 2026",
       sections: [
         {
@@ -120,6 +130,8 @@ export const legalMessages = {
     },
     terms: {
       title: "Terms of use",
+      metaDescription:
+        "ReLivroApps terms of use: accounts, listings, conduct and user responsibilities.",
       updated: "Last updated: September 2026",
       sections: [
         {
