@@ -24,4 +24,4 @@ Uses `getSiteUrl()` for safe absolute URLs.
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_29_BREADCRUMBS.md](./PHASE_29_BREADCRUMBS.md)

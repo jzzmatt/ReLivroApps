@@ -451,6 +451,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - Canonical URLs in metadata via `getSiteUrl()`
 - See [docs/PHASE_28_STRUCTURED_DATA.md](docs/PHASE_28_STRUCTURED_DATA.md)
 
+### Phase 29 — Breadcrumbs (UI + JSON-LD)
+
+- Visible breadcrumbs on book detail and seller profile (PT / FR / EN)
+- `BreadcrumbList` structured data for SEO
+- See [docs/PHASE_29_BREADCRUMBS.md](docs/PHASE_29_BREADCRUMBS.md)
+
 ### Validation commands
 
 ```bash

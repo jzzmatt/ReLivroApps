@@ -4,6 +4,8 @@ import type {Metadata} from "next";
 import {AppShell} from "@/components/AppShell";
 import {BookCard} from "@/components/BookCard";
 import {ProfileStats} from "@/components/ProfileStats";
+import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
+import {Breadcrumbs} from "@/components/Breadcrumbs";
 import {SellerProfileJsonLd} from "@/components/SellerProfileJsonLd";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
@@ -17,6 +19,7 @@ import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
+import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
 import {getSiteUrl} from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
@@ -120,9 +123,15 @@ export default async function SellerPublicPage({params}: PageProps) {
     profile.bio ||
     [profile.city, profile.municipality].filter(Boolean).join(", ") ||
     st.metaDescription;
+  const bc = breadcrumbsT(locale);
+  const breadcrumbItems = [
+    {href: "/books", label: bc.books},
+    {label: displayName},
+  ];
 
   return (
     <AppShell>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <SellerProfileJsonLd
         sellerId={id}
         name={displayName}
@@ -130,6 +139,7 @@ export default async function SellerPublicPage({params}: PageProps) {
         imageUrl={profile.avatar_url?.startsWith("http") ? profile.avatar_url : null}
       />
       <section className="profile-page seller-public-page container">
+        <Breadcrumbs items={breadcrumbItems} />
         <div className="profile-hero">
           <div className="profile-avatar-large">
             {profile.avatar_url ? (
