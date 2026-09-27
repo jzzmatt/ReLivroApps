@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import {NotificationNavLink} from "@/components/NotificationNavLink";
 import {shellT} from "@/lib/i18n-shell";
 import {useClientLocale} from "@/lib/use-client-locale";
 
@@ -21,10 +22,10 @@ export function MobileNav() {
       <Link href="/sell" className="mobile-add" aria-label={t.mobilePublish}>
         <span>＋</span>
       </Link>
-      <Link href="/notifications">
+      <NotificationNavLink className="mobile-notifications-link">
         <span>♢</span>
         <small>{t.mobileNotices}</small>
-      </Link>
+      </NotificationNavLink>
       <Link href="/profile">
         <span>♙</span>
         <small>{t.mobileProfile}</small>

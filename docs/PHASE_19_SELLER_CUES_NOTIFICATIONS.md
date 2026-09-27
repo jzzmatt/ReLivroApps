@@ -25,4 +25,4 @@
 
 **Sign-off:** ___________________ **Date:** ___________
 
-**Next:** _(TBD — push notifications, payments, school verification)_
+**Next:** [PHASE_20_FAVORITES_NOTIFICATIONS.md](./PHASE_20_FAVORITES_NOTIFICATIONS.md)
