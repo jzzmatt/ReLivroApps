@@ -440,6 +440,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Open Graph / Twitter metadata for seller public pages
 - See [docs/PHASE_26_SELLER_SHARE.md](docs/PHASE_26_SELLER_SHARE.md)
 
+### Phase 27 — Dynamic SEO sitemap (books & sellers)
+
+- `/sitemap.xml` includes published `/books/[id]` and `/seller/[id]` URLs when Supabase is configured
+- See [docs/PHASE_27_SEO_SITEMAP.md](docs/PHASE_27_SEO_SITEMAP.md)
+
 ### Validation commands
 
 ```bash
