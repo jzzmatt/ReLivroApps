@@ -77,3 +77,4 @@
 .marketplace-load-more{display:flex;justify-content:center;margin:28px 0 10px}
 .marketplace-load-more .secondary-button{min-width:220px}
 .favorites-grid{margin-top:20px}
+.favorites-catalog-size{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--muted)}
