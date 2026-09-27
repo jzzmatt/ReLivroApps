@@ -140,5 +140,6 @@
 .nearby-bar button,.nearby-bar a,.nearby-bar span{display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:800;font-size:14px;text-decoration:none}
 .nearby-bar span.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .nearby-note{margin:0 0 16px;color:#8b2424}
+.payment-hint{display:block;margin-top:6px;font-weight:600;color:var(--muted);font-size:13px}
 @media(max-width:900px){.workspace-kpi-grid,.workspace-inbox,.workspace-main-grid{grid-template-columns:1fr 1fr}.workspace-status-row{grid-template-columns:repeat(3,1fr)}.workspace-header{flex-direction:column;align-items:flex-start}}
 @media(max-width:640px){.workspace-kpi-grid,.workspace-inbox,.workspace-main-grid,.workspace-status-row{grid-template-columns:1fr 1fr}.workspace-header-actions,.workspace-header-actions .button,.workspace-header-actions .secondary-button{width:100%}}

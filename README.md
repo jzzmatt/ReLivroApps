@@ -584,6 +584,11 @@ Exit beta and enable public SEO when smoke tests are green:
 - Admins confirm a profile school. Members cannot set the stamp. Changing the school name clears it
 - See [docs/PHASE_54_VERIFIED_SCHOOL.md](docs/PHASE_54_VERIFIED_SCHOOL.md)
 
+### Phase 55 — Payment arrangement
+
+- Seller chooses cash, bank transfer, or to be agreed. The app does not take payment
+- See [docs/PHASE_55_PAYMENT_ARRANGEMENT.md](docs/PHASE_55_PAYMENT_ARRANGEMENT.md)
+
 ### Phase 50 — Roadmap complete
 
 - Phases 1–50 documented; post-MVP backlog called out in phase doc

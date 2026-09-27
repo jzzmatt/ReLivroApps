@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
-import {conditions, grades, modes, subjects, type BookCondition, type ListingMode} from "@/lib/books";
+import {conditions, grades, modes, paymentArrangements, subjects, type BookCondition, type ListingMode, type PaymentArrangement} from "@/lib/books";
 import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
 import {marketplaceT} from "@/lib/i18n-marketplace";
 import {messages} from "@/lib/i18n";
@@ -19,6 +19,7 @@ import {
   type InspectionSlot,
 } from "@/lib/inspection-photos";
 import {listingMediaT} from "@/lib/i18n-listing-media";
+import {paymentT} from "@/lib/i18n-payment";
 import {videoFileError} from "@/lib/listing-video";
 
 export default function SellPage() {
@@ -27,6 +28,7 @@ export default function SellPage() {
   const t = messages[locale].sell;
   const guide = inspectionT(locale);
   const media = listingMediaT(locale);
+  const pay = paymentT(locale);
   const catalog = marketplaceT(locale);
   const [userId, setUserId] = useState<string | null>(null);
   const [files, setFiles] = useState<Partial<Record<InspectionSlot, File>>>({});
@@ -42,6 +44,7 @@ export default function SellPage() {
   const [municipality, setMunicipality] = useState("");
   const [description, setDescription] = useState("");
   const [mode, setMode] = useState<ListingMode>("Venda");
+  const [payment, setPayment] = useState<PaymentArrangement>("A combinar");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -162,6 +165,7 @@ export default function SellPage() {
         municipality,
         description,
         is_published: true,
+        payment_arrangement: payment,
         ...(suggestion
           ? {
               ai_suggested_condition: suggestion.condition,
@@ -378,6 +382,17 @@ export default function SellPage() {
               ))}
             </div>
           </div>
+          <label>
+            {pay.label}
+            <select value={payment} onChange={(e) => setPayment(e.target.value as PaymentArrangement)}>
+              {paymentArrangements.map((item) => (
+                <option key={item} value={item}>
+                  {pay.arrangements[item]}
+                </option>
+              ))}
+            </select>
+            <small className="payment-hint">{pay.hint}</small>
+          </label>
           {error && <div className="form-error">{error}</div>}
           <button className="button submit-listing" disabled={loading}>
             {loading ? t.publishing : t.publishButton}

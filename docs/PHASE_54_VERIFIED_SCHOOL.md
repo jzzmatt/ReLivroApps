@@ -30,4 +30,4 @@ Payments and native push stay out of this phase.
 - [ ] A verified profile shows **Verified school**; others keep **School community**
 - [ ] `npm run typecheck` and `npm run build` pass
 
-**Next:** _(awaiting approval — payments and native push)_
+**Next:** [Phase 55 — Payment arrangement](PHASE_55_PAYMENT_ARRANGEMENT.md)

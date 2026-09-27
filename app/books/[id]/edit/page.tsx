@@ -3,10 +3,11 @@
 import {useEffect, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
-import {conditions, grades, modes, subjects, type BookCondition, type ListingMode} from "@/lib/books";
+import {conditions, grades, modes, parsePaymentArrangement, paymentArrangements, subjects, type BookCondition, type ListingMode, type PaymentArrangement} from "@/lib/books";
 import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
 import {editListingT} from "@/lib/i18n-edit-listing";
 import {marketplaceT} from "@/lib/i18n-marketplace";
+import {paymentT} from "@/lib/i18n-payment";
 import {messages} from "@/lib/i18n";
 import {useClientLocale} from "@/lib/use-client-locale";
 import {createClient} from "@/lib/supabase/client";
@@ -18,6 +19,7 @@ export default function EditBookPage() {
   const sell = messages[locale].sell;
   const edit = editListingT(locale);
   const catalog = marketplaceT(locale);
+  const pay = paymentT(locale);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -30,6 +32,7 @@ export default function EditBookPage() {
   const [municipality, setMunicipality] = useState("");
   const [description, setDescription] = useState("");
   const [mode, setMode] = useState<ListingMode>("Venda");
+  const [payment, setPayment] = useState<PaymentArrangement>("A combinar");
   const [published, setPublished] = useState(true);
 
   useEffect(() => {
@@ -56,6 +59,7 @@ export default function EditBookPage() {
       setMunicipality(data.municipality || "");
       setDescription(data.description || "");
       setMode(data.mode);
+      setPayment(parsePaymentArrangement(data.payment_arrangement));
       setPublished(data.is_published);
       setLoading(false);
     })();
@@ -78,6 +82,7 @@ export default function EditBookPage() {
         municipality,
         description,
         is_published: published,
+        payment_arrangement: payment,
       })
       .eq("id", id);
     if (saveError) setError(saveError.message);
@@ -167,6 +172,17 @@ export default function EditBookPage() {
               ))}
             </div>
           </div>
+          <label>
+            {pay.label}
+            <select value={payment} onChange={(e) => setPayment(e.target.value as PaymentArrangement)}>
+              {paymentArrangements.map((item) => (
+                <option key={item} value={item}>
+                  {pay.arrangements[item]}
+                </option>
+              ))}
+            </select>
+            <small className="payment-hint">{pay.hint}</small>
+          </label>
           <label className="publish-toggle">
             <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
             {edit.published}

@@ -16,7 +16,8 @@ import {ReportListingButton} from "@/components/ReportListingButton";
 import {SellerReviewForm} from "@/components/SellerReviewForm";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
-import {formatPrice, type Book, type BookImage as BookImageRow} from "@/lib/books";
+import {formatPrice, parsePaymentArrangement, type Book, type BookImage as BookImageRow} from "@/lib/books";
+import {paymentT} from "@/lib/i18n-payment";
 import {detailT} from "@/lib/i18n-detail";
 import {listingMediaT} from "@/lib/i18n-listing-media";
 import {labelGrade, labelSubject} from "@/lib/i18n-catalog";
@@ -84,6 +85,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const {id} = await params;
   const locale = await getRequestLocale();
   const t = detailT(locale);
+  const pay = paymentT(locale);
   const media = listingMediaT(locale);
   const rt = reviewsT(locale);
   const market = marketplaceT(locale);
@@ -143,6 +145,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const sellerName = book.profiles?.display_name || t.memberDefault;
   const modeLabel = t.modes[book.mode] ?? book.mode;
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
+  const arrangementLabel = pay.arrangements[parsePaymentArrangement(book.payment_arrangement)];
   const videoUrl =
     book.is_published && book.video_path ? storageImageUrl(book.video_path, imagesPublicBase) : null;
 
@@ -237,6 +240,10 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
               <div>
                 <small>{t.condition}</small>
                 <strong>{conditionLabel}</strong>
+              </div>
+              <div>
+                <small>{pay.label}</small>
+                <strong>{arrangementLabel}</strong>
               </div>
               <div>
                 <small>{t.location}</small>
