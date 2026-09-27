@@ -5,6 +5,8 @@ import {AppShell} from "@/components/AppShell";
 import {BookCard} from "@/components/BookCard";
 import {BookImage} from "@/components/BookImage";
 import {bookImagesPublicBase, storageImageUrl} from "@/lib/book-image-url";
+import {BreadcrumbJsonLd} from "@/components/BreadcrumbJsonLd";
+import {Breadcrumbs} from "@/components/Breadcrumbs";
 import {BookListingJsonLd} from "@/components/BookListingJsonLd";
 import {BookViewTracker} from "@/components/BookViewTracker";
 import {ContactSellerButton} from "@/components/ContactSellerButton";
@@ -22,6 +24,7 @@ import {localeTag} from "@/lib/locale-format";
 import {getRequestLocale} from "@/lib/locale-server";
 import {oneRelation} from "@/lib/supabase-relations";
 import {createClient} from "@/lib/supabase/server";
+import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
 import {getSiteUrl} from "@/lib/site-url";
 
 function firstImageUrl(images: BookImageRow[] | undefined, imagesPublicBase: string | null): string | null {
@@ -139,9 +142,15 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const conditionLabel = t.conditions[book.condition] ?? book.condition;
 
   const listingImage = firstImageUrl(images as BookImageRow[], imagesPublicBase);
+  const bc = breadcrumbsT(locale);
+  const breadcrumbItems = [
+    {href: "/books", label: bc.books},
+    {label: book.title},
+  ];
 
   return (
     <AppShell>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <BookListingJsonLd
         bookId={book.id}
         title={book.title}
@@ -152,6 +161,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
       />
       <BookViewTracker bookId={book.id} />
       <section className="detail-page container">
+        <Breadcrumbs items={breadcrumbItems} />
         <Link className="back-link" href="/books">
           {t.back}
         </Link>
