@@ -462,6 +462,12 @@ Exit beta and enable public SEO when smoke tests are green:
 - `/books` SSR first 24 listings; **Load more** via paginated `/api/books`
 - See [docs/PHASE_30_MARKETPLACE_PAGINATION.md](docs/PHASE_30_MARKETPLACE_PAGINATION.md)
 
+### Phase 31 — Marketplace SEO & listing context
+
+- Locale-aware `/books` metadata, breadcrumbs, `ItemList` JSON-LD
+- “Loaded of total” hint when catalog exceeds first page
+- See [docs/PHASE_31_MARKETPLACE_SEO.md](docs/PHASE_31_MARKETPLACE_SEO.md)
+
 ### Validation commands
 
 ```bash
