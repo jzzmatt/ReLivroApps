@@ -15,10 +15,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(callbackUrl);
     }
     const oauthError = searchParams.get("error_description") || searchParams.get("error");
-    if (oauthError && (pathname === "/" || pathname === "/auth")) {
+    // Only forward OAuth errors from the site root — redirecting /auth → /auth loops (ERR_TOO_MANY_REDIRECTS).
+    if (oauthError && pathname === "/") {
       const authUrl = request.nextUrl.clone();
       authUrl.pathname = "/auth";
       authUrl.searchParams.delete("code");
+      authUrl.searchParams.delete("error");
+      authUrl.searchParams.delete("error_code");
+      authUrl.searchParams.delete("error_description");
       authUrl.searchParams.set("error", oauthError);
       return NextResponse.redirect(authUrl);
     }
