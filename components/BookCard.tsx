@@ -4,6 +4,7 @@ import Link from "next/link";
 import {motion} from "motion/react";
 import type {Book} from "@/lib/books";
 import {formatPrice} from "@/lib/books";
+import {resolveListingImagePath} from "@/lib/listing-image";
 import {BookImage} from "@/components/BookImage";
 import {FavoriteButton} from "@/components/FavoriteButton";
 import type {MarketplaceLabels} from "@/lib/i18n-marketplace";
@@ -21,7 +22,7 @@ export function BookCard({
   labels: MarketplaceLabels;
   imagesPublicBase?: string | null;
 }) {
-  const image = book.book_images?.slice().sort((a, b) => a.sort_order - b.sort_order)[0];
+  const imagePath = resolveListingImagePath(book);
   const modeLabel = labels.modes[book.mode] ?? book.mode;
   const conditionLabel = labels.conditions[book.condition] ?? book.condition;
   const sellerName = book.profiles?.display_name?.trim() || labels.sellerDefault;
@@ -39,7 +40,7 @@ export function BookCard({
       <Link href={"/books/" + book.id} className="book-card-link">
         <div className="book-art">
           <BookImage
-            path={image?.storage_path}
+            path={imagePath}
             title={book.title}
             className="book-image"
             imagesPublicBase={imagesPublicBase}

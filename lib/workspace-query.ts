@@ -2,13 +2,16 @@ import type {SupabaseClient} from "@supabase/supabase-js";
 import {unreadMessageCount} from "@/lib/messages-unread";
 import {MY_LISTINGS_SELECT} from "@/lib/marketplace-query";
 import type {Book} from "@/lib/books";
+import {resolveListingImagePath} from "@/lib/listing-image";
 
 export type WorkspaceListing = {
   id: string;
   title: string;
+  grade: string;
   condition: string;
   priceKz: number;
   city: string | null;
+  municipality: string | null;
   isPublished: boolean;
   status: Book["status"];
   imagePath: string | null;
@@ -141,12 +144,14 @@ export async function loadWorkspace(
   const recent: WorkspaceListing[] = recentBooks.map((book) => ({
     id: book.id,
     title: book.title,
+    grade: book.grade,
     condition: book.condition,
     priceKz: Number(book.price_kz || 0),
     city: book.city,
+    municipality: book.municipality,
     isPublished: book.is_published,
     status: book.status || "active",
-    imagePath: book.book_images?.[0]?.storage_path ?? null,
+    imagePath: resolveListingImagePath(book),
     photoCount: book.book_images?.length ?? 0,
     viewCount: viewsByBook.get(book.id) ?? 0,
     favoriteCount: favoriteByBook.get(book.id) ?? 0,

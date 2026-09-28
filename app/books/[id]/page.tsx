@@ -17,6 +17,9 @@ import {SellerReviewForm} from "@/components/SellerReviewForm";
 import {ShareListingButton} from "@/components/ShareListingButton";
 import {StarRating} from "@/components/StarRating";
 import {formatPrice, parsePaymentArrangement, type Book, type BookImage as BookImageRow} from "@/lib/books";
+import {buildBookShareDescription} from "@/lib/book-social-metadata";
+import {resolveListingImagePath} from "@/lib/listing-image";
+import {WhatsAppBookShareButton} from "@/components/WhatsAppBookShareButton";
 import {paymentT} from "@/lib/i18n-payment";
 import {detailT} from "@/lib/i18n-detail";
 import {listingMediaT} from "@/lib/i18n-listing-media";
@@ -30,12 +33,6 @@ import {createClient} from "@/lib/supabase/server";
 import {breadcrumbsT} from "@/lib/i18n-breadcrumbs";
 import {getSiteUrl} from "@/lib/site-url";
 
-function firstImageUrl(images: BookImageRow[] | undefined, imagesPublicBase: string | null): string | null {
-  if (!images?.length) return null;
-  const sorted = [...images].sort((a, b) => a.sort_order - b.sort_order);
-  return storageImageUrl(sorted[0]?.storage_path, imagesPublicBase);
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -43,9 +40,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {id} = await params;
   const supabase = await createClient();
+  const locale = await getRequestLocale();
   const {data} = await supabase
     .from("books")
-    .select("title,description,subject,city,grade,book_images(storage_path,sort_order)")
+    .select(
+      "title,description,subject,city,municipality,grade,price_kz,thumbnail_path,book_images(storage_path,sort_order,slot)",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -53,20 +53,31 @@ export async function generateMetadata({
     return {title: "Livro"};
   }
 
-  const description =
-    data.description?.slice(0, 160) ||
-    `${data.subject} · ${data.grade} · ${data.city || "Angola"}`;
+  const shareDescription = buildBookShareDescription({
+    title: data.title,
+    grade: data.grade,
+    city: data.city,
+    municipality: data.municipality,
+    priceKz: Number(data.price_kz || 0),
+    locale,
+  });
+  const description = data.description?.slice(0, 160) || shareDescription.slice(0, 160);
 
-  const ogImage = firstImageUrl((data.book_images || []) as BookImageRow[], bookImagesPublicBase());
+  const imagePath = resolveListingImagePath({
+    thumbnail_path: data.thumbnail_path,
+    book_images: (data.book_images || []) as BookImageRow[],
+  });
+  const ogImage = storageImageUrl(imagePath, bookImagesPublicBase());
   const canonical = `${getSiteUrl()}/books/${id}`;
+  const pageTitle = `${data.title} | ReLivroApps`;
 
   return {
-    title: data.title,
+    title: pageTitle,
     description,
     alternates: {canonical},
     openGraph: {
-      title: data.title,
-      description,
+      title: pageTitle,
+      description: shareDescription,
       url: canonical,
       type: "website",
       siteName: "ReLivroApps",
@@ -74,8 +85,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: ogImage ? "summary_large_image" : "summary",
-      title: data.title,
-      description,
+      title: pageTitle,
+      description: shareDescription,
       ...(ogImage ? {images: [ogImage]} : {}),
     },
   };
@@ -97,7 +108,7 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   } = await supabase.auth.getUser();
   const {data} = await supabase
     .from("books")
-    .select("*,book_images(id,storage_path,sort_order),profiles!books_seller_id_fkey(display_name,avatar_url,city,municipality,school,school_verified_at)")
+    .select("*,book_images(id,storage_path,sort_order,slot),profiles!books_seller_id_fkey(display_name,avatar_url,city,municipality,school,school_verified_at)")
     .eq("id", id)
     .maybeSingle();
   if (!data) notFound();
@@ -149,7 +160,9 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
   const videoUrl =
     book.is_published && book.video_path ? storageImageUrl(book.video_path, imagesPublicBase) : null;
 
-  const listingImage = firstImageUrl(images as BookImageRow[], imagesPublicBase);
+  const heroPath = resolveListingImagePath(book);
+  const listingImage = storageImageUrl(heroPath, imagesPublicBase);
+  const canonicalBookUrl = `${getSiteUrl()}/books/${book.id}`;
   const bc = breadcrumbsT(locale);
   const breadcrumbItems = [
     {href: "/books", label: bc.books},
@@ -176,9 +189,9 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
         <div className="detail-grid">
           <div>
             <div className="detail-art book-art">
-              {images[0] ? (
+              {heroPath ? (
                 <BookImage
-                  path={images[0].storage_path}
+                  path={heroPath}
                   title={book.title}
                   className="detail-image"
                   imagesPublicBase={imagesPublicBase}
@@ -277,6 +290,17 @@ export default async function BookDetail({params}: {params: Promise<{id: string}
                 />
               )}
               <ShareListingButton title={book.title} path={`/books/${book.id}`} locale={locale} />
+              {book.is_published ? (
+                <WhatsAppBookShareButton
+                  title={book.title}
+                  grade={book.grade}
+                  city={book.city}
+                  municipality={book.municipality}
+                  priceKz={Number(book.price_kz)}
+                  bookUrl={canonicalBookUrl}
+                  locale={locale}
+                />
+              ) : null}
             </div>
             <div className="safe-note">🛡 {t.safeNote}</div>
             <div className="payment-note">{t.paymentNote}</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {trackEvent} from "@/components/AnalyticsTracker";
 import {authLoginUrl} from "@/lib/auth-redirect";
@@ -24,6 +24,9 @@ import {listingMediaT} from "@/lib/i18n-listing-media";
 import {paymentT} from "@/lib/i18n-payment";
 import {videoFileError} from "@/lib/listing-video";
 
+type AnalysisPhase = "idle" | "analyzing" | "done" | "failed" | "unavailable";
+type ThumbnailPhase = "idle" | "preparing" | "failed";
+
 export default function SellPage() {
   const router = useRouter();
   const locale = useClientLocale();
@@ -36,7 +39,16 @@ export default function SellPage() {
   const [files, setFiles] = useState<Partial<Record<InspectionSlot, File>>>({});
   const [video, setVideo] = useState<File | null>(null);
   const [suggestion, setSuggestion] = useState<{condition: BookCondition; note: string} | null>(null);
-  const [analyzing, setAnalyzing] = useState(false);
+  const [thumbnailChoice, setThumbnailChoice] = useState<{
+    slot: InspectionSlot;
+    confidence: number;
+    reason: string;
+  } | null>(null);
+  const [analysisPhase, setAnalysisPhase] = useState<AnalysisPhase>("idle");
+  const [thumbnailPhase, setThumbnailPhase] = useState<ThumbnailPhase>("idle");
+  const [pendingBookId, setPendingBookId] = useState<string | null>(null);
+  const lastAnalyzedFingerprint = useRef("");
+  const analyzeInFlight = useRef(false);
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState<(typeof subjects)[number]>(subjects[0]);
   const [grade, setGrade] = useState<(typeof grades)[number]>(grades[3]);
@@ -50,12 +62,117 @@ export default function SellPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const photoFingerprint = useMemo(
+    () =>
+      INSPECTION_SLOTS.map((slot) => {
+        const file = files[slot];
+        return file ? `${slot}:${file.name}:${file.size}:${file.lastModified}` : "";
+      }).join("|"),
+    [files],
+  );
+
+  const allPhotosReady = INSPECTION_SLOTS.every((slot) => Boolean(files[slot]));
+
   useEffect(() => {
     createClient().auth.getUser().then(({data}) => {
       if (!data.user) router.replace(authLoginUrl("/sell"));
       else setUserId(data.user.id);
     });
   }, [router]);
+
+  useEffect(() => {
+    if (!userId || !allPhotosReady) {
+      if (!allPhotosReady) {
+        setAnalysisPhase("idle");
+        setSuggestion(null);
+        setThumbnailChoice(null);
+        lastAnalyzedFingerprint.current = "";
+      }
+      return;
+    }
+
+    for (const slot of INSPECTION_SLOTS) {
+      const file = files[slot];
+      if (!file) return;
+      const problem = inspectionFileError(file);
+      if (problem) return;
+    }
+
+    if (photoFingerprint === lastAnalyzedFingerprint.current) return;
+    if (analyzeInFlight.current) return;
+
+    let cancelled = false;
+    analyzeInFlight.current = true;
+    (async () => {
+      setError("");
+      setAnalysisPhase("analyzing");
+      setSuggestion(null);
+      setThumbnailChoice(null);
+      const form = new FormData();
+      for (const slot of INSPECTION_SLOTS) {
+        const file = files[slot];
+        if (file) form.append(slot, file);
+      }
+      const response = await fetch("/api/listings/analyze-condition", {method: "POST", body: form});
+      if (cancelled) return;
+
+      if (response.status === 401) {
+        analyzeInFlight.current = false;
+        router.replace(authLoginUrl("/sell"));
+        return;
+      }
+      if (response.status === 503) {
+        lastAnalyzedFingerprint.current = photoFingerprint;
+        setAnalysisPhase("unavailable");
+        analyzeInFlight.current = false;
+        return;
+      }
+      if (response.status === 400) {
+        const body = (await response.json().catch(() => null)) as {error?: string} | null;
+        setError(body?.error === "size" ? guide.fileSize : guide.fileType);
+        setAnalysisPhase("failed");
+        analyzeInFlight.current = false;
+        return;
+      }
+      if (!response.ok) {
+        lastAnalyzedFingerprint.current = photoFingerprint;
+        setAnalysisPhase("failed");
+        analyzeInFlight.current = false;
+        return;
+      }
+
+      const body = (await response.json()) as {
+        condition?: BookCondition;
+        note?: string;
+        selected_image?: InspectionSlot;
+        confidence?: number;
+        reason?: string;
+      };
+      if (!body.condition || !conditions.includes(body.condition)) {
+        lastAnalyzedFingerprint.current = photoFingerprint;
+        setAnalysisPhase("failed");
+        analyzeInFlight.current = false;
+        return;
+      }
+
+      lastAnalyzedFingerprint.current = photoFingerprint;
+      setSuggestion({condition: body.condition, note: body.note || ""});
+      if (body.selected_image && INSPECTION_SLOTS.includes(body.selected_image)) {
+        setThumbnailChoice({
+          slot: body.selected_image,
+          confidence: typeof body.confidence === "number" ? body.confidence : 0.5,
+          reason: body.reason || "",
+        });
+      }
+      setAnalysisPhase("done");
+      analyzeInFlight.current = false;
+    })();
+
+    return () => {
+      cancelled = true;
+      analyzeInFlight.current = false;
+    };
+  }, [allPhotosReady, files, guide.fileSize, guide.fileType, photoFingerprint, router, userId]);
 
   function selectedPhotos(): File[] | null {
     const selected = INSPECTION_SLOTS.map((slot) => files[slot]).filter((file): file is File => Boolean(file));
@@ -77,46 +194,51 @@ export default function SellPage() {
     return selected;
   }
 
-  async function analyzePhotos() {
-    if (!userId || analyzing || loading) return;
-    setError("");
-    if (!selectedPhotos()) return;
-    setAnalyzing(true);
-    const form = new FormData();
-    for (const slot of INSPECTION_SLOTS) {
-      const file = files[slot];
-      if (file) form.append(slot, file);
-    }
-    const response = await fetch("/api/listings/analyze-condition", {method: "POST", body: form});
-    setAnalyzing(false);
+  async function finalizeThumbnail(bookId: string): Promise<boolean> {
+    setThumbnailPhase("preparing");
+    const response = await fetch("/api/listings/prepare-thumbnail", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        bookId,
+        selected_image: thumbnailChoice?.slot,
+        publish: true,
+      }),
+    });
     if (response.status === 401) {
       router.replace(authLoginUrl("/sell"));
-      return;
-    }
-    if (response.status === 503) {
-      setError(media.unavailable);
-      return;
-    }
-    if (response.status === 400) {
-      const body = (await response.json().catch(() => null)) as {error?: string} | null;
-      setError(body?.error === "size" ? guide.fileSize : guide.fileType);
-      return;
+      return false;
     }
     if (!response.ok) {
-      setError(media.analyzeFailed);
-      return;
+      setThumbnailPhase("failed");
+      setPendingBookId(bookId);
+      setError(media.thumbnailFailed);
+      return false;
     }
-    const body = (await response.json()) as {condition?: BookCondition; note?: string};
-    if (!body.condition || !conditions.includes(body.condition)) {
-      setError(media.analyzeFailed);
-      return;
+    setThumbnailPhase("idle");
+    setPendingBookId(null);
+    return true;
+  }
+
+  async function retryThumbnail() {
+    if (!pendingBookId || loading) return;
+    setLoading(true);
+    setError("");
+    const ok = await finalizeThumbnail(pendingBookId);
+    setLoading(false);
+    if (ok) {
+      void trackEvent("listing_published", {book_id: pendingBookId});
+      router.push("/books/" + pendingBookId);
     }
-    setSuggestion({condition: body.condition, note: body.note || ""});
   }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!userId) return;
+    if (!userId || analysisPhase === "analyzing" || thumbnailPhase === "preparing") return;
+    if (pendingBookId) {
+      await retryThumbnail();
+      return;
+    }
     setLoading(true);
     setError("");
     const parsed = listingSchema.safeParse({
@@ -166,7 +288,7 @@ export default function SellPage() {
         city,
         municipality,
         description,
-        is_published: true,
+        is_published: false,
         payment_arrangement: payment,
         ...(suggestion
           ? {
@@ -237,10 +359,24 @@ export default function SellPage() {
         return;
       }
     }
+
+    const thumbnailOk = await finalizeThumbnail(book.id);
     setLoading(false);
+    if (!thumbnailOk) return;
+
     void trackEvent("listing_published", {book_id: book.id});
     router.push("/books/" + book.id);
   }
+
+  const publishBusy = loading || analysisPhase === "analyzing" || thumbnailPhase === "preparing";
+  const publishLabel =
+    thumbnailPhase === "preparing" || (loading && !pendingBookId)
+      ? media.publishing
+      : loading
+        ? t.publishing
+        : pendingBookId
+          ? media.thumbnailRetry
+          : t.publishButton;
 
   return (
     <AppShell>
@@ -289,6 +425,46 @@ export default function SellPage() {
               })}
             </p>
           </fieldset>
+          {allPhotosReady ? (
+            <div className="listing-ai-status" aria-live="polite">
+              {analysisPhase === "analyzing" ? (
+                <>
+                  <p>{media.analyzing}</p>
+                  <p>{media.thumbnailChoosing}</p>
+                </>
+              ) : null}
+              {analysisPhase === "done" ? <p>{media.analysisDone}</p> : null}
+              {analysisPhase === "failed" ? <p>{media.analysisFailed}</p> : null}
+              {analysisPhase === "unavailable" ? <p>{media.unavailable}</p> : null}
+              {thumbnailChoice ? (
+                <div className="ai-suggestion">
+                  <p>{media.thumbnailDone}</p>
+                  <p>
+                    {fillTemplate(media.thumbnailSelected, {
+                      slot: guide.slots[thumbnailChoice.slot],
+                    })}
+                  </p>
+                </div>
+              ) : null}
+              {suggestion ? (
+                <div className="ai-suggestion">
+                  <p>
+                    {media.suggestionLead} <strong>{catalog.conditions[suggestion.condition]}</strong>
+                  </p>
+                  {suggestion.note ? <p>{suggestion.note}</p> : null}
+                </div>
+              ) : null}
+              {thumbnailPhase === "preparing" ? <p>{media.thumbnailPreparing}</p> : null}
+              {thumbnailPhase === "failed" ? (
+                <div className="ai-suggestion">
+                  <p>{media.thumbnailFailed}</p>
+                  <button type="button" className="secondary-button" disabled={loading} onClick={() => void retryThumbnail()}>
+                    {media.thumbnailRetry}
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <label className="listing-video-field">
             {media.videoLabel}
             <input
@@ -340,22 +516,6 @@ export default function SellPage() {
               </select>
             </label>
           </div>
-          <div className="listing-video-field">
-            <button type="button" className="secondary-button" disabled={analyzing || loading} onClick={analyzePhotos}>
-              {analyzing ? media.analyzing : media.analyze}
-            </button>
-            {suggestion ? (
-              <div className="ai-suggestion">
-                <p>
-                  {media.suggestionLead} <strong>{catalog.conditions[suggestion.condition]}</strong>
-                </p>
-                {suggestion.note ? <p>{suggestion.note}</p> : null}
-                <button type="button" className="secondary-button" onClick={() => setCondition(suggestion.condition)}>
-                  {media.applySuggestion}
-                </button>
-              </div>
-            ) : null}
-          </div>
           <div className="form-two">
             <label>
               {t.city}
@@ -397,8 +557,8 @@ export default function SellPage() {
             <small className="payment-hint">{pay.hint}</small>
           </label>
           {error && <div className="form-error">{error}</div>}
-          <button className="button submit-listing" disabled={loading}>
-            {loading ? t.publishing : t.publishButton}
+          <button className="button submit-listing" disabled={publishBusy}>
+            {publishLabel}
           </button>
         </form>
       </section>
