@@ -6,7 +6,9 @@ import {listingsManageT} from "@/lib/i18n-listings-manage";
 import {inspectionT} from "@/lib/i18n-inspection";
 import {listingMediaT} from "@/lib/i18n-listing-media";
 import {fillTemplate, workspaceT} from "@/lib/i18n-workspace";
+import {whatsappShareT} from "@/lib/i18n-whatsapp-share";
 import type {Locale} from "@/lib/i18n";
+import {createWhatsAppBookShareUrl} from "@/lib/whatsapp-share";
 import type {WorkspaceListing} from "@/lib/workspace-query";
 import {getSiteUrl} from "@/lib/site-url";
 
@@ -22,6 +24,7 @@ export function WorkspaceRecentListings({
   numberLocale: string;
 }) {
   const t = workspaceT(locale);
+  const wa = whatsappShareT(locale);
   const photos = inspectionT(locale);
   const media = listingMediaT(locale);
   const manage = listingsManageT(locale);
@@ -49,9 +52,15 @@ export function WorkspaceRecentListings({
       <div className="listing-list">
         {listings.map((book) => {
           const shareUrl = `${getSiteUrl()}/books/${book.id}`;
-          const whatsapp = `https://wa.me/?text=${encodeURIComponent(
-            `${fillTemplate(t.whatsappText, {title: book.title})} ${shareUrl}`,
-          )}`;
+          const whatsapp = createWhatsAppBookShareUrl({
+            title: book.title,
+            grade: book.grade,
+            city: book.city,
+            municipality: book.municipality,
+            priceKz: book.priceKz,
+            bookUrl: shareUrl,
+            locale,
+          });
           return (
             <article className="listing-row" key={book.id}>
               <div className="listing-thumb">
@@ -103,7 +112,7 @@ export function WorkspaceRecentListings({
                   <Link href={"/books/" + book.id}>{t.view}</Link>
                   {book.isPublished ? (
                     <a href={whatsapp} target="_blank" rel="noopener noreferrer">
-                      {t.whatsapp}
+                      {wa.button}
                     </a>
                   ) : null}
                 </div>

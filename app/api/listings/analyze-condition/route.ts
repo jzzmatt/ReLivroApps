@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {suggestBookCondition} from "@/lib/ai-condition";
+import {analyzeListingPhotos} from "@/lib/ai-listing-analysis";
 import {INSPECTION_SLOTS, inspectionFileError} from "@/lib/inspection-photos";
 import {createClient} from "@/lib/supabase/server";
 
@@ -24,8 +24,14 @@ export async function POST(request: Request) {
     images.push({mime: value.type, base64: bytes.toString("base64")});
   }
 
-  const result = await suggestBookCondition(images);
+  const result = await analyzeListingPhotos(images);
   if ("unavailable" in result) return NextResponse.json({error: "unavailable"}, {status: 503});
   if ("failed" in result) return NextResponse.json({error: "failed"}, {status: 502});
-  return NextResponse.json({condition: result.condition, note: result.note});
+  return NextResponse.json({
+    condition: result.condition,
+    note: result.note,
+    selected_image: result.selected_image,
+    confidence: result.confidence,
+    reason: result.reason,
+  });
 }
