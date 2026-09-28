@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {trackEvent} from "@/components/AnalyticsTracker";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {createClient} from "@/lib/supabase/client";
 
 export function FavoriteButton({bookId, initial = false}: {bookId: string; initial?: boolean}) {
@@ -18,7 +19,7 @@ export function FavoriteButton({bookId, initial = false}: {bookId: string; initi
       data: {user},
     } = await supabase.auth.getUser();
     if (!user) {
-      window.location.href = "/auth";
+      window.location.href = authLoginUrl(window.location.pathname);
       return;
     }
     const result = saved

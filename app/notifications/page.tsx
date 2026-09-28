@@ -1,4 +1,5 @@
 import {redirect} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {NotificationsPaginatedClient} from "@/components/NotificationsPaginatedClient";
 import {messages} from "@/lib/i18n";
@@ -18,7 +19,7 @@ export default async function NotificationsPage() {
   const {
     data: {user},
   } = await s.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(authLoginUrl("/notifications"));
 
   const [{data, count}, {count: unreadCount}] = await Promise.all([
     s

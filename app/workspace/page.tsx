@@ -1,4 +1,5 @@
 import {redirect} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {WorkspaceActivity} from "@/components/workspace/WorkspaceActivity";
 import {WorkspaceHeader} from "@/components/workspace/WorkspaceHeader";
@@ -18,7 +19,7 @@ export default async function WorkspacePage() {
   const {
     data: {user},
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(authLoginUrl("/workspace"));
 
   const data = await loadWorkspace(supabase, user.id);
   const name = data.displayName || user.email?.split("@")[0] || "ReLivroApps";

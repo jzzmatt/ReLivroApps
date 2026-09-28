@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {trackEvent} from "@/components/AnalyticsTracker";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {createClient} from "@/lib/supabase/client";
 
 const defaultLabels = {
@@ -28,7 +29,7 @@ export function ContactSellerButton({
       data: {user},
     } = await s.auth.getUser();
     if (!user) {
-      router.push("/auth");
+      router.push(authLoginUrl(window.location.pathname));
       return;
     }
     const {data, error} = await s.rpc("start_conversation", {p_book_id: bookId});

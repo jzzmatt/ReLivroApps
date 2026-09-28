@@ -66,7 +66,7 @@ Portuguese is the default application language. French and English will be suppo
 - Mobile-first management UI
 
 ### Current user flow
-`/auth` → `/books` → `/books/[id]` → `/sell` → `/profile/listings` → `/books/[id]/edit`
+`/auth` → `/workspace` (after sign-in) → `/books` → `/books/[id]` → `/sell` → `/profile/listings` → `/books/[id]/edit`
 
 ## Phase 4 — Backend & Data Foundation
 - Supabase browser/server clients

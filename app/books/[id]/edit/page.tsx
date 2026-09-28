@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {conditions, grades, modes, parsePaymentArrangement, paymentArrangements, subjects, type BookCondition, type ListingMode, type PaymentArrangement} from "@/lib/books";
 import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
 import {editListingT} from "@/lib/i18n-edit-listing";
@@ -42,7 +43,7 @@ export default function EditBookPage() {
         data: {user},
       } = await s.auth.getUser();
       if (!user) {
-        router.replace("/auth");
+        router.replace(authLoginUrl(`/books/${id}/edit`));
         return;
       }
       const {data, error: loadError} = await s.from("books").select("*").eq("id", id).maybeSingle();

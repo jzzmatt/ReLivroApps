@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {conversationT} from "@/lib/i18n-conversation";
 import {createClient} from "@/lib/supabase/client";
 import {useClientLocale} from "@/lib/use-client-locale";
@@ -23,7 +24,7 @@ export function MessageComposer({conversationId}: {conversationId: string}) {
       data: {user},
     } = await s.auth.getUser();
     if (!user) {
-      router.push("/auth");
+      router.push(authLoginUrl(window.location.pathname));
       return;
     }
     const {error} = await s.from("messages").insert({
