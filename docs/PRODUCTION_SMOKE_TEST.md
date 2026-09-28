@@ -16,10 +16,13 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 - [ ] Browse books
 - [ ] Search
 - [ ] Book details (PT / FR / EN labels; share preview with photo when available)
-- [ ] Publish book
+- [ ] Publish book (five mandatory inspection photos)
+- [ ] Automatic AI condition analysis starts when five photos are selected (no manual AI button)
+- [ ] Marketplace thumbnail generated after publish (`thumbnail_path` on listing)
+- [ ] WhatsApp share on book detail (formatted message + link preview via Open Graph)
 - [ ] Edit listing
 - [ ] Delete listing
-- [ ] Upload images (up to 5, JPG/PNG/WebP, size limits)
+- [ ] Upload images (five slots: JPG/PNG/WebP, size limits)
 
 ## Community
 
@@ -73,7 +76,9 @@ Do not treat this as a public launch checklist unless explicitly approved (Phase
 
 - [ ] `NEXT_PUBLIC_SITE_URL` matches deployed URL
 - [ ] Supabase Auth redirect URLs include `https://YOUR_DOMAIN/auth/callback`
-- [ ] Migrations `0001`–`0009` applied in order on production database
+- [ ] Migrations `0001`–`0016` applied in order on production database
+- [ ] `GET /api/health/deploy-readiness` returns `200` with `ready: true`
+- [ ] `GET /api/health/supabase` returns `configured: true`
 - [ ] Google provider enabled in Supabase (see [GOOGLE_AUTH_SETUP.md](./GOOGLE_AUTH_SETUP.md))
 - [ ] Storage buckets `book-images` and `avatars` exist with expected policies
 - [ ] HTTPS enforced on production domain
