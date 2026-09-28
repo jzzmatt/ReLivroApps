@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {trackEvent} from "@/components/AnalyticsTracker";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {conditions, grades, modes, paymentArrangements, subjects, type BookCondition, type ListingMode, type PaymentArrangement} from "@/lib/books";
 import {gradeOptions, subjectOptions} from "@/lib/i18n-catalog";
@@ -51,7 +52,7 @@ export default function SellPage() {
 
   useEffect(() => {
     createClient().auth.getUser().then(({data}) => {
-      if (!data.user) router.replace("/auth");
+      if (!data.user) router.replace(authLoginUrl("/sell"));
       else setUserId(data.user.id);
     });
   }, [router]);
@@ -89,7 +90,7 @@ export default function SellPage() {
     const response = await fetch("/api/listings/analyze-condition", {method: "POST", body: form});
     setAnalyzing(false);
     if (response.status === 401) {
-      router.replace("/auth");
+      router.replace(authLoginUrl("/sell"));
       return;
     }
     if (response.status === 503) {

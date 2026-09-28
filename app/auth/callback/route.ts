@@ -1,5 +1,6 @@
 import type {NextRequest} from "next/server";
 import {NextResponse} from "next/server";
+import {sanitizeAuthRedirect} from "@/lib/auth-redirect";
 import {
   applySupabaseCookiesToResponse,
   createRouteHandlerSupabaseClient,
@@ -17,11 +18,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  let destination = "/books";
-  const nextPath = requestUrl.searchParams.get("next");
-  if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
-    destination = nextPath;
-  }
+  const destination = sanitizeAuthRedirect(requestUrl.searchParams.get("next"));
 
   if (!code) {
     return NextResponse.redirect(new URL(destination, requestUrl.origin));

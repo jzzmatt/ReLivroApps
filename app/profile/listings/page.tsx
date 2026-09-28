@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {MyListingsClient} from "@/components/MyListingsClient";
 import type {Book} from "@/lib/books";
@@ -18,7 +19,7 @@ export default async function ListingsPage() {
   const {
     data: {user},
   } = await s.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(authLoginUrl("/profile/listings"));
 
   const {data, count} = await s
     .from("books")

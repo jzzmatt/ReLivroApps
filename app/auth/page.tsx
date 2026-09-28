@@ -3,13 +3,16 @@
 import {Suspense, useState, useEffect} from "react";
 import Link from "next/link";
 import {useRouter, useSearchParams} from "next/navigation";
+import {sanitizeAuthRedirect} from "@/lib/auth-redirect";
 import {createClient} from "@/lib/supabase/client";
 import {messages, type Locale} from "@/lib/i18n";
 import {LanguageSwitcher} from "@/components/LanguageSwitcher";
 
-function authCallbackUrl(): string {
+function authCallbackUrl(nextPath: string | null): string {
   if (typeof window === "undefined") return "/auth/callback";
-  return `${window.location.origin}/auth/callback`;
+  const url = new URL("/auth/callback", window.location.origin);
+  if (nextPath) url.searchParams.set("next", nextPath);
+  return url.toString();
 }
 
 function AuthPageContent() {
@@ -25,12 +28,21 @@ function AuthPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const nextPath = searchParams.get("next");
+
   useEffect(() => {
     const saved = localStorage.getItem("relivro-locale") as Locale | null;
     if (saved && ["pt", "fr", "en"].includes(saved)) setLocale(saved);
     const oauthError = searchParams.get("error");
     if (oauthError) setMessage(decodeURIComponent(oauthError));
   }, [searchParams]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({data: {user}}) => {
+      if (user) router.replace(sanitizeAuthRedirect(nextPath));
+    });
+  }, [nextPath, router]);
 
   async function signInWithGoogle() {
     setGoogleLoading(true);
@@ -39,7 +51,7 @@ function AuthPageContent() {
     const {error} = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: authCallbackUrl(),
+        redirectTo: authCallbackUrl(nextPath),
         queryParams: {prompt: "select_account"},
       },
     });
@@ -65,8 +77,16 @@ function AuthPageContent() {
       setMessage(result.error.message);
       return;
     }
-    setMessage(mode === "signup" ? t.auth.created : t.auth.logged);
-    if (mode === "signin") router.push("/books");
+    const destination = sanitizeAuthRedirect(nextPath);
+    if (mode === "signin") {
+      router.push(destination);
+      return;
+    }
+    if (result.data.session) {
+      router.push(destination);
+      return;
+    }
+    setMessage(t.auth.created);
   }
 
   return (

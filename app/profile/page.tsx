@@ -1,5 +1,7 @@
 import Link from "next/link";
+import {redirect} from "next/navigation";
 import {AppShell} from "@/components/AppShell";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {createClient} from "@/lib/supabase/server";
 import {ProfileStats} from "@/components/ProfileStats";
 import {ProfileLogoutButton} from "@/components/ProfileLogoutButton";
@@ -21,16 +23,7 @@ export default async function ProfilePage() {
   const s = await createClient();
   const {data: {user}} = await s.auth.getUser();
 
-  if (!user) {
-    return (
-      <AppShell>
-        <section className="profile-page container">
-          <h1>{t.profile.loginTitle}</h1>
-          <Link className="button" href="/auth">{t.profile.login}</Link>
-        </section>
-      </AppShell>
-    );
-  }
+  if (!user) redirect(authLoginUrl("/profile"));
 
   const {data: profile} = await s.from("profiles").select("*").eq("id", user.id).single();
   const {count: books} = await s.from("books").select("id", {count: "exact", head: true}).eq("seller_id", user.id);

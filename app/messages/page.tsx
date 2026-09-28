@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {MessagesInboxClient} from "@/components/MessagesInboxClient";
 import {
@@ -22,7 +23,7 @@ export default async function MessagesPage() {
   const {
     data: {user},
   } = await s.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(authLoginUrl("/messages"));
 
   const {data, count} = await s
     .from("conversations")

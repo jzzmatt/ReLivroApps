@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {notFound, redirect} from "next/navigation";
+import {authLoginUrl} from "@/lib/auth-redirect";
 import {AppShell} from "@/components/AppShell";
 import {MessageComposer} from "@/components/MessageComposer";
 import {MessageThreadClient} from "@/components/MessageThreadClient";
@@ -26,7 +27,7 @@ export default async function ConversationPage({params}: {params: Promise<{id: s
   const {
     data: {user},
   } = await s.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(authLoginUrl(`/messages/${id}`));
 
   const {data: conversation} = await s
     .from("conversations")
