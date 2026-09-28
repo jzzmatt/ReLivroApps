@@ -1,7 +1,6 @@
 import type {Locale} from "@/lib/i18n";
 import {formatPrice} from "@/lib/books";
 import {labelGrade} from "@/lib/i18n-catalog";
-import {whatsappShareT} from "@/lib/i18n-whatsapp-share";
 
 export function buildBookShareDescription(input: {
   title: string;
@@ -12,7 +11,6 @@ export function buildBookShareDescription(input: {
   locale?: Locale;
 }): string {
   const locale = input.locale ?? "pt";
-  const t = whatsappShareT(locale);
   const lines: string[] = [`📚 ${input.title.trim()}`];
 
   if (input.grade?.trim()) {

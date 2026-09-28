@@ -17,6 +17,14 @@ In **Vercel → Production**:
 
 **Redeploy** production after changes.
 
+Verify launch readiness (expect HTTP 200):
+
+```text
+GET /api/health/deploy-readiness?mode=ga
+```
+
+When `NEXT_PUBLIC_BETA` is still `true`, this endpoint returns `503` with hints.
+
 Expected results:
 
 - Beta banner hidden
@@ -72,6 +80,7 @@ Otherwise keep organic discovery (SEO, word of mouth).
 | Step | Done |
 |------|------|
 | `NEXT_PUBLIC_BETA` disabled + redeploy | ☐ |
+| `/api/health/deploy-readiness?mode=ga` returns 200 | ☐ |
 | Sitemap & robots verified | ☐ |
 | Legal pages reviewed | ☐ |
 | Production smoke test (GA) | ☐ |

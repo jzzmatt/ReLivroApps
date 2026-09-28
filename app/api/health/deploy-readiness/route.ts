@@ -8,6 +8,9 @@ export async function GET(request: Request) {
     origin && !origin.startsWith("http")
       ? `https://${origin}`
       : origin || new URL(request.url).origin;
-  const report = getDeployReadiness(requestOrigin);
+  const url = new URL(request.url);
+  const modeParam = url.searchParams.get("mode");
+  const mode = modeParam === "ga" ? "ga" : "beta";
+  const report = getDeployReadiness(requestOrigin, mode);
   return NextResponse.json(report, {status: report.ready ? 200 : 503});
 }
