@@ -1,4 +1,4 @@
-import type {Book, BookImage} from "@/lib/books";
+import type {BookImage} from "@/lib/books";
 import {INSPECTION_SLOTS, type InspectionSlot} from "@/lib/inspection-photos";
 
 export function parseThumbnailSource(value: unknown): InspectionSlot | null {
