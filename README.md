@@ -323,6 +323,11 @@ See [docs/PHASE_9_6_DATA_SEEDING.md](docs/PHASE_9_6_DATA_SEEDING.md). Demo email
 - Profile stays account-focused and links to the workspace
 - See [docs/PHASE_9_7_1_SELLER_WORKSPACE.md](docs/PHASE_9_7_1_SELLER_WORKSPACE.md)
 
+### Phase 9.7.2 — Workspace KPI visual refactor
+
+- Accent colours and Motion on the four KPI cards only; data unchanged
+- See [docs/PHASE_9_7_2_WORKSPACE_KPI_VISUAL.md](docs/PHASE_9_7_2_WORKSPACE_KPI_VISUAL.md)
+
 ### Phase 9.8 — Beta deployment
 
 Closed beta on Vercel + Supabase (not a public marketing launch unless you approve one).

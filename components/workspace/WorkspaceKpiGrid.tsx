@@ -1,15 +1,14 @@
+import {WorkspaceKpiCard, type WorkspaceKpiAccent} from "@/components/workspace/WorkspaceKpiCard";
 import {workspaceT} from "@/lib/i18n-workspace";
 import type {Locale} from "@/lib/i18n";
+import {localeTag} from "@/lib/locale-format";
 
-function Card({icon, value, label}: {icon: string; value: number; label: string}) {
-  return (
-    <article className="workspace-kpi">
-      <span aria-hidden="true">{icon}</span>
-      <strong>{value}</strong>
-      <small>{label}</small>
-    </article>
-  );
-}
+const KPI_ORDER: {key: "visitors" | "books" | "favorites" | "messages"; accent: WorkspaceKpiAccent}[] = [
+  {key: "visitors", accent: "visitors"},
+  {key: "books", accent: "books"},
+  {key: "favorites", accent: "favorites"},
+  {key: "messages", accent: "messages"},
+];
 
 export function WorkspaceKpiGrid({
   locale,
@@ -25,12 +24,26 @@ export function WorkspaceKpiGrid({
   messages: number;
 }) {
   const t = workspaceT(locale);
+  const numberLocale = localeTag(locale);
+  const values = {visitors, books, favorites, messages};
+  const labels = {
+    visitors: t.visitors,
+    books: t.books,
+    favorites: t.favorites,
+    messages: t.messages,
+  };
+
   return (
     <div className="workspace-kpi-grid">
-      <Card icon="👁" value={visitors} label={t.visitors} />
-      <Card icon="▣" value={books} label={t.books} />
-      <Card icon="♡" value={favorites} label={t.favorites} />
-      <Card icon="✉" value={messages} label={t.messages} />
+      {KPI_ORDER.map(({key, accent}, index) => (
+        <WorkspaceKpiCard
+          key={key}
+          accent={accent}
+          index={index}
+          label={labels[key]}
+          value={values[key].toLocaleString(numberLocale)}
+        />
+      ))}
     </div>
   );
 }
