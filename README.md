@@ -328,14 +328,21 @@ See [docs/PHASE_9_6_DATA_SEEDING.md](docs/PHASE_9_6_DATA_SEEDING.md). Demo email
 - Accent colours and Motion on the four KPI cards only; data unchanged
 - See [docs/PHASE_9_7_2_WORKSPACE_KPI_VISUAL.md](docs/PHASE_9_7_2_WORKSPACE_KPI_VISUAL.md)
 
+### Phase 9.7.3 — AI thumbnail, auto condition analysis, WhatsApp sharing
+
+- Automatic vision analysis when five inspection photos are ready; canonical marketplace thumbnail; localized WhatsApp share + Open Graph previews
+- See [docs/PHASE_9_7_3_AI_THUMBNAIL_WHATSAPP.md](docs/PHASE_9_7_3_AI_THUMBNAIL_WHATSAPP.md)
+
 ### Phase 9.8 — Beta deployment
 
 Closed beta on Vercel + Supabase (not a public marketing launch unless you approve one).
 
 1. Follow [docs/PHASE_9_8_BETA_DEPLOYMENT.md](docs/PHASE_9_8_BETA_DEPLOYMENT.md).
-2. Set `NEXT_PUBLIC_BETA=true` in Vercel Production during beta (dismissible banner + `noindex`).
-3. Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md) on the live URL.
-4. Onboard testers privately; do not announce publicly unless requested.
+2. Apply Supabase migrations through `0016_book_marketplace_thumbnail.sql`.
+3. Set `NEXT_PUBLIC_BETA=true` in Vercel Production during beta (dismissible banner + `noindex`).
+4. Hit `/api/health/deploy-readiness` on production (expect `ready: true`).
+5. Complete [docs/PRODUCTION_SMOKE_TEST.md](docs/PRODUCTION_SMOKE_TEST.md) on the live URL.
+6. Onboard testers privately; do not announce publicly unless requested.
 
 ### Phase 9.9 — Public launch (GA)
 
