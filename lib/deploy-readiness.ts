@@ -22,7 +22,10 @@ export const REQUIRED_MIGRATION_FILES = [
   "0016_book_marketplace_thumbnail.sql",
 ] as const;
 
+export type DeployReadinessMode = "beta" | "ga";
+
 export type DeployReadinessReport = {
+  mode: DeployReadinessMode;
   ready: boolean;
   closedBeta: boolean;
   checks: {
@@ -35,7 +38,10 @@ export type DeployReadinessReport = {
   migrations: readonly string[];
 };
 
-export function getDeployReadiness(requestOrigin?: string | null): DeployReadinessReport {
+export function getDeployReadiness(
+  requestOrigin?: string | null,
+  mode: DeployReadinessMode = "beta",
+): DeployReadinessReport {
   const supabase = getSupabasePublicEnv();
   const siteUrl = getSiteUrl().replace(/\/$/, "");
   const hints: string[] = [];
@@ -75,20 +81,33 @@ export function getDeployReadiness(requestOrigin?: string | null): DeployReadine
     hints.push("OPENAI_API_KEY is unset: /sell auto condition + thumbnail selection will be limited (thumbnail falls back to front cover).");
   }
 
-  if (isClosedBeta()) {
-    hints.push("NEXT_PUBLIC_BETA=true: pages use noindex; set false for public launch (Phase 9.9).");
+  const closedBeta = isClosedBeta();
+
+  if (mode === "beta" && closedBeta) {
+    hints.push("NEXT_PUBLIC_BETA=true: closed beta (noindex). Correct for Phase 9.8.");
   }
 
-  hints.push(`Apply Supabase migrations through ${REQUIRED_MIGRATION_FILES.at(-1)} before beta testers publish listings.`);
+  if (mode === "ga" && closedBeta) {
+    hints.push("Set NEXT_PUBLIC_BETA=false or remove it, then redeploy before public launch (Phase 9.9).");
+  }
 
-  const ready =
+  if (mode === "ga" && !closedBeta) {
+    hints.push("Public GA mode: confirm /robots.txt allows crawl and /sitemap.xml is reachable.");
+  }
+
+  hints.push(`Apply Supabase migrations through ${REQUIRED_MIGRATION_FILES.at(-1)} before sellers publish listings.`);
+
+  const envReady =
     Boolean(supabase) &&
     siteUrlOk &&
     (siteUrlMatchesRequest === undefined || siteUrlMatchesRequest);
+  const modeReady = mode === "ga" ? !closedBeta : true;
+  const ready = envReady && modeReady;
 
   return {
+    mode,
     ready,
-    closedBeta: isClosedBeta(),
+    closedBeta,
     checks: {
       supabasePublicEnv: Boolean(supabase),
       siteUrl: siteUrlOk,
